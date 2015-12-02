@@ -1,3 +1,6 @@
-var Quiz = require("./nickname");
+var Quiz = require("./Quiz");
 
-nickname.getNickname();
+
+var test = new Quiz();
+
+test.getNickname();
