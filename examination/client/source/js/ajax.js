@@ -11,8 +11,7 @@ function request(config, callback) {
 
     req.open(config.method, config.url);
     req.setRequestHeader("Content-type", config.contentType);
-    req.send(config.query);
-
+    req.send(config.answer);
 }
 
 module.exports.request = request;
