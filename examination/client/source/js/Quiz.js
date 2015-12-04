@@ -1,7 +1,5 @@
 var ajax = require("./ajax");
 
-
-
 function Quiz() {
     if (sessionStorage.getItem("nickname")) {
         this.nickname = sessionStorage.getItem("nickname");
@@ -16,22 +14,22 @@ Quiz.prototype.getNickname = function() {
 
     var nickname;
 
-    form.addEventListener("submit", function submit() {
+    form.addEventListener("submit", function submit(event) {
         nickname = form.firstElementChild.value;
         sessionStorage.setItem("nickname", nickname);
+        event.preventDefault();
     });
 };
 
 Quiz.prototype.playQuiz = function() {
-    this.getQuestion("http://vhost3.lnu.se:20080/question/1");
-    document.addEventListener();
-    this.postAnswer(response.nextURL);
+
+    this.getQuestion();
 };
 
 Quiz.prototype.getQuestion = function(url) {
     var getAjaxConfig = {
         method: "GET",
-        url: url
+        url: url || "http://vhost3.lnu.se:20080/question/1"
     };
 
     var _this = this;
@@ -39,7 +37,7 @@ Quiz.prototype.getQuestion = function(url) {
     ajax.request(getAjaxConfig, function(error, data) {
         var response = JSON.parse(data);
         _this.printQuestion(response.question);
-
+        _this.postAnswer(response.nextURL);
     });
 };
 
@@ -48,32 +46,38 @@ Quiz.prototype.postAnswer = function(url) {
     var form = answerContainer.querySelector("form");
 
     var _this = this;
+    var myAnswer;
+    var answer = {};
+    var postAjaxConfig = {};
 
     form.addEventListener("submit", function submit(event) {
+        event.preventDefault();
+        event.stopPropagation();
 
-        var myAnswer = form.firstElementChild.value;
-        form.firstElementChild.value = null;
-        var answer = {
+        myAnswer = form.firstElementChild.value;
+
+        answer = {
             answer: myAnswer
         };
 
-        var postAjaxConfig = {
+        postAjaxConfig = {
             method: "POST",
             url: url,
             contentType: "application/json",
             answer: JSON.stringify(answer)
         };
 
+        debugger;
         ajax.request(postAjaxConfig, function(error, data) {
             if (error) {
                 console.log("Network error");
             }
 
             var response = JSON.parse(data);
+            console.log(response);
             _this.getQuestion(response.nextURL);
+            form.firstElementChild.value = null;
         });
-
-        event.preventDefault();
     });
 };
 
