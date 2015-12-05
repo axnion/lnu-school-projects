@@ -4,23 +4,35 @@
     <link rel="stylesheet" href="./stylesheet/style.css"/>
 </head>
 <body>
-    <div id="nicknameContainer" class="container">
-        <form>
-            <input type="textbox" placeholder="Nickname">
-            <input type="submit" value="Start Game">
-        </form>
-    </div>
 
     <div id="questionContainer" class="container">
         <p></p>
     </div>
 
-    <div id="answerContainer" class="container">
+    <div id="formContainer" class="container">
+
+    </div>
+
+    <template id="nicknameTemplate">
         <form>
-            <input type="textbox" placeholder="Answer">
+            <input type="text" placeholder="Nickname">
+            <input type="submit" value="Start Game">
+        </form>
+    </template>
+
+    <template id="textAnswerTemplate">
+        <form>
+            <input type="text" placeholder="Answer">
             <input type="submit" value="OK">
         </form>
-    </div>
+    </template>
+
+    <template id="alternativeAnswerTemplate">
+        <form>
+            <input type="text" placeholder="ALTERNATIVES CHANGE">
+            <input type="submit" value="OK">
+        </form>
+    </template>
 
     <script src="./javascript/build.js"></script>
 </body>
