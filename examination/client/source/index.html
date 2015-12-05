@@ -14,22 +14,25 @@
     </div>
 
     <template id="nicknameTemplate">
-        <form>
+        <form id = "nicknameForm">
             <input type="text" placeholder="Nickname">
             <input type="submit" value="Start Game">
         </form>
     </template>
 
     <template id="textAnswerTemplate">
-        <form>
+        <form id = "textAnswerForm">
             <input type="text" placeholder="Answer">
             <input type="submit" value="OK">
         </form>
     </template>
 
     <template id="alternativeAnswerTemplate">
-        <form>
-            <input type="text" placeholder="ALTERNATIVES CHANGE">
+        <form id = "alternativeAnswerForm">
+            <input type="radio" name="alt" value="alt1" checked>alt1
+            <input type="radio" name="alt" value="alt2">alt2
+            <input type="radio" name="alt" value="alt3">alt3
+            <input type="radio" name="alt" value="alt4">alt4
             <input type="submit" value="OK">
         </form>
     </template>

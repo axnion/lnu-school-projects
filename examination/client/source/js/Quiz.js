@@ -9,26 +9,30 @@ function Quiz() {
 }
 
 Quiz.prototype.getNickname = function() {
-    var formContainer = document.querySelector("#formContainer");
-    var template = document.querySelector("#nicknameTemplate");
-    var form = document.importNode(template.content, true);
-    formContainer.appendChild(form);
-    formContainer.removeChild("form");
+    this.addTemplate("nicknameTemplate");
+    var form = document.querySelector("#nicknameForm");
     var nickname;
     var _this = this;
 
-    formContainer.addEventListener("submit", function(event) {
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
         nickname = form.firstElementChild.value;
-        sessionStorage.setItem("nickname", nickname)
+        form.remove();
+        _this.playQuiz();
     });
 };
 
+Quiz.prototype.addTemplate = function(templateName) {
+    var formContainer = document.querySelector("#formContainer");
+    var template = document.querySelector("#" + templateName);
+    var form = document.importNode(template.content, true);
+
+    formContainer.appendChild(form);
+};
+
 Quiz.prototype.playQuiz = function() {
-    if(!sessionStorage.getItem("nickname")) {
-        ge
-    }
     this.getQuestion();
-    this.postAnswer();
+
 };
 
 Quiz.prototype.getQuestion = function() {
@@ -42,23 +46,35 @@ Quiz.prototype.getQuestion = function() {
         response = JSON.parse(data);
         newURL = response.nextURL;
         _this.printQuestion();
-        _this.printAnswers();
+
+        if (response.alternatives) {
+            _this.postAnswerAlt();
+        } else {
+            _this.postAnswerText();
+        }
     });
 };
 
-Quiz.prototype.postAnswer = function() {
-    var answerContainer = document.querySelector("#formContainer");
-    var form = answerContainer.querySelector("form");
-    var inputBox = form.firstElementChild;
+Quiz.prototype.postAnswerAlt = function() {
     var _this = this;
     var myAnswer;
     var answer = {};
+    var form;
+    var i;
+
+    this.addTemplate("alternativeAnswerTemplate");
+    form = document.querySelector("#alternativeAnswerForm");
+
+    var buttons = form.children;
 
     form.addEventListener("submit", function(event) {
         event.preventDefault();
 
-        myAnswer = inputBox.value;
-        inputBox.value = null;
+        for (i = 0; i < buttons.length - 1; i += 1) {
+            if (buttons[i].checked) {
+                myAnswer = buttons[i].value;
+            }
+        }
 
         answer = {
             answer: myAnswer
@@ -77,23 +93,45 @@ Quiz.prototype.postAnswer = function() {
             newURL = response.nextURL;
             _this.getQuestion();
         });
+
+        form.remove();
     });
 };
 
-Quiz.prototype.printAnswers = function() {
-    var formContainer = document.querySelector("#formContainer");
-    var template;
+Quiz.prototype.postAnswerText = function() {
+    var _this = this;
+    var myAnswer;
+    var answer = {};
     var form;
 
-    if (response.alternatives) {
-        template = document.querySelector("#alternativeAnswerTemplate");
-    } else {
-        template = document.querySelector("#textAnswerTemplate");
-    }
+    this.addTemplate("textAnswerTemplate");
+    form = document.querySelector("#textAnswerForm");
 
-    form = document.importNode(template.content, true);
-    formContainer.appendChild(form);
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
 
+        myAnswer = form.firstElementChild.value;
+
+        answer = {
+            answer: myAnswer
+        };
+
+        ajaxConfig = {
+            method: "POST",
+            url: newURL,
+            contentType: "application/json",
+            answer: JSON.stringify(answer)
+        };
+
+        console.log(ajaxConfig);
+        ajax.request(ajaxConfig, function(error, data) {
+            response = JSON.parse(data);
+            newURL = response.nextURL;
+            _this.getQuestion();
+        });
+
+        form.remove();
+    });
 };
 
 Quiz.prototype.printQuestion = function() {
