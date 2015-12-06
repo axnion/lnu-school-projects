@@ -1,13 +1,16 @@
 var ajax = require("./ajax");
+var Timer = require("./Timer");
 
 var ajaxConfig;
 var response;
 var newURL;
-var time = 0;
-var timerInterval;
 
 function Quiz() {
+    var _this = this;
     this.nickname = this.getNickname();
+    this.timer = new Timer(function() {
+        _this.lostGame();
+    });
 }
 
 Quiz.prototype.getNickname = function() {
@@ -65,7 +68,7 @@ Quiz.prototype.postAnswer = function() {
     form.addEventListener("submit", function(event) {
         event.preventDefault();
 
-        _this.stopTimer();
+        _this.timer.stopTimer();
 
         if (response.alternatives) {
             var buttons = form.querySelectorAll("input");
@@ -99,22 +102,13 @@ Quiz.prototype.postAnswer = function() {
         form.remove();
     });
 
-    this.startTimer();
+    this.timer.startTimer();
 };
 
-Quiz.prototype.startTimer = function() {
-    time = 20;
-    timerInterval = window.setInterval(this.updateTimer, 100);
-};
-
-Quiz.prototype.stopTimer = function() {
-    window.clearInterval(timerInterval);
-};
-
-Quiz.prototype.updateTimer = function() {
-    var timer = document.querySelector("#time");
-    time -= 0.1;
-    timer.textContent = time.toFixed(1);
+Quiz.prototype.lostGame = function() {
+    this.addTemplate("gameLostTemplate");
+    var formContainer = document.querySelector("#formContainer");
+    formContainer.firstElementChild.remove();
 };
 
 Quiz.prototype.printQuestion = function() {
