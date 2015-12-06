@@ -3,6 +3,8 @@ var ajax = require("./ajax");
 var ajaxConfig;
 var response;
 var newURL;
+var time = 0;
+var timerInterval;
 
 function Quiz() {
     this.nickname = this.getNickname();
@@ -18,7 +20,7 @@ Quiz.prototype.getNickname = function() {
         event.preventDefault();
         nickname = form.firstElementChild.value;
         form.remove();
-        _this.playQuiz();
+        _this.getQuestion();
     });
 };
 
@@ -28,10 +30,6 @@ Quiz.prototype.addTemplate = function(templateName) {
     var form = document.importNode(template.content, true);
 
     formContainer.appendChild(form);
-};
-
-Quiz.prototype.playQuiz = function() {
-    this.getQuestion();
 };
 
 Quiz.prototype.getQuestion = function() {
@@ -46,7 +44,6 @@ Quiz.prototype.getQuestion = function() {
         newURL = response.nextURL;
         _this.printQuestion();
         _this.postAnswer();
-
     });
 };
 
@@ -59,6 +56,7 @@ Quiz.prototype.postAnswer = function() {
     if (response.alternatives) {
         this.addTemplate("alternativeAnswerTemplate");
         form = document.querySelector("#alternativeAnswerForm");
+        this.printAlternatives();
     } else {
         this.addTemplate("textAnswerTemplate");
         form = document.querySelector("#textAnswerForm");
@@ -67,8 +65,10 @@ Quiz.prototype.postAnswer = function() {
     form.addEventListener("submit", function(event) {
         event.preventDefault();
 
+        _this.stopTimer();
+
         if (response.alternatives) {
-            var buttons = form.children;
+            var buttons = form.querySelectorAll("input");
             for (var i = 0; i < buttons.length - 1; i += 1) {
                 if (buttons[i].checked) {
                     myAnswer = buttons[i].value;
@@ -98,19 +98,46 @@ Quiz.prototype.postAnswer = function() {
 
         form.remove();
     });
+
+    this.startTimer();
+};
+
+Quiz.prototype.startTimer = function() {
+    time = 20;
+    timerInterval = window.setInterval(this.updateTimer, 100);
+};
+
+Quiz.prototype.stopTimer = function() {
+    window.clearInterval(timerInterval);
+};
+
+Quiz.prototype.updateTimer = function() {
+    var timer = document.querySelector("#time");
+    time -= 0.1;
+    timer.textContent = time.toFixed(1);
 };
 
 Quiz.prototype.printQuestion = function() {
     var div = document.querySelector("#questionContainer");
     var p = div.firstElementChild;
     var question = response.question;
-    var alt = response.alternatives;
+    p.textContent = question;
+};
 
-    if (alt) {
-        p.textContent = question + "\n Alt1: " + alt.alt1 + "\n Alt2: " + alt.alt2 + "\n Alt3: " + alt.alt3 + "\n Alt4: " + alt.alt4;
-    } else {
-        p.textContent = question;
-    }
+Quiz.prototype.printAlternatives = function() {
+    var form = document.querySelector("#alternativeAnswerForm");
+    var lables = form.querySelectorAll("lable");
+    var alternatives = response.alternatives;
+    var textNode;
+
+    textNode = document.createTextNode(alternatives.alt1);
+    lables[0].appendChild(textNode);
+    textNode = document.createTextNode(alternatives.alt2);
+    lables[1].appendChild(textNode);
+    textNode = document.createTextNode(alternatives.alt3);
+    lables[2].appendChild(textNode);
+    textNode = document.createTextNode(alternatives.alt4);
+    lables[3].appendChild(textNode);
 };
 
 module.exports = Quiz;

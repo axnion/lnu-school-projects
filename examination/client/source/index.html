@@ -7,6 +7,7 @@
 
     <div id="questionContainer" class="container">
         <p></p>
+        <div>Time: <span id="time"></span></div>
     </div>
 
     <div id="formContainer" class="container">
@@ -29,10 +30,18 @@
 
     <template id="alternativeAnswerTemplate">
         <form id = "alternativeAnswerForm">
-            <input type="radio" name="alt" value="alt1" checked>alt1
-            <input type="radio" name="alt" value="alt2">alt2
-            <input type="radio" name="alt" value="alt3">alt3
-            <input type="radio" name="alt" value="alt4">alt4
+            <input type="radio" name="alt" value="alt1" checked>
+            <lable for="radio"></lable>
+            <br>
+            <input type="radio" name="alt" value="alt2">
+            <lable for="radio"></lable>
+            <br>
+            <input type="radio" name="alt" value="alt3">
+            <lable for="radio"></lable>
+            <br>
+            <input type="radio" name="alt" value="alt4">
+            <lable for="radio"></lable>
+            <br>
             <input type="submit" value="OK">
         </form>
     </template>
