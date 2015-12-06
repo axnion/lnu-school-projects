@@ -32,7 +32,6 @@ Quiz.prototype.addTemplate = function(templateName) {
 
 Quiz.prototype.playQuiz = function() {
     this.getQuestion();
-
 };
 
 Quiz.prototype.getQuestion = function() {
@@ -46,71 +45,38 @@ Quiz.prototype.getQuestion = function() {
         response = JSON.parse(data);
         newURL = response.nextURL;
         _this.printQuestion();
+        _this.postAnswer();
+
+    });
+};
+
+Quiz.prototype.postAnswer = function() {
+    var _this = this;
+    var myAnswer;
+    var answer = {};
+    var form;
+
+    if (response.alternatives) {
+        this.addTemplate("alternativeAnswerTemplate");
+        form = document.querySelector("#alternativeAnswerForm");
+    } else {
+        this.addTemplate("textAnswerTemplate");
+        form = document.querySelector("#textAnswerForm");
+    }
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
 
         if (response.alternatives) {
-            _this.postAnswerAlt();
-        } else {
-            _this.postAnswerText();
-        }
-    });
-};
-
-Quiz.prototype.postAnswerAlt = function() {
-    var _this = this;
-    var myAnswer;
-    var answer = {};
-    var form;
-    var i;
-
-    this.addTemplate("alternativeAnswerTemplate");
-    form = document.querySelector("#alternativeAnswerForm");
-
-    var buttons = form.children;
-
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        for (i = 0; i < buttons.length - 1; i += 1) {
-            if (buttons[i].checked) {
-                myAnswer = buttons[i].value;
+            var buttons = form.children;
+            for (var i = 0; i < buttons.length - 1; i += 1) {
+                if (buttons[i].checked) {
+                    myAnswer = buttons[i].value;
+                }
             }
+        } else {
+            myAnswer = form.firstElementChild.value;
         }
-
-        answer = {
-            answer: myAnswer
-        };
-
-        ajaxConfig = {
-            method: "POST",
-            url: newURL,
-            contentType: "application/json",
-            answer: JSON.stringify(answer)
-        };
-
-        console.log(ajaxConfig);
-        ajax.request(ajaxConfig, function(error, data) {
-            response = JSON.parse(data);
-            newURL = response.nextURL;
-            _this.getQuestion();
-        });
-
-        form.remove();
-    });
-};
-
-Quiz.prototype.postAnswerText = function() {
-    var _this = this;
-    var myAnswer;
-    var answer = {};
-    var form;
-
-    this.addTemplate("textAnswerTemplate");
-    form = document.querySelector("#textAnswerForm");
-
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        myAnswer = form.firstElementChild.value;
 
         answer = {
             answer: myAnswer
