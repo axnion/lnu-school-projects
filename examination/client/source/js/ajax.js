@@ -2,8 +2,6 @@ function request(config, callback) {
     var req = new XMLHttpRequest();
 
     req.addEventListener("load", function() {
-        event.stopPropagation();
-
         console.log(req.responseText);
         callback(null, req.responseText);
     });

@@ -29,7 +29,7 @@ function Timer(callback) {
 
     this.getTotalTime = function() {
         return totalTime.toFixed(2);
-    }
+    };
 }
 
 module.exports = Timer;
