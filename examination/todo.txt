@@ -1,7 +1,14 @@
+--------ATT GÖRA---------
 Error hantering på post och get.
-Kontrollera och fixa potensiella fel i sparfunktinen.
 Byt ut scoreboarddiven mot ul li.
-Byt ut alla globala variabler
 Dela upp postAnswer i fler funktioner.
 Flytta alla print metoder till ett eget objekt.
 Gör så att man måste fylla i något i nickname.
+Timern skiver inte alltid ut meddelandet.
+Lägg till så ens nya tid alltid syns längst upp när man vinner.
+Flytta upp så allt blir deklarerat i början av funktionen.
+
+
+--------KLART---------
+Kontrollera och fixa potensiella fel i sparfunktinen.
+Byt ut alla globala variabler.

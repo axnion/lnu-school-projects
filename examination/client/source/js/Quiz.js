@@ -1,28 +1,32 @@
 var ajax = require("./ajax");
 var Timer = require("./Timer");
 
-var ajaxConfig;
-var response;
-var newURL;
-
 function Quiz() {
     var _this = this;
     this.nickname = this.getNickname();
     this.timer = new Timer(function() {
-        _this.lostGame();
+        _this.lostGame("You ran out of time");
     });
 }
 
 Quiz.prototype.getNickname = function() {
     this.addTemplate("nicknameTemplate");
     var form = document.querySelector("#nicknameForm");
+    var message = document.querySelector("#nickMessage");
     var _this = this;
 
     form.addEventListener("submit", function(event) {
         event.preventDefault();
         _this.nickname = form.firstElementChild.value;
-        form.remove();
-        _this.getQuestion();
+        if (_this.nickname) {
+            _this.nickname = form.firstElementChild.value;
+            message.remove();
+            form.remove();
+            _this.getQuestion();
+        } else {
+
+            message.textContent = "Please write your nickname";
+        }
     });
 };
 
@@ -34,31 +38,30 @@ Quiz.prototype.addTemplate = function(templateName) {
     formContainer.appendChild(form);
 };
 
-Quiz.prototype.getQuestion = function() {
-    ajaxConfig = {
+Quiz.prototype.getQuestion = function(newURL) {
+    var ajaxConfig = {
         method: "GET",
         url: newURL || "http://vhost3.lnu.se:20080/question/1"
     };
     var _this = this;
 
     ajax.request(ajaxConfig, function(error, data) {
-        response = JSON.parse(data);
-        newURL = response.nextURL;
-        _this.printQuestion();
-        _this.postAnswer();
+        var response = JSON.parse(data);
+        _this.printQuestion(response.question);
+        _this.postAnswer(response.nextURL, response.alternatives);
     });
 };
 
-Quiz.prototype.postAnswer = function() {
+Quiz.prototype.postAnswer = function(newURL, alternatives) {
     var _this = this;
     var myAnswer;
     var answer = {};
     var form;
 
-    if (response.alternatives) {
+    if (alternatives) {
         this.addTemplate("alternativeAnswerTemplate");
         form = document.querySelector("#alternativeAnswerForm");
-        this.printAlternatives();
+        this.printAlternatives(alternatives);
     } else {
         this.addTemplate("textAnswerTemplate");
         form = document.querySelector("#textAnswerForm");
@@ -69,7 +72,7 @@ Quiz.prototype.postAnswer = function() {
 
         _this.timer.stopTimer();
 
-        if (response.alternatives) {
+        if (alternatives) {
             var buttons = form.querySelectorAll("input");
             for (var i = 0; i < buttons.length - 1; i += 1) {
                 if (buttons[i].checked) {
@@ -84,16 +87,15 @@ Quiz.prototype.postAnswer = function() {
             answer: myAnswer
         };
 
-        ajaxConfig = {
+        var ajaxConfig = {
             method: "POST",
             url: newURL,
             contentType: "application/json",
             answer: JSON.stringify(answer)
         };
 
-        console.log(ajaxConfig);
         ajax.request(ajaxConfig, function(error, data) {
-            response = JSON.parse(data);
+            var response = JSON.parse(data);
             if (error) {
                 if (response.message) {
                     _this.lostGame(response.message);
@@ -102,10 +104,8 @@ Quiz.prototype.postAnswer = function() {
                 }
 
             } else {
-                console.log("NOT ERROR");
                 if (response.nextURL) {
-                    newURL = response.nextURL;
-                    _this.getQuestion();
+                    _this.getQuestion(response.nextURL);
                 } else {
                     _this.finish();
                 }
@@ -123,8 +123,8 @@ Quiz.prototype.lostGame = function(message) {
     var formContainer = document.querySelector("#formContainer");
     var messageTag = document.querySelector("#message");
     var textNode = document.createTextNode(message);
-    messageTag.appendChild(textNode);
     formContainer.firstElementChild.remove();
+    messageTag.appendChild(textNode);
 };
 
 Quiz.prototype.finish = function() {
@@ -135,7 +135,6 @@ Quiz.prototype.finish = function() {
 Quiz.prototype.saveHighscore = function() {
     var time = this.timer.getTotalTime();
     var name = this.nickname;
-    var temp;
     var highscore = JSON.parse(localStorage.getItem("highscore"));
     if (!highscore) {
         highscore = [
@@ -150,7 +149,7 @@ Quiz.prototype.saveHighscore = function() {
         localStorage.setItem("highscore", JSON.stringify(highscore));
     } else {
         for (var i = 0; i < 5; i += 1) {
-            if (time < Number(highscore[i].time)) { //todo Konvertera från sträng till int
+            if (time < Number(highscore[i].time)) {
                 for (var j = 3; j >= i; j -= 1) {
                     highscore[j + 1].nickname = highscore[j].nickname;
                     highscore[j + 1].time = highscore[j].time;
@@ -175,7 +174,6 @@ Quiz.prototype.printScore = function() {
     var highscore = JSON.parse(localStorage.getItem("highscore"));
     var scoreBoard = document.querySelector("#scoreBoard");
     var p = scoreBoard.querySelectorAll("p");
-    var br = document.createElement("br");
     var str;
     var textNode;
     for (var i = 0; i < highscore.length; i += 1) {
@@ -187,17 +185,15 @@ Quiz.prototype.printScore = function() {
     }
 };
 
-Quiz.prototype.printQuestion = function() {
+Quiz.prototype.printQuestion = function(question) {
     var div = document.querySelector("#questionContainer");
     var p = div.firstElementChild;
-    var question = response.question;
     p.textContent = question;
 };
 
-Quiz.prototype.printAlternatives = function() {
+Quiz.prototype.printAlternatives = function(alternatives) {
     var form = document.querySelector("#alternativeAnswerForm");
     var lables = form.querySelectorAll("lable");
-    var alternatives = response.alternatives;
     var textNode;
 
     textNode = document.createTextNode(alternatives.alt1);

@@ -11,7 +11,6 @@ function Timer(callback) {
 
     this.stopTimer = function() {
         totalTime += 20 - time;
-        console.log(totalTime);
         window.clearInterval(timerInterval);
     };
 
