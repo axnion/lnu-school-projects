@@ -47,11 +47,25 @@
     </template>
 
     <template id="gameLostTemplate">
-        <p>You lost</p>
+        <p id="message"></p>
         <form id="gameLostForm">
             <input type="submit" value="Restart">
         </form>
     </template>
+
+    <template id="gameWonTemplate">
+        <div id="scoreBoard">
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+        </div>
+        <form>
+            <input type="submit" value="Play again">
+        </form>
+    </template>
+
 
     <script src="./javascript/build.js"></script>
 </body>

@@ -1,2 +1,7 @@
 Error hantering på post och get.
 Kontrollera och fixa potensiella fel i sparfunktinen.
+Byt ut scoreboarddiven mot ul li.
+Byt ut alla globala variabler
+Dela upp postAnswer i fler funktioner.
+Flytta alla print metoder till ett eget objekt.
+Gör så att man måste fylla i något i nickname.

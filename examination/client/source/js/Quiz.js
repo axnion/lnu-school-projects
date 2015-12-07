@@ -94,11 +94,21 @@ Quiz.prototype.postAnswer = function() {
         console.log(ajaxConfig);
         ajax.request(ajaxConfig, function(error, data) {
             response = JSON.parse(data);
-            if (response.nextURL) {
-                newURL = response.nextURL;
-                _this.getQuestion();
+            if (error) {
+                if (response.message) {
+                    _this.lostGame(response.message);
+                } else {
+                    throw new Error ("Network error " + error);
+                }
+
             } else {
-                _this.finish();
+                console.log("NOT ERROR");
+                if (response.nextURL) {
+                    newURL = response.nextURL;
+                    _this.getQuestion();
+                } else {
+                    _this.finish();
+                }
             }
         });
 
@@ -108,14 +118,18 @@ Quiz.prototype.postAnswer = function() {
     this.timer.startTimer();
 };
 
-Quiz.prototype.lostGame = function() {
+Quiz.prototype.lostGame = function(message) {
     this.addTemplate("gameLostTemplate");
     var formContainer = document.querySelector("#formContainer");
+    var messageTag = document.querySelector("#message");
+    var textNode = document.createTextNode(message);
+    messageTag.appendChild(textNode);
     formContainer.firstElementChild.remove();
 };
 
 Quiz.prototype.finish = function() {
     this.saveHighscore();
+    this.printScore();
 };
 
 Quiz.prototype.saveHighscore = function() {
@@ -135,8 +149,8 @@ Quiz.prototype.saveHighscore = function() {
         highscore[0].time = time;
         localStorage.setItem("highscore", JSON.stringify(highscore));
     } else {
-        for (var i = 0; i < 5; i += 1 || highscore[i].time === "") {
-            if (time < highscore[i].time) {
+        for (var i = 0; i < 5; i += 1) {
+            if (time < Number(highscore[i].time)) { //todo Konvertera från sträng till int
                 for (var j = 3; j >= i; j -= 1) {
                     highscore[j + 1].nickname = highscore[j].nickname;
                     highscore[j + 1].time = highscore[j].time;
@@ -146,8 +160,30 @@ Quiz.prototype.saveHighscore = function() {
                 highscore[i].time = time;
                 localStorage.setItem("highscore", JSON.stringify(highscore));
                 break;
+            } else if (highscore[i].time === "") {
+                highscore[i].nickname = name;
+                highscore[i].time = time;
+                localStorage.setItem("highscore", JSON.stringify(highscore));
+                break;
             }
         }
+    }
+};
+
+Quiz.prototype.printScore = function() {
+    this.addTemplate("gameWonTemplate");
+    var highscore = JSON.parse(localStorage.getItem("highscore"));
+    var scoreBoard = document.querySelector("#scoreBoard");
+    var p = scoreBoard.querySelectorAll("p");
+    var br = document.createElement("br");
+    var str;
+    var textNode;
+    for (var i = 0; i < highscore.length; i += 1) {
+        str = (i + 1) + ". ";
+        str += "Name: " + highscore[i].nickname + " ";
+        str += "Time: " + highscore[i].time;
+        textNode = document.createTextNode(str);
+        p[i].appendChild(textNode);
     }
 };
 
