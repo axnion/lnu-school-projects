@@ -1,14 +1,17 @@
 function Timer(callback) {
     var time;
+    var totalTime = 0;
     var timerInterval;
     var _this = this;
 
     this.startTimer = function() {
-        time = 5;
+        time = 20;
         timerInterval = window.setInterval(this.updateTimer, 100);
     };
 
     this.stopTimer = function() {
+        totalTime += 20 - time;
+        console.log(totalTime);
         window.clearInterval(timerInterval);
     };
 
@@ -23,6 +26,10 @@ function Timer(callback) {
             timer.textContent = time.toFixed(1);
         }
     };
+
+    this.getTotalTime = function() {
+        return totalTime.toFixed(2);
+    }
 }
 
 module.exports = Timer;

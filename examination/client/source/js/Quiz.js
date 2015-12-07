@@ -95,8 +95,12 @@ Quiz.prototype.postAnswer = function() {
         console.log(ajaxConfig);
         ajax.request(ajaxConfig, function(error, data) {
             response = JSON.parse(data);
-            newURL = response.nextURL;
-            _this.getQuestion();
+            if (response.nextURL) {
+                newURL = response.nextURL;
+                _this.getQuestion();
+            } else {
+                _this.finish();
+            }
         });
 
         form.remove();
@@ -109,6 +113,10 @@ Quiz.prototype.lostGame = function() {
     this.addTemplate("gameLostTemplate");
     var formContainer = document.querySelector("#formContainer");
     formContainer.firstElementChild.remove();
+};
+
+Quiz.prototype.finish = function() {
+
 };
 
 Quiz.prototype.printQuestion = function() {
