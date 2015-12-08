@@ -67,11 +67,14 @@ function Print() {
         var paragraph;
         var textNode;
 
+        this.clearContainer("formContainer");
+
         this.addTemplate("gameLostTemplate", "formContainer");
         container = document.querySelector("#formContainer");
+        //container.firstElementChild.remove();
+        //container.textContent = message;
         paragraph = document.querySelector("#message");
         textNode = document.createTextNode(message);
-        container.firstElementChild.remove();
         paragraph.appendChild(textNode);
     };
 
@@ -85,6 +88,19 @@ function Print() {
         form = document.importNode(template.content, true);
 
         container.appendChild(form);
+    };
+
+    this.clearContainer = function(containerName) {
+        var container;
+        var content;
+        var i;
+
+        container = document.querySelector("#" + containerName);
+        content = container.children;
+
+        for (i = 0; i < content.length; i += 1) {
+            content[i].remove();
+        }
     };
 }
 

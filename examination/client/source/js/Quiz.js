@@ -24,8 +24,7 @@ Quiz.prototype.getNickname = function() {
         event.preventDefault();
         _this.nickname = form.firstElementChild.value;
         if (_this.nickname) {
-            message.remove();
-            form.remove();
+            _this.print.clearContainer("formContainer");
             _this.getQuestion();
         } else {
             message.textContent = "Please write your nickname";
@@ -44,10 +43,14 @@ Quiz.prototype.getQuestion = function(newURL) {
     };
 
     ajax.request(ajaxConfig, function(error, data) {
-        response = JSON.parse(data);
-        _this.print.question(response.question);
-        _this.postAnswer(response.nextURL, response.alternatives);
-        _this.timer.startTimer();
+        if (error) {
+            throw new Error ("Network error " + error);
+        } else {
+            response = JSON.parse(data);
+            _this.print.question(response.question);
+            _this.postAnswer(response.nextURL, response.alternatives);
+            _this.timer.startTimer();
+        }
     });
 };
 
@@ -64,7 +67,6 @@ Quiz.prototype.postAnswer = function(newURL, alternatives) {
         _this.timer.stopTimer();
 
         answer = _this.getAnswer(alternatives, form);
-
         ajaxConfig = {
             method: "POST",
             url: newURL,
@@ -72,11 +74,11 @@ Quiz.prototype.postAnswer = function(newURL, alternatives) {
             answer: JSON.stringify(answer)
         };
 
+        form.remove();
+
         ajax.request(ajaxConfig, function(error, data) {
             _this.analyzeResponse(error, JSON.parse(data));
         });
-
-        form.remove();
     });
 };
 
@@ -116,13 +118,13 @@ Quiz.prototype.analyzeResponse = function(error, response) {
         if (response.nextURL) {
             this.getQuestion(response.nextURL);
         } else {
-            this.saveHighscore();
+            this.saveHighScore();
             this.print.gameWon();
         }
     }
 };
 
-Quiz.prototype.saveHighscore = function() {
+Quiz.prototype.saveHighScore = function() {
     var time;
     var name;
     var highScore;
@@ -131,7 +133,7 @@ Quiz.prototype.saveHighscore = function() {
 
     time = this.timer.getTotalTime();
     name = this.nickname;
-    highScore = JSON.parse(localStorage.getItem("highscore"));
+    highScore = JSON.parse(localStorage.getItem("highScore"));
     if (!highScore) {
         highScore = [
             {nickname: "", time: ""},
@@ -142,7 +144,7 @@ Quiz.prototype.saveHighscore = function() {
         ];
         highScore[0].nickname = name;
         highScore[0].time = time;
-        localStorage.setItem("highscore", JSON.stringify(highScore));
+        localStorage.setItem("highScore", JSON.stringify(highScore));
     } else {
         for (i = 0; i < 5; i += 1) {
             if (time < Number(highScore[i].time)) {
@@ -153,12 +155,12 @@ Quiz.prototype.saveHighscore = function() {
 
                 highScore[i].nickname = name;
                 highScore[i].time = time;
-                localStorage.setItem("highscore", JSON.stringify(highScore));
+                localStorage.setItem("highScore", JSON.stringify(highScore));
                 break;
             } else if (highScore[i].time === "") {
                 highScore[i].nickname = name;
                 highScore[i].time = time;
-                localStorage.setItem("highscore", JSON.stringify(highScore));
+                localStorage.setItem("highScore", JSON.stringify(highScore));
                 break;
             }
         }
