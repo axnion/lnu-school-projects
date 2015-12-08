@@ -2,13 +2,17 @@
 Error hantering på post och get.
 Byt ut scoreboarddiven mot ul li.
 Dela upp postAnswer i fler funktioner.
-Flytta alla print metoder till ett eget objekt.
-Gör så att man måste fylla i något i nickname.
+Flytta alla print metoder till ett eget objekt och flytta all hantering av html till det objectet.
 Timern skiver inte alltid ut meddelandet.
 Lägg till så ens nya tid alltid syns längst upp när man vinner.
 Flytta upp så allt blir deklarerat i början av funktionen.
+Rensa upp i index.html
+Skapa en default till questioncontainer och sätt timern i en template.
+Fixa deleteing av form på ett bättre sätt.
+Undersök lite på hur man får this att alltid vara this.
 
 
 --------KLART---------
 Kontrollera och fixa potensiella fel i sparfunktinen.
 Byt ut alla globala variabler.
+Gör så att man måste fylla i något i nickname.
