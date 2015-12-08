@@ -12,13 +12,13 @@ function Quiz() {
     this.nickname = this.getNickname();
 }
 
-
-
-
 Quiz.prototype.getNickname = function() {
-    var form = this.print.nicknameForm();
-    var message = document.querySelector("#nickMessage"); //TODO Kom på något bra sätt att lösa detta
     var _this = this;
+    var form;
+    var message;
+
+    form = this.print.nicknameForm();
+    message = document.querySelector("#nickMessage"); //TODO Kom på något bra sätt att lösa detta
 
     form.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -33,56 +33,39 @@ Quiz.prototype.getNickname = function() {
     });
 };
 
-
-
-
 Quiz.prototype.getQuestion = function(newURL) {
-    var ajaxConfig = {
+    var _this = this;
+    var ajaxConfig;
+    var response;
+
+    ajaxConfig = {
         method: "GET",
         url: newURL || "http://vhost3.lnu.se:20080/question/1"
     };
-    var _this = this;
 
     ajax.request(ajaxConfig, function(error, data) {
-        var response = JSON.parse(data);
+        response = JSON.parse(data);
         _this.print.question(response.question);
         _this.postAnswer(response.nextURL, response.alternatives);
         _this.timer.startTimer();
     });
 };
 
-
-
-
 Quiz.prototype.postAnswer = function(newURL, alternatives) {
     var _this = this;
-    var myAnswer;
-    var answer = {};
+    var answer;
     var form;
+    var ajaxConfig;
 
     form = this.print.answer(alternatives);
 
     form.addEventListener("submit", function(event) {
         event.preventDefault();
-
         _this.timer.stopTimer();
 
-        if (alternatives) {
-            var buttons = form.querySelectorAll("input");
-            for (var i = 0; i < buttons.length - 1; i += 1) {
-                if (buttons[i].checked) {
-                    myAnswer = buttons[i].value;
-                }
-            }
-        } else {
-            myAnswer = form.firstElementChild.value;
-        }
+        answer = _this.getAnswer(alternatives, form);
 
-        answer = {
-            answer: myAnswer
-        };
-
-        var ajaxConfig = {
+        ajaxConfig = {
             method: "POST",
             url: newURL,
             contentType: "application/json",
@@ -97,8 +80,29 @@ Quiz.prototype.postAnswer = function(newURL, alternatives) {
     });
 };
 
+Quiz.prototype.getAnswer = function(alternatives, form) {
+    var answer;
+    var answerObj;
+    var buttons;
+    var i;
 
+    if (alternatives) {
+        buttons = form.querySelectorAll("input");
+        for (i = 0; i < buttons.length - 1; i += 1) {
+            if (buttons[i].checked) {
+                answer = buttons[i].value;
+            }
+        }
+    } else {
+        answer = form.firstElementChild.value;
+    }
 
+    answerObj = {
+        answer: answer
+    };
+
+    return answerObj;
+};
 
 Quiz.prototype.analyzeResponse = function(error, response) {
     if (error) {
@@ -118,40 +122,43 @@ Quiz.prototype.analyzeResponse = function(error, response) {
     }
 };
 
-
-
-
 Quiz.prototype.saveHighscore = function() {
-    var time = this.timer.getTotalTime();
-    var name = this.nickname;
-    var highscore = JSON.parse(localStorage.getItem("highscore"));
-    if (!highscore) {
-        highscore = [
+    var time;
+    var name;
+    var highScore;
+    var i;
+    var j;
+
+    time = this.timer.getTotalTime();
+    name = this.nickname;
+    highScore = JSON.parse(localStorage.getItem("highscore"));
+    if (!highScore) {
+        highScore = [
             {nickname: "", time: ""},
             {nickname: "", time: ""},
             {nickname: "", time: ""},
             {nickname: "", time: ""},
             {nickname: "", time: ""}
         ];
-        highscore[0].nickname = name;
-        highscore[0].time = time;
-        localStorage.setItem("highscore", JSON.stringify(highscore));
+        highScore[0].nickname = name;
+        highScore[0].time = time;
+        localStorage.setItem("highscore", JSON.stringify(highScore));
     } else {
-        for (var i = 0; i < 5; i += 1) {
-            if (time < Number(highscore[i].time)) {
-                for (var j = 3; j >= i; j -= 1) {
-                    highscore[j + 1].nickname = highscore[j].nickname;
-                    highscore[j + 1].time = highscore[j].time;
+        for (i = 0; i < 5; i += 1) {
+            if (time < Number(highScore[i].time)) {
+                for (j = 3; j >= i; j -= 1) {
+                    highScore[j + 1].nickname = highScore[j].nickname;
+                    highScore[j + 1].time = highScore[j].time;
                 }
 
-                highscore[i].nickname = name;
-                highscore[i].time = time;
-                localStorage.setItem("highscore", JSON.stringify(highscore));
+                highScore[i].nickname = name;
+                highScore[i].time = time;
+                localStorage.setItem("highscore", JSON.stringify(highScore));
                 break;
-            } else if (highscore[i].time === "") {
-                highscore[i].nickname = name;
-                highscore[i].time = time;
-                localStorage.setItem("highscore", JSON.stringify(highscore));
+            } else if (highScore[i].time === "") {
+                highScore[i].nickname = name;
+                highScore[i].time = time;
+                localStorage.setItem("highscore", JSON.stringify(highScore));
                 break;
             }
         }

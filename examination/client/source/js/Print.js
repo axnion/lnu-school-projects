@@ -1,22 +1,23 @@
 function Print() {
-
     this.question = function(question) {
-        var container = document.querySelector("#questionContainer");
-        var p = container.firstElementChild;
-        p.textContent = question;
+        var container;
+        var paragraph;
+
+        container = document.querySelector("#questionContainer");
+        paragraph = container.firstElementChild;
+        paragraph.textContent = question;
     };
-
-
-
 
     this.answer = function(alternatives) {
         var form;
+        var lables;
+        var textNode;
+
         if (alternatives) {
 
             this.addTemplate("alternativeAnswerTemplate", "formContainer");
             form = document.querySelector("#alternativeAnswerForm");
-            var lables = form.querySelectorAll("lable");
-            var textNode;
+            lables = form.querySelectorAll("lable");
 
             textNode = document.createTextNode(alternatives.alt1);
             lables[0].appendChild(textNode);
@@ -34,54 +35,54 @@ function Print() {
         return form;
     };
 
-
-
-
     this.nicknameForm = function() {
         this.addTemplate("nicknameTemplate", "formContainer");
-        var form = document.querySelector("#nicknameForm");
-
-        return form;
+        return document.querySelector("#nicknameForm");
     };
 
-
-
-
     this.gameWon = function() {
-        this.addTemplate("gameWonTemplate", "formContainer");
-        var highscore = JSON.parse(localStorage.getItem("highscore"));
-        var scoreBoard = document.querySelector("#scoreBoard");
-        var p = scoreBoard.querySelectorAll("p");
+        var highScore;
+        var scoreBoard;
+        var paragraphs;
         var str;
         var textNode;
-        for (var i = 0; i < highscore.length; i += 1) {
+        var i;
+
+        this.addTemplate("gameWonTemplate", "formContainer");
+        highScore = JSON.parse(localStorage.getItem("highScore"));
+        scoreBoard = document.querySelector("#scoreBoard");
+        paragraphs = scoreBoard.querySelectorAll("p");
+
+        for (i = 0; i < highScore.length; i += 1) {
             str = (i + 1) + ". ";
-            str += "Name: " + highscore[i].nickname + " ";
-            str += "Time: " + highscore[i].time;
+            str += "Name: " + highScore[i].nickname + " ";
+            str += "Time: " + highScore[i].time;
             textNode = document.createTextNode(str);
-            p[i].appendChild(textNode);
+            paragraphs[i].appendChild(textNode);
         }
     };
 
-
-
-
     this.gameLost = function(message) {
+        var container;
+        var paragraph;
+        var textNode;
+
         this.addTemplate("gameLostTemplate", "formContainer");
-        var formContainer = document.querySelector("#formContainer");
-        var messageTag = document.querySelector("#message");
-        var textNode = document.createTextNode(message);
-        formContainer.firstElementChild.remove();
-        messageTag.appendChild(textNode);
+        container = document.querySelector("#formContainer");
+        paragraph = document.querySelector("#message");
+        textNode = document.createTextNode(message);
+        container.firstElementChild.remove();
+        paragraph.appendChild(textNode);
     };
 
-
-
-
     this.addTemplate = function(templateName, containerName) {
-        var container = document.querySelector("#" + containerName);
-        var template = document.querySelector("#" + templateName);
-        var form = document.importNode(template.content, true);
+        var container;
+        var template;
+        var form;
+
+        container = document.querySelector("#" + containerName);
+        template = document.querySelector("#" + templateName);
+        form = document.importNode(template.content, true);
 
         container.appendChild(form);
     };
