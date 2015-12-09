@@ -40,7 +40,7 @@ function Print() {
     };
 
     this.gameWon = function(name, time) {
-        var highScore;
+        var highScores;
         var scoreBoard;
         var heading;
         var paragraphs;
@@ -49,7 +49,7 @@ function Print() {
         var i;
 
         this.addTemplate("gameWonTemplate", "bottomContainer");
-        highScore = JSON.parse(localStorage.getItem("highScore"));
+        highScores = JSON.parse(localStorage.getItem("highScores"));
         scoreBoard = document.querySelector("#scoreBoard");
         paragraphs = scoreBoard.querySelectorAll("p");
         heading = document.querySelector("#playerScore");
@@ -57,10 +57,10 @@ function Print() {
         textNode = document.createTextNode("Nickname: " + name + " Time: " + time);
         heading.appendChild(textNode);
 
-        for (i = 0; i < highScore.length; i += 1) {
+        for (i = 0; i < highScores.length; i += 1) {
             str = (i + 1) + ". ";
-            str += "Name: " + highScore[i].nickname + " ";
-            str += "Time: " + highScore[i].time;
+            str += "Name: " + highScores[i].nickname + " ";
+            str += "Time: " + highScores[i].time;
             textNode = document.createTextNode(str);
             paragraphs[i].appendChild(textNode);
         }

@@ -1,16 +1,12 @@
 --------ATT GÖRA---------
 Kontrollera så att errorhanteringen funkar.
 Byt ut scoreboarddiven mot ul li.
-Lägg till så ens nya tid alltid syns längst upp när man vinner.
-Flytta upp så allt blir deklarerat i början av funktionen.
-Rensa upp i index.html
-Skapa en default till questioncontainer och sätt timern i en template.
 Undersök lite på hur man får this att alltid vara this.
 Gör så att det bara finns så många element som behövs i highscore arrayen.
 Implementera clearContainer där den behövs.
 Dela upp save highscore
 Försök att dra ner lite på IDn i html
-Lös template.remove() problemet
+Fixa problem med att när timer slutar så försvinner inte formuläret.
 
 --------KLART---------
 Kontrollera och fixa potensiella fel i sparfunktinen.
@@ -21,3 +17,8 @@ Dela upp postAnswer i fler funktioner.
 Skapa en clear container metod som tar bort allt i en container.
 Fixa deleteing av form på ett bättre sätt.
 Timern skiver inte alltid ut meddelandet.
+Lägg till så ens nya tid alltid syns längst upp när man vinner.
+Flytta upp så allt blir deklarerat i början av funktionen.
+Rensa upp i index.html
+Skapa en default till questioncontainer och sätt timern i en template.
+Lös template.remove() problemet

@@ -130,40 +130,52 @@ Quiz.prototype.analyzeResponse = function(error, response) {
 };
 
 Quiz.prototype.saveHighScore = function(name, time) {
-    var highScore;
+    var highScores;
+
+    highScores = JSON.parse(localStorage.getItem("highScores"));
+    if (highScores) {
+        this.saveToScoreBoard(name, time, highScores);
+
+    } else {
+        this.createScoreBoard(name, time);
+    }
+};
+
+Quiz.prototype.createScoreBoard = function(name, time) {
+    var highScores;
+
+    highScores = [
+        {nickname: "", time: ""},
+        {nickname: "", time: ""},
+        {nickname: "", time: ""},
+        {nickname: "", time: ""},
+        {nickname: "", time: ""}
+    ];
+    highScores[0].nickname = name;
+    highScores[0].time = time;
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+};
+
+Quiz.prototype.saveToScoreBoard = function(name, time, highScores) {
     var i;
     var j;
 
-    highScore = JSON.parse(localStorage.getItem("highScore"));
-    if (!highScore) {
-        highScore = [
-            {nickname: "", time: ""},
-            {nickname: "", time: ""},
-            {nickname: "", time: ""},
-            {nickname: "", time: ""},
-            {nickname: "", time: ""}
-        ];
-        highScore[0].nickname = name;
-        highScore[0].time = time;
-        localStorage.setItem("highScore", JSON.stringify(highScore));
-    } else {
-        for (i = 0; i < 5; i += 1) {
-            if (time < Number(highScore[i].time)) {
-                for (j = 3; j >= i; j -= 1) {
-                    highScore[j + 1].nickname = highScore[j].nickname;
-                    highScore[j + 1].time = highScore[j].time;
-                }
-
-                highScore[i].nickname = name;
-                highScore[i].time = time;
-                localStorage.setItem("highScore", JSON.stringify(highScore));
-                break;
-            } else if (highScore[i].time === "") {
-                highScore[i].nickname = name;
-                highScore[i].time = time;
-                localStorage.setItem("highScore", JSON.stringify(highScore));
-                break;
+    for (i = 0; i < 5; i += 1) {
+        if (time < Number(highScores[i].time)) {
+            for (j = 3; j >= i; j -= 1) {
+                highScores[j + 1].nickname = highScores[j].nickname;
+                highScores[j + 1].time = highScores[j].time;
             }
+
+            highScores[i].nickname = name;
+            highScores[i].time = time;
+            localStorage.setItem("highScores", JSON.stringify(highScores));
+            break;
+        } else if (highScores[i].time === "") {
+            highScores[i].nickname = name;
+            highScores[i].time = time;
+            localStorage.setItem("highScores", JSON.stringify(highScores));
+            break;
         }
     }
 };
