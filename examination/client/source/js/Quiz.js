@@ -2,23 +2,31 @@ var ajax = require("./ajax");
 var Timer = require("./Timer");
 var Print = require("./Print");
 
+/**
+ * Constructs a Quiz object. This object contains the logic and communication tools for a quiz game.
+ * @constructor
+ */
 function Quiz() {
     var _this = this;
     this.print = new Print();
-    this.timer = new Timer(function() {
-        _this.print.gameLost("You ran out of time");
-    });
-
-    this.nickname = this.getNickname();
+    this.timer = new Timer();
+    this.nickname = "";
 }
 
+Quiz.prototype.run = function() {
+    this.nickname = this.getNickname();
+};
+
+/**
+ * Gets the content of and input text to be used as a name for the player. It also
+ */
 Quiz.prototype.getNickname = function() {
     var _this = this;
     var form;
     var message;
 
     form = this.print.nicknameForm();
-    message = document.querySelector("#nickMessage"); //TODO Kom på något bra sätt att lösa detta
+    message = document.querySelector("#nickMessage");
 
     form.addEventListener("submit", function setNickname(event) {
         event.preventDefault();
@@ -34,6 +42,12 @@ Quiz.prototype.getNickname = function() {
     });
 };
 
+/**
+ * Gets the questions from the server and calls necessary functions when data from the server has been downloaded
+ * to the client.
+ * @throw error
+ * @param newURL
+ */
 Quiz.prototype.getQuestion = function(newURL) {
     var _this = this;
     var ajaxConfig;
@@ -50,12 +64,18 @@ Quiz.prototype.getQuestion = function(newURL) {
         } else {
             response = JSON.parse(data);
             _this.print.question(response.question);
-            _this.timer.startTimer();
             _this.postAnswer(response.nextURL, response.alternatives);
         }
     });
 };
 
+/**
+ * Calls functions to render answer form, start the timer and creates an event listener on the form. When event is
+ * triggered, timer stops, the form is removed and the answers are sent to the server. The response back is analysed
+ * and depending on the response from the server something will happen.
+ * @param newURL
+ * @param alternatives
+ */
 Quiz.prototype.postAnswer = function(newURL, alternatives) {
     var _this = this;
     var answer;
@@ -63,6 +83,11 @@ Quiz.prototype.postAnswer = function(newURL, alternatives) {
     var ajaxConfig;
 
     form = this.print.answer(alternatives);
+
+    _this.timer.startTimer(function() {
+        form.remove();
+        _this.print.gameLost("You ran out of time");
+    });
 
     form.addEventListener("submit", function submitAnswer(event) {
         event.preventDefault();
@@ -82,6 +107,13 @@ Quiz.prototype.postAnswer = function(newURL, alternatives) {
     });
 };
 
+/**
+ * Gets the answers from the answer form. Depending on if the answers has alternatives or if it's just a text box, the
+ * way the function collects the answers differs. The answer is then returned.
+ * @param alternatives
+ * @param form
+ * @returns {{answer: *}|*}
+ */
 Quiz.prototype.getAnswer = function(alternatives, form) {
     var answer;
     var answerObj;
@@ -106,6 +138,13 @@ Quiz.prototype.getAnswer = function(alternatives, form) {
     return answerObj;
 };
 
+/**
+ * This method analyses the response the server gave the client when it received the the answers. It checks if there
+ * was an error, or if there are more questions, if the answer the client gave was wrong, and then it calls the
+ * appropriate functions.
+ * @param error
+ * @param response
+ */
 Quiz.prototype.analyzeResponse = function(error, response) {
     var name;
     var time;
@@ -129,6 +168,12 @@ Quiz.prototype.analyzeResponse = function(error, response) {
     }
 };
 
+/**
+ * This function checks if a new JSON abject need to be created to save the scores or if there already is one and we can
+ * save in that one. It then calls the appropriate function.
+ * @param name
+ * @param time
+ */
 Quiz.prototype.saveHighScore = function(name, time) {
     var highScores;
 
@@ -141,6 +186,12 @@ Quiz.prototype.saveHighScore = function(name, time) {
     }
 };
 
+/**
+ * This function creates a new JSON object to keep the scores in. The object is turned to a string and saved in
+ * local storage.
+ * @param name
+ * @param time
+ */
 Quiz.prototype.createScoreBoard = function(name, time) {
     var highScores;
 
@@ -150,6 +201,14 @@ Quiz.prototype.createScoreBoard = function(name, time) {
     localStorage.setItem("highScores", JSON.stringify(highScores));
 };
 
+/**
+ * This method is used to save the top 5 highscores of the game. It take the new score and pushes it into the array.
+ * The array is then sorted, and if the array is longer than 5 element the 6th element is removed. The JSON object is
+ * then put back into local storage.
+ * @param name
+ * @param time
+ * @param highScores
+ */
 Quiz.prototype.saveToScoreBoard = function(name, time, highScores) {
     highScores.push({nickname: name, time: time});
     highScores.sort(function(a, b) {

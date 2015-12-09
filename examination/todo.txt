@@ -1,8 +1,7 @@
 --------ATT GÖRA---------
 Kontrollera så att errorhanteringen funkar.
-Fixa problem med att när timer slutar så försvinner inte formuläret.
 Skriv ut nätverksfel på skärmen.
-
+Lägg till run metod
 
 --------KLART---------
 Kontrollera och fixa potensiella fel i sparfunktinen.
@@ -25,3 +24,4 @@ Byt ut scoreboarddiven mot ul li.
 Sätt lite style på listan
 Försök att dra ner lite på IDn i html
 Gör så att det bara finns så många element som behövs i highscore arrayen.
+Fixa problem med att när timer slutar så försvinner inte formuläret.

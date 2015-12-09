@@ -1,5 +1,13 @@
+/**
+ * This is the Print object. In the Quiz game this object contains most of the functionallity used when altering the HTML.
+ * @constructor
+ */
 function Print() {
 
+    /**
+     * Prints the questions to the questionParagraph in the html file.
+     * @param question
+     */
     this.question = function(question) {
         var questionParagraph;
 
@@ -7,6 +15,12 @@ function Print() {
         questionParagraph.textContent = question;
     };
 
+    /**
+     * Loads the correct template and put's it into the bottom container. The form is then returned so it
+     * can be removed easily.
+     * @param alternatives
+     * @returns {*}
+     */
     this.answer = function(alternatives) {
         var form;
         var lables;
@@ -34,11 +48,21 @@ function Print() {
         return form;
     };
 
+    /**
+     * Loads the template so the user can fill in it's nickname
+     * @returns {Element}
+     */
     this.nicknameForm = function() {
         this.addTemplate("nicknameTemplate", "bottomContainer");
         return document.querySelector("#nicknameForm");
     };
 
+    /**
+     * Loads the correct template and presents the player with his score this round and the top 5 scores saved on
+     * this local storage.
+     * @param name
+     * @param time
+     */
     this.gameWon = function(name, time) {
         var highScores;
         var fragment;
@@ -69,6 +93,10 @@ function Print() {
         document.querySelector("#questionParagraph").textContent = "";
     };
 
+    /**
+     * Loads the correct template and presents a message to tell the player that he/she lost and why they lost.
+     * @param message
+     */
     this.gameLost = function(message) {
         var paragraph;
         var textNode;
@@ -79,6 +107,11 @@ function Print() {
         paragraph.appendChild(textNode);
     };
 
+    /**
+     * This is a helper method used in many of the other print methods. It's used to load a template into a container.
+     * @param templateName
+     * @param containerName
+     */
     this.addTemplate = function(templateName, containerName) {
         var container;
         var template;
@@ -87,7 +120,6 @@ function Print() {
         container = document.querySelector("#" + containerName);
         template = document.querySelector("#" + templateName);
         form = document.importNode(template.content, true);
-
         container.appendChild(form);
     };
 }
