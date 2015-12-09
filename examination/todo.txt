@@ -1,10 +1,7 @@
 --------ATT GÖRA---------
 Kontrollera så att errorhanteringen funkar.
 Byt ut scoreboarddiven mot ul li.
-Undersök lite på hur man får this att alltid vara this.
 Gör så att det bara finns så många element som behövs i highscore arrayen.
-Implementera clearContainer där den behövs.
-Dela upp save highscore
 Försök att dra ner lite på IDn i html
 Fixa problem med att när timer slutar så försvinner inte formuläret.
 
@@ -22,3 +19,6 @@ Flytta upp så allt blir deklarerat i början av funktionen.
 Rensa upp i index.html
 Skapa en default till questioncontainer och sätt timern i en template.
 Lös template.remove() problemet
+Dela upp save highscore
+Implementera clearContainer där den behövs.
+Undersök lite på hur man får this att alltid vara this.
