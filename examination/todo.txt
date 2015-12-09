@@ -1,9 +1,8 @@
 --------ATT GÖRA---------
 Kontrollera så att errorhanteringen funkar.
-Byt ut scoreboarddiven mot ul li.
-Gör så att det bara finns så många element som behövs i highscore arrayen.
-Försök att dra ner lite på IDn i html
 Fixa problem med att när timer slutar så försvinner inte formuläret.
+Skriv ut nätverksfel på skärmen.
+
 
 --------KLART---------
 Kontrollera och fixa potensiella fel i sparfunktinen.
@@ -22,3 +21,7 @@ Lös template.remove() problemet
 Dela upp save highscore
 Implementera clearContainer där den behövs.
 Undersök lite på hur man får this att alltid vara this.
+Byt ut scoreboarddiven mot ul li.
+Sätt lite style på listan
+Försök att dra ner lite på IDn i html
+Gör så att det bara finns så många element som behövs i highscore arrayen.

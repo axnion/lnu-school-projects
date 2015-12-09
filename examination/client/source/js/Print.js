@@ -45,49 +45,29 @@ function Print() {
         var textNode;
         var list;
         var listElement;
+        var playerScore;
         var i;
 
         this.addTemplate("gameWonTemplate", "bottomContainer");
+        playerScore = document.querySelector("#playerScore");
+        textNode = document.createTextNode(name + ", your time was: " + time);
+        playerScore.appendChild(textNode);
         highScores = JSON.parse(localStorage.getItem("highScores"));
         fragment = document.createDocumentFragment();
         list = document.querySelector("#scoreBoard");
 
         for (i = 0; i < highScores.length; i += 1) {
             listElement = document.createElement("li");
-            textNode = document.createTextNode((i + 1) + ". Name: " + highScores[i].nickname + " Time: " + highScores[i].time);
+            textNode = document.createTextNode("Name: " + highScores[i].nickname + " Time: " + highScores[i].time);
             listElement.appendChild(textNode);
             fragment.appendChild(listElement);
         }
 
         list.appendChild(fragment);
-    };
 
-    //this.gameWon = function(name, time) {
-    //    var highScores;
-    //    var scoreBoard;
-    //    var heading;
-    //    var paragraphs;
-    //    var str;
-    //    var textNode;
-    //    var i;
-    //
-    //    this.addTemplate("gameWonTemplate", "bottomContainer");
-    //    highScores = JSON.parse(localStorage.getItem("highScores"));
-    //    scoreBoard = document.querySelector("#scoreBoard");
-    //    paragraphs = scoreBoard.querySelectorAll("p");
-    //    heading = document.querySelector("#playerScore");
-    //
-    //    textNode = document.createTextNode("Nickname: " + name + " Time: " + time);
-    //    heading.appendChild(textNode);
-    //
-    //    for (i = 0; i < highScores.length; i += 1) {
-    //        str = (i + 1) + ". ";
-    //        str += "Name: " + highScores[i].nickname + " ";
-    //        str += "Time: " + highScores[i].time;
-    //        textNode = document.createTextNode(str);
-    //        paragraphs[i].appendChild(textNode);
-    //    }
-    //};
+        document.querySelector("#timeParagraph").textContent = "";
+        document.querySelector("#questionParagraph").textContent = "";
+    };
 
     this.gameLost = function(message) {
         var paragraph;

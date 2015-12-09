@@ -145,39 +145,20 @@ Quiz.prototype.createScoreBoard = function(name, time) {
     var highScores;
 
     highScores = [
-        {nickname: "", time: ""},
-        {nickname: "", time: ""},
-        {nickname: "", time: ""},
-        {nickname: "", time: ""},
-        {nickname: "", time: ""}
+        {nickname: name, time: time}
     ];
-    highScores[0].nickname = name;
-    highScores[0].time = time;
     localStorage.setItem("highScores", JSON.stringify(highScores));
 };
 
 Quiz.prototype.saveToScoreBoard = function(name, time, highScores) {
-    var i;
-    var j;
+    highScores.push({nickname: name, time: time});
+    highScores.sort(function(a, b) {
+        return Number(a.time) - Number(b.time);
+    });
 
-    for (i = 0; i < 5; i += 1) {
-        if (time < Number(highScores[i].time)) {
-            for (j = 3; j >= i; j -= 1) {
-                highScores[j + 1].nickname = highScores[j].nickname;
-                highScores[j + 1].time = highScores[j].time;
-            }
+    highScores.splice(5, 1);
 
-            highScores[i].nickname = name;
-            highScores[i].time = time;
-            localStorage.setItem("highScores", JSON.stringify(highScores));
-            break;
-        } else if (highScores[i].time === "") {
-            highScores[i].nickname = name;
-            highScores[i].time = time;
-            localStorage.setItem("highScores", JSON.stringify(highScores));
-            break;
-        }
-    }
+    localStorage.setItem("highScores", JSON.stringify(highScores));
 };
 
 module.exports = Quiz;
