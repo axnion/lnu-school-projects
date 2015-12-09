@@ -1,16 +1,8 @@
 function Print() {
 
-    this.title = function() {
-        this.clearContainer("topContainer");
-        this.addTemplate("titleTemplate", "topContainer");
-    };
-
     this.question = function(question) {
-        var container;
         var questionParagraph;
 
-        this.clearContainer("topContainer");
-        this.addTemplate("questionTemplate", "topContainer");
         questionParagraph = document.querySelector("#questionParagraph");
         questionParagraph.textContent = question;
     };
@@ -19,8 +11,6 @@ function Print() {
         var form;
         var lables;
         var textNode;
-
-        this.clearContainer("bottomContainer");
 
         if (alternatives) {
 
@@ -45,7 +35,6 @@ function Print() {
     };
 
     this.nicknameForm = function() {
-        this.title();
         this.addTemplate("nicknameTemplate", "bottomContainer");
         return document.querySelector("#nicknameForm");
     };
@@ -59,8 +48,6 @@ function Print() {
         var textNode;
         var i;
 
-        this.title();
-        this.clearContainer("bottomContainer");
         this.addTemplate("gameWonTemplate", "bottomContainer");
         highScore = JSON.parse(localStorage.getItem("highScore"));
         scoreBoard = document.querySelector("#scoreBoard");
@@ -83,9 +70,6 @@ function Print() {
         var paragraph;
         var textNode;
 
-        this.clearContainer("bottomContainer");
-
-        this.title();
         this.addTemplate("gameLostTemplate", "bottomContainer");
         paragraph = document.querySelector("#message");
         textNode = document.createTextNode(message);
@@ -102,19 +86,6 @@ function Print() {
         form = document.importNode(template.content, true);
 
         container.appendChild(form);
-    };
-
-    this.clearContainer = function(containerName) {
-        var container;
-        var content;
-        var i;
-
-        container = document.querySelector("#" + containerName);
-        content = container.children;
-
-        for (i = 0; i < content.length; i += 1) {
-            content[i].remove();
-        }
     };
 }
 

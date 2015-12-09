@@ -20,11 +20,14 @@ Quiz.prototype.getNickname = function() {
     form = this.print.nicknameForm();
     message = document.querySelector("#nickMessage"); //TODO Kom på något bra sätt att lösa detta
 
-    form.addEventListener("submit", function(event) {
+    form.addEventListener("submit", function setNickname(event) {
         event.preventDefault();
         _this.nickname = form.firstElementChild.value;
         if (_this.nickname) {
+            form.removeEventListener("submit", setNickname);
+            form.remove();
             _this.getQuestion();
+            message.textContent = "";
         } else {
             message.textContent = "Please write your nickname";
         }
@@ -47,8 +50,8 @@ Quiz.prototype.getQuestion = function(newURL) {
         } else {
             response = JSON.parse(data);
             _this.print.question(response.question);
-            _this.postAnswer(response.nextURL, response.alternatives);
             _this.timer.startTimer();
+            _this.postAnswer(response.nextURL, response.alternatives);
         }
     });
 };
@@ -61,7 +64,7 @@ Quiz.prototype.postAnswer = function(newURL, alternatives) {
 
     form = this.print.answer(alternatives);
 
-    form.addEventListener("submit", function(event) {
+    form.addEventListener("submit", function submitAnswer(event) {
         event.preventDefault();
         _this.timer.stopTimer();
 
@@ -72,12 +75,9 @@ Quiz.prototype.postAnswer = function(newURL, alternatives) {
             contentType: "application/json",
             answer: JSON.stringify(answer)
         };
-
-        //form.remove();    //TODO Byt ut mot clearContainer
-
+        form.remove();
         ajax.request(ajaxConfig, function(error, data) {
             _this.analyzeResponse(error, JSON.parse(data));
-            form.remove();
         });
     });
 };

@@ -17,7 +17,7 @@ function Timer(callback) {
     this.updateTimer = function() {
         var timer = document.querySelector("#timeParagraph");
         time -= 0.1;
-        if (time <= 0.1) {
+        if (time <= 0) {
             _this.stopTimer();
             timer.textContent = time.toFixed(1);
             callback();
