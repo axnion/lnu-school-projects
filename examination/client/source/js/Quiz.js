@@ -24,7 +24,6 @@ Quiz.prototype.getNickname = function() {
         event.preventDefault();
         _this.nickname = form.firstElementChild.value;
         if (_this.nickname) {
-            _this.print.clearContainer("formContainer");
             _this.getQuestion();
         } else {
             message.textContent = "Please write your nickname";
@@ -74,10 +73,11 @@ Quiz.prototype.postAnswer = function(newURL, alternatives) {
             answer: JSON.stringify(answer)
         };
 
-        form.remove();
+        //form.remove();    //TODO Byt ut mot clearContainer
 
         ajax.request(ajaxConfig, function(error, data) {
             _this.analyzeResponse(error, JSON.parse(data));
+            form.remove();
         });
     });
 };
@@ -107,6 +107,9 @@ Quiz.prototype.getAnswer = function(alternatives, form) {
 };
 
 Quiz.prototype.analyzeResponse = function(error, response) {
+    var name;
+    var time;
+
     if (error) {
         if (response.message) {
             this.print.gameLost(response.message);
@@ -118,21 +121,19 @@ Quiz.prototype.analyzeResponse = function(error, response) {
         if (response.nextURL) {
             this.getQuestion(response.nextURL);
         } else {
-            this.saveHighScore();
-            this.print.gameWon();
+            time = this.timer.getTotalTime();
+            name = this.nickname;
+            this.saveHighScore(name, time);
+            this.print.gameWon(name, time);
         }
     }
 };
 
-Quiz.prototype.saveHighScore = function() {
-    var time;
-    var name;
+Quiz.prototype.saveHighScore = function(name, time) {
     var highScore;
     var i;
     var j;
 
-    time = this.timer.getTotalTime();
-    name = this.nickname;
     highScore = JSON.parse(localStorage.getItem("highScore"));
     if (!highScore) {
         highScore = [

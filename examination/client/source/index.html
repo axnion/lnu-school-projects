@@ -5,14 +5,34 @@
 </head>
 <body>
 
-    <div id="questionContainer" class="container">
-        <p></p>
-        <div>Time: <span id="time"></span></div>
-    </div>
-
-    <div id="formContainer" class="container">
+    <div id="topContainer" class="container">
 
     </div>
+
+
+
+
+    <div id="bottomContainer" class="container">
+
+    </div>
+
+
+
+
+    <template id="titleTemplate">
+        <h1>Javascript Quiz</h1>
+    </template>
+
+
+
+
+    <template id="questionTemplate">
+        <p id="questionParagraph"></p>
+        <p id="timeParagraph"></p>
+    </template>
+
+
+
 
     <template id="nicknameTemplate">
         <form id = "nicknameForm">
@@ -22,12 +42,18 @@
         <p id="nickMessage"></p>
     </template>
 
+
+
+
     <template id="textAnswerTemplate">
         <form id = "textAnswerForm">
             <input type="text" placeholder="Answer">
             <input type="submit" value="OK">
         </form>
     </template>
+
+
+
 
     <template id="alternativeAnswerTemplate">
         <form id = "alternativeAnswerForm">
@@ -47,6 +73,9 @@
         </form>
     </template>
 
+
+
+
     <template id="gameLostTemplate">
         <p id="message"></p>
         <form id="gameLostForm">
@@ -54,7 +83,11 @@
         </form>
     </template>
 
+
+
+
     <template id="gameWonTemplate">
+        <h4 id="playerScore"></h4>
         <div id="scoreBoard">
             <p></p>
             <p></p>
@@ -66,6 +99,10 @@
             <input type="submit" value="Play again">
         </form>
     </template>
+
+
+
+
 
 
     <script src="./javascript/build.js"></script>

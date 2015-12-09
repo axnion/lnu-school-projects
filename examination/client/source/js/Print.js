@@ -1,11 +1,18 @@
 function Print() {
+
+    this.title = function() {
+        this.clearContainer("topContainer");
+        this.addTemplate("titleTemplate", "topContainer");
+    };
+
     this.question = function(question) {
         var container;
-        var paragraph;
+        var questionParagraph;
 
-        container = document.querySelector("#questionContainer");
-        paragraph = container.firstElementChild;
-        paragraph.textContent = question;
+        this.clearContainer("topContainer");
+        this.addTemplate("questionTemplate", "topContainer");
+        questionParagraph = document.querySelector("#questionParagraph");
+        questionParagraph.textContent = question;
     };
 
     this.answer = function(alternatives) {
@@ -13,9 +20,11 @@ function Print() {
         var lables;
         var textNode;
 
+        this.clearContainer("bottomContainer");
+
         if (alternatives) {
 
-            this.addTemplate("alternativeAnswerTemplate", "formContainer");
+            this.addTemplate("alternativeAnswerTemplate", "bottomContainer");
             form = document.querySelector("#alternativeAnswerForm");
             lables = form.querySelectorAll("lable");
 
@@ -28,7 +37,7 @@ function Print() {
             textNode = document.createTextNode(alternatives.alt4);
             lables[3].appendChild(textNode);
         } else {
-            this.addTemplate("textAnswerTemplate", "formContainer");
+            this.addTemplate("textAnswerTemplate", "bottomContainer");
             form = document.querySelector("#textAnswerForm");
         }
 
@@ -36,22 +45,30 @@ function Print() {
     };
 
     this.nicknameForm = function() {
-        this.addTemplate("nicknameTemplate", "formContainer");
+        this.title();
+        this.addTemplate("nicknameTemplate", "bottomContainer");
         return document.querySelector("#nicknameForm");
     };
 
-    this.gameWon = function() {
+    this.gameWon = function(name, time) {
         var highScore;
         var scoreBoard;
+        var heading;
         var paragraphs;
         var str;
         var textNode;
         var i;
 
-        this.addTemplate("gameWonTemplate", "formContainer");
+        this.title();
+        this.clearContainer("bottomContainer");
+        this.addTemplate("gameWonTemplate", "bottomContainer");
         highScore = JSON.parse(localStorage.getItem("highScore"));
         scoreBoard = document.querySelector("#scoreBoard");
         paragraphs = scoreBoard.querySelectorAll("p");
+        heading = document.querySelector("#playerScore");
+
+        textNode = document.createTextNode("Nickname: " + name + " Time: " + time);
+        heading.appendChild(textNode);
 
         for (i = 0; i < highScore.length; i += 1) {
             str = (i + 1) + ". ";
@@ -63,16 +80,13 @@ function Print() {
     };
 
     this.gameLost = function(message) {
-        var container;
         var paragraph;
         var textNode;
 
-        this.clearContainer("formContainer");
+        this.clearContainer("bottomContainer");
 
-        this.addTemplate("gameLostTemplate", "formContainer");
-        container = document.querySelector("#formContainer");
-        //container.firstElementChild.remove();
-        //container.textContent = message;
+        this.title();
+        this.addTemplate("gameLostTemplate", "bottomContainer");
         paragraph = document.querySelector("#message");
         textNode = document.createTextNode(message);
         paragraph.appendChild(textNode);
