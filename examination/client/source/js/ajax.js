@@ -9,7 +9,7 @@ function request(config, callback) {
         }
     });
 
-    req.open(config.method, config.url);
+    req.open(config.method, config.url, true);
     req.setRequestHeader("Content-type", config.contentType);
     req.send(config.answer);
 }

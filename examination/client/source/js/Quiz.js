@@ -7,7 +7,6 @@ var Print = require("./Print");
  * @constructor
  */
 function Quiz() {
-    var _this = this;
     this.print = new Print();
     this.timer = new Timer();
     this.nickname = "";

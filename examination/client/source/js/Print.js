@@ -23,23 +23,44 @@ function Print() {
      */
     this.answer = function(alternatives) {
         var form;
-        var lables;
+        var variableNameString;
         var textNode;
+        var counter;
+        var radioButton;
+        var lable;
+        var br;
+        var submit;
+
+        counter = 1;
 
         if (alternatives) {
-
             this.addTemplate("alternativeAnswerTemplate", "bottomContainer");
             form = document.querySelector("#alternativeAnswerForm");
-            lables = form.querySelectorAll("lable");
+            submit = document.createElement("input");
+            submit.setAttribute("type", "submit");
+            submit.setAttribute("value", "OK");
 
-            textNode = document.createTextNode(alternatives.alt1);
-            lables[0].appendChild(textNode);
-            textNode = document.createTextNode(alternatives.alt2);
-            lables[1].appendChild(textNode);
-            textNode = document.createTextNode(alternatives.alt3);
-            lables[2].appendChild(textNode);
-            textNode = document.createTextNode(alternatives.alt4);
-            lables[3].appendChild(textNode);
+            do {
+                variableNameString = "alt" + counter;
+
+                radioButton = document.createElement("input");
+                radioButton.setAttribute("type", "radio");
+                radioButton.setAttribute("name", "alt");
+                radioButton.setAttribute("value", variableNameString);
+                lable = document.createElement("lable");
+                lable.setAttribute("for", "radio");
+                br = document.createElement("br");
+                textNode = document.createTextNode(alternatives[variableNameString]);
+                lable.appendChild(textNode);
+
+                form.appendChild(radioButton);
+                form.appendChild(lable);
+                form.appendChild(br);
+
+                counter += 1;
+            } while (alternatives["alt" + counter]);
+
+            form.appendChild(submit);
         } else {
             this.addTemplate("textAnswerTemplate", "bottomContainer");
             form = document.querySelector("#textAnswerForm");
