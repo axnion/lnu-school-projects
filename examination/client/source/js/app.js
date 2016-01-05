@@ -1,4 +1,4 @@
-var button = document.querySelector("#button");
+var buttonCreateWindow = document.querySelector("#buttonCreateWindow");
 var lastIndex = 0;
 
 function addTemplate(templateName, containerName) {
@@ -21,7 +21,6 @@ function printWindow() {
     var offsetY;
     var newPositionX;
     var newPositionY;
-    var i;
 
     addTemplate("#appWindowTemplate", "body");
 
@@ -31,7 +30,13 @@ function printWindow() {
     topbar = topbars[topbars.length - 1];
     appWindow = appWindows[appWindows.length - 1];
 
+
+    topbar.querySelector(".closeWindowButton").addEventListener("click", function() {
+        appWindow.remove();
+    });
+
     topbar.addEventListener("mousedown", function pressMouseButton(event) {
+        event.stopPropagation();
         offsetX = event.offsetX;
         offsetY = event.offsetY;
 
@@ -49,10 +54,16 @@ function printWindow() {
         });
     });
 
-    appWindow.addEventListener("click", function() {
+    appWindow.addEventListener("click", function(event) {
+        event.stopPropagation();
         lastIndex += 1;
         appWindow.style.zIndex = lastIndex;
     });
 }
 
-button.addEventListener("click", printWindow);
+function closeWindow() {
+
+}
+
+buttonCreateWindow.addEventListener("click", printWindow);
+

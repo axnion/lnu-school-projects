@@ -18,7 +18,14 @@ body {
     background-color: white;
 }
 
-#button {
+.closeWindowButton {
+    background-color: red;
+    height: 100%;
+    width: 25px;
+    float: right;
+}
+
+#buttonCreateWindow {
     background-color: yellowgreen;
     width: 25px;
     height: 25px;
