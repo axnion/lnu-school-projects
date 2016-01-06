@@ -1,5 +1,7 @@
 body {
     background-color: black;
+    background-image: url("../image/background.jpg");
+    background-repeat: repeat-x;
 }
 
 .appWindow {
