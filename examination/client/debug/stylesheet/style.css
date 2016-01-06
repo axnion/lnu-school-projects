@@ -4,6 +4,16 @@ body {
     background-repeat: repeat-x;
 }
 
+#dock {
+    position: absolute;
+    background-color: lightgrey;
+    height: 60px;
+    width: 5px;
+    bottom: 0px;
+    left: 50%;
+    padding: 5px;
+}
+
 .appWindow {
     background-color: white;
     width: 500px;
@@ -27,16 +37,10 @@ body {
     float: right;
 }
 .appButton {
-    width: 25px;
-    height: 25px;
-    margin-bottom: 10px;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin-left: 5px;
+    background-color: greenyellow;
+    background-size:cover
 }
-
-#launchTest {
-    background-color: yellowgreen;
-}
-
-#launchError {
-    background-color: yellowgreen;
-}
-

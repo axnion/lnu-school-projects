@@ -1,5 +1,5 @@
 function test(container) {
-    var text = document.createTextNode("It's working");
+    var text = document.createTextNode("This is a test application");
     container.appendChild(text);
 }
 

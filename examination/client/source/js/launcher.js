@@ -1,4 +1,5 @@
-var pwdWindow = require("./pwdWindow");
+var pwdWindow = require("./window");
+
 
 function launchApplication(appID) {
     var appWindow;
@@ -6,7 +7,7 @@ function launchApplication(appID) {
     var launcher;
 
     appWindow = pwdWindow.createWindow();
-    launcherSpace = require("./launchers");
+    launcherSpace = require("./applications");
 
     try {
         launcher = launcherSpace[appID];
