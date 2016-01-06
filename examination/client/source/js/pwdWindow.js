@@ -37,7 +37,7 @@ function addTemplate(templateName, containerName) {
     container.appendChild(node);
 }
 
-function printWindow() {
+function createWindow() {
     var topbar;
     var appWindow;
 
@@ -65,6 +65,8 @@ function printWindow() {
     topbar.querySelector(".closeWindowButton").addEventListener("click", function() {
         appWindow.remove();
     });
+
+    return appWindow;
 }
 
-module.exports.printWindow = printWindow;
+module.exports.createWindow = createWindow;

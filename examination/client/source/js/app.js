@@ -1,4 +1,11 @@
-var appWindow = require("./appWindow");
-var buttonCreateWindow = document.querySelector("#buttonCreateWindow");
-buttonCreateWindow.addEventListener("click", appWindow.printWindow);
+var pwdApplication = require("./pwdApplication");
 
+var launchTest = document.querySelector("#launchTest");
+var launchError = document.querySelector("#launchError");
+
+launchTest.addEventListener("click", function() {
+    pwdApplication.launchApplication("test");
+});
+launchError.addEventListener("click", function() {
+    pwdApplication.launchApplication("error");
+});
