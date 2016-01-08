@@ -20,7 +20,15 @@
 
     <template id="instaChatTemplate">
         <div class="instaChat">
-            <textarea class="messageBox"></textarea>
+            <div class="chatBox">
+                <template id="messageTemplate">
+                    <div class="messageBox">
+                        <p class="username"></p>
+                        <p class="message"></p>
+                    </div>
+                </template>
+            </div>
+            <textarea class="textArea"></textarea>
         </div>
     </template>
 

@@ -44,3 +44,47 @@ body {
     background-color: greenyellow;
     background-size:cover
 }
+
+.sentMessage {
+    border: 2px solid lightblue;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.receivedMessage {
+    border: 2px solid lightgreen;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.messageBox {
+    bottom: 0px;
+}
+
+.username {
+    font-size: small;
+    margin: 2px;
+}
+
+.message {
+    font-size: large;
+    margin: 2px;
+}
+
+.chatBox {
+    margin: 5px;
+
+    padding: 5px;
+    width: 480px;
+    height: 400px;
+    background-color: white;
+    overflow-y: scroll;
+}
+
+textarea {
+    margin-left: 5px;
+    margin-top: 2px;
+    resize: none;
+    width: 490px;
+    height: 40px;
+}
