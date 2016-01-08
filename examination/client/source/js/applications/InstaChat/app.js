@@ -11,21 +11,23 @@ function printMessage(container, message) {
     var messageElement;
     var username;
     var chatBox = container.querySelector(".chatBox");
+    var date = new Date();
+    var time = date.getHours() + ":" + date.getMinutes();
 
     template = document.querySelector("#messageTemplate");
     fragment = document.importNode(template.content, true);
 
     username = fragment.querySelector(".username");
-    username.appendChild(document.createTextNode(message.username));
     messageElement = fragment.querySelector(".message");
-    messageElement.appendChild(document.createTextNode(message.data));
-
 
     if (message.username === config.username) {
-        messageElement.className += " sentMessage";
-    } else {
-        messageElement.className += " receivedMessage";
+        message.username = "You";
+        username.className += " usernameSent";
+        messageElement.className += " messageSent";
     }
+
+    username.appendChild(document.createTextNode(message.username + " " + time));
+    messageElement.appendChild(document.createTextNode(message.data));
 
     chatBox.appendChild(fragment);
 }
@@ -37,8 +39,6 @@ function print(container) {
     template = document.querySelector("#instaChatTemplate");
     node = document.importNode(template.content, true);
     container.appendChild(node);
-
-    container.style.backgroundColor = "greenyellow";
 }
 
 function connect(container) {
@@ -55,7 +55,7 @@ function connect(container) {
         socket.addEventListener("message", function(event) {
             var message = JSON.parse(event.data);
 
-            if(message.type === "message") {
+            if (message.type === "message") {
                 printMessage(container, message);
             }
         });

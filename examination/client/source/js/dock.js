@@ -3,8 +3,8 @@ var buttons = [];
 var launcher = require("./launcher");
 
 var applications = [
-    {id: "testApp", img: "../image/test.jpg"},
-    {id: "instaChat", img: ""}
+    {id: "testApp", img: "../image/testApp.png", backgroundColor: "indianred"},
+    {id: "instaChat", img: "../image/instaChat.png", backgroundColor: "yellowgreen"}
 ];
 
 function centralize() {
@@ -36,11 +36,12 @@ function addButton(app) {
     dock.style.width = dock.offsetWidth + 45;
     var button = document.createElement("div");
     button.className = "appButton";
+    button.style.backgroundColor = app.backgroundColor;
     button.style.backgroundImage = "url(" + app.img + ")";
     dock.appendChild(button);
 
     button.addEventListener("click", function() {
-        launcher.launchApplication(app.id);
+        launcher.launchApplication(app);
     });
 
     buttons.push(button);

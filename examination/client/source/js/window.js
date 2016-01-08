@@ -37,7 +37,7 @@ function addTemplate(templateName, containerName) {
     container.appendChild(node);
 }
 
-function createWindow() {
+function createWindow(app) {
     var topbar;
     var appWindow;
 
@@ -48,6 +48,11 @@ function createWindow() {
 
     lastIndex += 1;
     appWindow.style.zIndex = lastIndex;
+
+    topbar.querySelector(".appIcon").setAttribute("src", app.img);
+    topbar.querySelector(".appTitle").appendChild(document.createTextNode(app.id));
+
+    appWindow.style.backgroundColor = app.backgroundColor;
 
     topbar.addEventListener("mousedown", function() {
         grabElement(appWindow);
