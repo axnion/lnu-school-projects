@@ -1,23 +1,35 @@
 var dock = document.querySelector("#dock");
+var buttons = [];
 var launcher = require("./launcher");
 
 var applications = [
-    {id: "test", img: "../image/test.jpg"},
-    {id: "error", img: ""}
+    {id: "testApp", img: "../image/test.jpg"},
+    {id: "instaChat", img: ""}
 ];
 
 function centralize() {
-    var width = dock.offsetWidth + 110;
+    var width = dock.offsetWidth;
     dock.style.marginLeft = (width / 2) * -1;
 }
 
-function init() {
+function dockHideShow() {
     var i;
-    centralize();
 
-    for (i = 0; i < applications.length; i += 1) {
-        addButton(applications[i]);
-    }
+    dock.addEventListener("mouseover", function() {
+        dock.style.height = "60px";
+
+        for (i = 0; i < buttons.length; i += 1) {
+            buttons[i].style.height = "50px";
+        }
+    });
+
+    dock.addEventListener("mouseout", function() {
+        dock.style.height = "0px";
+
+        for (i = 0; i < buttons.length; i += 1) {
+            buttons[i].style.height = "0px";
+        }
+    });
 }
 
 function addButton(app) {
@@ -30,6 +42,18 @@ function addButton(app) {
     button.addEventListener("click", function() {
         launcher.launchApplication(app.id);
     });
+
+    buttons.push(button);
+}
+
+function init() {
+    var i;
+    for (i = 0; i < applications.length; i += 1) {
+        addButton(applications[i]);
+    }
+
+    centralize();
+    dockHideShow();
 }
 
 module.exports.init = init;
