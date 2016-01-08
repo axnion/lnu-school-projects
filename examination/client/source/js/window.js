@@ -1,3 +1,5 @@
+"use strict";
+
 var lastIndex = 0;
 var offsetX = 0;
 var offsetY = 0;

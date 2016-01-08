@@ -1,15 +1,34 @@
+"use strict";
+
 var socket = null;
 var config = {
     adress: "ws://vhost3.lnu.se:20080/socket/",
-    key: "eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd",
-    username: "an222yp"
+    key: "eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd"
 };
+
+function printLoginScreen(container) {
+    var template;
+    var node;
+
+    template = document.querySelector("#instaChatLoginTemplate");
+    node = document.importNode(template.content, true);
+    container.appendChild(node);
+}
+
+function printOperationsScreen(container) {
+    var template;
+    var node;
+
+    template = document.querySelector("#instaChatTemplate");
+    node = document.importNode(template.content, true);
+    container.appendChild(node);
+}
 
 function printMessage(container, message) {
     var template;
     var fragment;
     var messageElement;
-    var username;
+    var usernameElement;
     var chatBox = container.querySelector(".chatBox");
     var date = new Date();
     var time = date.getHours() + ":" + date.getMinutes();
@@ -17,28 +36,44 @@ function printMessage(container, message) {
     template = document.querySelector("#messageTemplate");
     fragment = document.importNode(template.content, true);
 
-    username = fragment.querySelector(".username");
+    usernameElement = fragment.querySelector(".username");
     messageElement = fragment.querySelector(".message");
 
-    if (message.username === config.username) {
+    if (message.username === sessionStorage.username) {
         message.username = "You";
-        username.className += " usernameSent";
+        usernameElement.className += " usernameSent";
         messageElement.className += " messageSent";
     }
 
-    username.appendChild(document.createTextNode(message.username + " " + time));
+    usernameElement.appendChild(document.createTextNode(message.username + " " + time));
     messageElement.appendChild(document.createTextNode(message.data));
 
     chatBox.appendChild(fragment);
 }
 
-function print(container) {
-    var template;
-    var node;
+function login(container) {
+    printLoginScreen(container);
+    var loginDiv = container.querySelector(".instaChatLogin");
+    return new Promise(function(resolve) {
 
-    template = document.querySelector("#instaChatTemplate");
-    node = document.importNode(template.content, true);
-    container.appendChild(node);
+        if(sessionStorage.username) {
+            loginDiv.remove();
+            resolve();
+            return;
+        }
+
+        loginDiv.addEventListener("keypress", function(event) {
+            if (event.keyCode === 13) {
+                if (event.target.value) {
+                    sessionStorage.username = event.target.value;
+                    loginDiv.remove();
+                    resolve();
+                } else {
+                    container.querySelector(".alertText").appendChild(document.createTextNode("Please enter a username!"));
+                }
+            }
+        });
+    });
 }
 
 function connect(container) {
@@ -49,6 +84,7 @@ function connect(container) {
         });
 
         socket.addEventListener("error", function() {
+            //TODO Denna koden bör testas
             reject("Det gick fel");
         });
 
@@ -66,7 +102,7 @@ function send(text) {
     var data = {
         type: "message",
         data: text,
-        username: config.username,
+        username: sessionStorage.username,
         channel: "",
         key: config.key
     };
@@ -74,14 +110,16 @@ function send(text) {
 }
 
 function launch(container) {
-    connect(container).then(function() {
-        print(container);
-        container.querySelector(".textArea").addEventListener("keypress", function(event) {
-            if (event.keyCode === 13) {
-                send(event.target.value);
-                event.target.value = "";
-                event.preventDefault();
-            }
+    login(container).then(function() {
+        connect(container).then(function() {
+            printOperationsScreen(container);
+            container.querySelector(".textArea").addEventListener("keypress", function(event) {
+                if (event.keyCode === 13) {
+                    send(event.target.value);
+                    event.target.value = "";
+                    event.preventDefault();
+                }
+            });
         });
     });
 

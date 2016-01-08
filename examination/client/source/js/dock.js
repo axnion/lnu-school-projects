@@ -1,11 +1,10 @@
+"use strict";
+
 var dock = document.querySelector("#dock");
 var buttons = [];
 var launcher = require("./launcher");
 
-var applications = [
-    {id: "testApp", img: "../image/testApp.png", backgroundColor: "indianred"},
-    {id: "instaChat", img: "../image/instaChat.png", backgroundColor: "yellowgreen"}
-];
+var applications = require("./applicationsList");
 
 function centralize() {
     var width = dock.offsetWidth;
@@ -41,7 +40,7 @@ function addButton(app) {
     dock.appendChild(button);
 
     button.addEventListener("click", function() {
-        launcher.launchApplication(app);
+        launcher.launcher(app);
     });
 
     buttons.push(button);

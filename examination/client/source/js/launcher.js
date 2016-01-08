@@ -1,19 +1,37 @@
+"use strict";
+
 var pwdWindow = require("./window");
 
-function launchApplication(app) {
-    var appWindow;
-    var launcherSpace;
-    var launcher;
+function Applications() {
+    this.testApp = function(container) {
+        var app = require("./applications/testApp/app");
+        app.start(container);
+    };
 
-    appWindow = pwdWindow.createWindow(app);
-    launcherSpace = require("./applications");
+    this.instaChat = function(container) {
+        var app = require("./applications/instaChat/app");
+        app.launch(container);
+    };
+
+    this.error = function(container) {
+        var text = document.createTextNode("An error occurred");
+        container.appendChild(text);
+    };
+}
+
+function launcher(app) {
+    var container;
+    var applications;
+
+    container = pwdWindow.createWindow(app);
+    applications = new Applications();
 
     try {
-        launcher = launcherSpace[app.id];
-        launcher(appWindow);
-    } catch (error) {
-        launcherSpace.error(appWindow);
+        applications[app.id](container);
+    } catch (err) {
+        applications.error(container);
     }
 }
 
-module.exports.launchApplication = launchApplication;
+module.exports.launcher = launcher;
+

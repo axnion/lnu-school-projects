@@ -119,3 +119,27 @@ textarea {
     width: 490px;
     height: 40px;
 }
+
+.instaChatLogin {
+    width: 200px;
+    display: block;
+    margin-top: 150px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+.loginInput {
+    margin: auto;
+}
+
+.alertText {
+    color: red;
+}
+
+
+
+
