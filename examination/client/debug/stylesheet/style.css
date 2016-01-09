@@ -9,7 +9,7 @@ body {
 */
 #dock {
     position: absolute;
-    background-color: lightgrey;
+    /*background-color: lightgrey;*/
     height: 0px;
     width: 5px;
     bottom: 0px;
@@ -139,6 +139,19 @@ h1 {
 .alertText {
     color: red;
 }
+
+/*
+--- memoryGame ---------------------------------------------------------------------------------------------------------
+*/
+
+.memory img {
+    width: 23%;
+}
+
+.memory .remove {
+    visibility: hidden;
+}
+
 
 
 

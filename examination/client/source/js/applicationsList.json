@@ -1,5 +1,6 @@
 [
     {"id": "testApp", "img": "../image/testApp.png", "backgroundColor": "indianred"},
-    {"id": "instaChat", "img": "../image/instaChat.png", "backgroundColor": "yellowgreen"}
+    {"id": "instaChat", "img": "../image/instaChat.png", "backgroundColor": "yellowgreen"},
+    {"id": "memoryGame", "img": "../image/testApp.png", "backgroundColor": "lightblue"}
 ]
 

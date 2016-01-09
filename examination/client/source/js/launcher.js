@@ -9,12 +9,18 @@ function Applications() {
     };
 
     this.instaChat = function(container) {
+
         var app = require("./applications/instaChat/app");
         app.launch(container);
     };
 
-    this.error = function(container) {
-        var text = document.createTextNode("An error occurred");
+    this.memoryGame = function(container) {
+        var app = require("./applications/memoryGame/app");
+        app.launch(container);
+    };
+
+    this.error = function(container, err) {
+        var text = document.createTextNode(err);
         container.appendChild(text);
     };
 }
@@ -29,7 +35,7 @@ function launcher(app) {
     try {
         applications[app.id](container);
     } catch (err) {
-        applications.error(container);
+        applications.error(container, err);
     }
 }
 
