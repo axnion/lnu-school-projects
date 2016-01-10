@@ -92,5 +92,33 @@
         </div>
     </template>
 
+    <!-- Settings ----------------------------------------------------------------------------------------------------->
+
+    <template id="settingsTemplate">
+        <form class="settingsForm">
+            <fieldset>
+                <legend>Desktop Settings</legend>
+                <input type="text">
+            </fieldset>
+            <fieldset>
+                <legend>Dock Hide/Show</legend>
+                    Hide when not focused
+                    <input type="radio" name="hideDock" value="true">
+                    Always show
+                    <input type="radio" name="hideDock" value="false">
+            </fieldset>
+            <fieldset>
+                <legend>Dock Position</legend>
+                Top
+                <input type="radio" name="dockPosition" value="top">
+                Bottom
+                <input type="radio" name="dockPosition" value="bottom">'
+            </fieldset>
+
+            <input type="button" value="Apply">
+            <input type="button" value="Reset">
+            <input type="button" value="Reset To Default">
+        </form>
+    </template>
 </body>
 </html>

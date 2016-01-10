@@ -1,4 +1,5 @@
 //TODO Lägg till loged in as.
+//TODO Extragrejen får bli kanaler och kanske byta namn
 
 "use strict";
 

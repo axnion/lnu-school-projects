@@ -1,6 +1,7 @@
 "use strict";
 
 //TODO Försök rensa upp så mkt html och css från javascriptkoden.
+//TODO Kolla var där kan behövas med feedback
 
 var dock = document.querySelector("#dock");
 var buttons = [];
@@ -25,10 +26,14 @@ function dockHideShow() {
     });
 
     dock.addEventListener("mouseout", function() {
-        dock.style.height = "0px";
+        var hideDock = JSON.parse(localStorage.getItem("PWDSettings")).hideDock;
 
-        for (i = 0; i < buttons.length; i += 1) {
-            buttons[i].style.height = "0px";
+        if (hideDock === "true") {
+            dock.style.height = "0px";
+
+            for (i = 0; i < buttons.length; i += 1) {
+                buttons[i].style.height = "0px";
+            }
         }
     });
 }
@@ -48,14 +53,33 @@ function addButton(app) {
     buttons.push(button);
 }
 
+function loadSettings() {
+    var settings;
+    if (!localStorage.getItem("PWDSettings")) {
+        localStorage.setItem("PWDSettings", JSON.stringify(require("./defaultSettings.json")));
+    }
+
+    settings = JSON.parse(localStorage.getItem("PWDSettings"));
+    document.querySelector("body").style.backgroundImage = "url(" + settings.wallpaper + ")";
+
+    if (settings.dockPosition === "top") {
+        document.querySelector("#dock").classList.add("dockTop");
+    } else {
+        document.querySelector("#dock").classList.add("dockBottom");
+    }
+}
+
 function init() {
     var i;
+
     for (i = 0; i < applications.length; i += 1) {
         addButton(applications[i]);
     }
 
+    loadSettings();
     centralize();
     dockHideShow();
+
 }
 
 module.exports.init = init;

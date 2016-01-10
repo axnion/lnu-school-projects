@@ -18,6 +18,7 @@ function Applications() {
         app.launch(container);
     };
 
+    //TODO Ta bort allt i fönstret innan
     this.error = function(container, err) {
         var text = document.createTextNode(err);
         container.appendChild(text);
