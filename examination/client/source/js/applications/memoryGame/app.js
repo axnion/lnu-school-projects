@@ -51,6 +51,7 @@ function getBricksArray(rows, cols) {
 
 function gameLogic(tile, img, rows, cols, container) {
     if (turn2) {return;}
+    if (img.getAttribute("data-bricknumber") === "-1") {return;}
 
     img.src = "image/" + tile + ".png";
 
@@ -65,7 +66,6 @@ function gameLogic(tile, img, rows, cols, container) {
         turn2 = img;
         if (tile === lastTile) {
             pairs += 1;
-
             if (pairs === (cols * rows) / 2) {
                 container.querySelector(".memoryGameBoard").remove();
                 printHighScoreScreen(rows, cols, container);
@@ -74,6 +74,9 @@ function gameLogic(tile, img, rows, cols, container) {
             setTimeout(function() {
                 turn1.parentNode.classList.add("remove");
                 turn2.parentNode.classList.add("remove");
+
+                turn1.setAttribute("data-bricknumber", "-1");
+                turn2.setAttribute("data-bricknumber", "-1");
 
                 turn1 = null;
                 turn2 = null;
@@ -114,7 +117,6 @@ function printHighScoreScreen(rows, cols, container) {
 
     gameEndDiv.querySelector(".saveHighscoreForm").addEventListener("submit", function(event) {
         event.preventDefault();
-        debugger;
         saveHighScore(gameEndDiv.querySelectorAll("input")[0].value);
         gameEndDiv.querySelector(".saveHighscoreForm").remove();
         printHighScore();
