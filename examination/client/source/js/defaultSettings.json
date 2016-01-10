@@ -1,5 +1,5 @@
 {
     "wallpaper": "../image/wallpaper.jpg",
-    "hideDock": "true",
+    "hideDock": "false",
     "dockPosition": "bottom"
 }

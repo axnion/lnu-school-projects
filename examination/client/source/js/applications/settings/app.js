@@ -14,7 +14,8 @@ function settings(container) {
 
     fillFormWithData();
 
-    form.addEventListener("change", function() {
+    form.addEventListener("change", function(event) {
+        event.preventDefault();
         inputs[5].disabled = false;
         inputs[6].disabled = false;
     });
@@ -61,6 +62,8 @@ function settings(container) {
     }
 
     function resetToDefault() {
+        localStorage.setItem("PWDSettings", JSON.stringify(require("../../defaultSettings.json")));
+        useNewSettings();
     }
 
     function useNewSettings() {
