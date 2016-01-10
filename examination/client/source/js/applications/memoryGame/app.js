@@ -1,4 +1,5 @@
 //TODO Lite mer fluff och CSS
+//TODO Byta bilderna
 
 function memoryGame(container) {
     var gameBoard;
@@ -37,7 +38,7 @@ function memoryGame(container) {
 
         //TODO Lägg till en reject!
         return new Promise (function(resolve) {
-            for (i = 0; i < 3; i += 1) {
+            for (i = 1; i < 4; i += 1) {
                 div.children[i].addEventListener("click", function(event) {
                     event.preventDefault();
                     boardSize = this.firstChild.lastChild.nodeValue;
