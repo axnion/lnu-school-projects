@@ -1,5 +1,7 @@
 "use strict";
 
+//TODO Försök rensa upp så mkt html och css från javascriptkoden.
+
 var dock = document.querySelector("#dock");
 var buttons = [];
 var launcher = require("./launcher");

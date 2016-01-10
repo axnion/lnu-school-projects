@@ -8,6 +8,8 @@
 
     <script src="./javascript/build.js"></script>
 
+    <!-- window ------------------------------------------------------------------------------------------------------->
+
     <template id="appWindowTemplate">
         <div class="appWindow">
             <div class="topbar">
@@ -17,6 +19,8 @@
             </div>
         </div>
     </template>
+
+    <!-- instaChat ---------------------------------------------------------------------------------------------------->
 
     <template id="instaChatTemplate">
         <div class="instaChat">
@@ -40,9 +44,46 @@
         </div>
     </template>
 
+    <!-- Memory ------------------------------------------------------------------------------------------------------->
+
     <template id="memoryGameTemplate">
-        <div class="memory">
+        <div class="memoryGameBoard">
             <a href="#"><img src="image/0.png" alt="A memory brick"></a>
+        </div>
+    </template>
+
+    <template id="memoryGameStartTemplate">
+        <div class="memoryMeny">
+            <a href="#"><h1>2x2</h1></a>
+            <a href="#"><h1>2x4</h1></a>
+            <a href="#"><h1>4x4</h1></a>
+        </div>
+    </template>
+
+    <template id="memoryGameEndTemplate">
+        <div class="memoryEnd">
+            <form class="saveHighscoreForm">
+                <h3>Save your highscore</h3>
+                <input type="text" placeholder="Nickname">
+                <input type="submit" value="Save">
+            </form>
+
+
+            <template id="highScoreTempate">
+                <div class="highscore">
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                </div>
+            </template>
+
+            <template id="noHighScoreTempate">
+                <div class="highscore">
+                    <p>There is no highScore.</p>
+                </div>
+            </template>
         </div>
     </template>
 

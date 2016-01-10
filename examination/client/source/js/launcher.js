@@ -3,19 +3,18 @@
 var pwdWindow = require("./window");
 
 function Applications() {
-    this.testApp = function(container) {
-        var app = require("./applications/testApp/app");
-        app.start(container);
-    };
-
     this.instaChat = function(container) {
-
         var app = require("./applications/instaChat/app");
         app.launch(container);
     };
 
     this.memoryGame = function(container) {
         var app = require("./applications/memoryGame/app");
+        app.launch(container);
+    };
+
+    this.settings = function(container) {
+        var app = require("./applications/settings/app");
         app.launch(container);
     };
 

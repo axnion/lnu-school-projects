@@ -1,3 +1,5 @@
+//TODO Lägg till loged in as.
+
 "use strict";
 
 var socket = null;
@@ -54,9 +56,11 @@ function printMessage(container, message) {
 function login(container) {
     printLoginScreen(container);
     var loginDiv = container.querySelector(".instaChatLogin");
+
+    //TODO Lägg till en reject!
     return new Promise(function(resolve) {
 
-        if(sessionStorage.username) {
+        if (sessionStorage.username) {
             loginDiv.remove();
             resolve();
             return;
@@ -80,6 +84,9 @@ function connect(container) {
     return new Promise(function(resolve, reject) {
         socket = new WebSocket(config.adress);
         socket.addEventListener("open", function() {
+            container.querySelector(".closeWindowButton").addEventListener("click", function() {
+                socket.close();
+            });
             resolve();
         });
 
@@ -121,10 +128,6 @@ function launch(container) {
                 }
             });
         });
-    });
-
-    container.querySelector(".closeWindowButton").addEventListener("click", function() {
-        socket.close();
     });
 }
 

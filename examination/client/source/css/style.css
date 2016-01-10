@@ -1,25 +1,27 @@
 body {
     background-color: black;
-    background-image: url("../image/background.jpg");
+    background-image: url("../image/wallpaper.jpg");
     background-repeat: repeat-x;
 }
 
 /*
---- Dock -------------------------------------------------------------------------------------------------------------
+--- Dock ---------------------------------------------------------------------------------------------------------------
 */
 #dock {
     position: absolute;
-    /*background-color: lightgrey;*/
+    background-color: rgba(255, 255, 255, 0.5);
     height: 0px;
     width: 5px;
     bottom: 0px;
     left: 50%;
     padding: 5px;
+    border-radius: 10px;
 }
 
 .appButton {
     display: inline-block;
     width: 50px;
+    margin-top: 5px;
     margin-left: 5px;
     background-color: white;
     background-size: cover;
@@ -77,6 +79,7 @@ body {
 }
 
 .message {
+    word-wrap: break-word;
     background-color: whitesmoke;
     font-size: large;
     border-radius: 10px;
@@ -144,11 +147,11 @@ h1 {
 --- memoryGame ---------------------------------------------------------------------------------------------------------
 */
 
-.memory img {
+.memoryGameBoard img {
     width: 23%;
 }
 
-.memory .remove {
+.memoryGameBoard .remove {
     visibility: hidden;
 }
 
