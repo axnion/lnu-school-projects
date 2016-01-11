@@ -151,6 +151,21 @@ h1 {
     color: red;
 }
 
+.notification {
+    text-align: center;
+    background-color: blue;
+    color: white;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+.channelSelect {
+    margin-top: 3px;
+    margin-left:5px;
+}
+
 /*
 --- memoryGame ---------------------------------------------------------------------------------------------------------
 */

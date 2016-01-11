@@ -1,5 +1,5 @@
 "use strict";
-
+//TODO Städa upp så URLen inte förändras.
 //TODO Försök rensa upp så mkt html och css från javascriptkoden.
 //TODO Kolla var där kan behövas med feedback
 

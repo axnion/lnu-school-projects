@@ -31,6 +31,10 @@
                         <p class="message"></p>
                     </div>
                 </template>
+
+                <template id="notificationTemplate">
+                    <p class="notification"></p>
+                </template>
             </div>
             <textarea class="textArea"></textarea>
         </div>
@@ -42,6 +46,14 @@
             <input type="text" class="loginInput" placeholder="Username">
             <p class="alertText"></p>
         </div>
+    </template>
+
+    <template id="channelSelectTempalte">
+        <select class="channelSelect" name="channel">
+            <option value="">Default</option>
+            <option value="general">General</option>
+            <option value="random">Random</option>
+        </select>
     </template>
 
     <!-- Memory ------------------------------------------------------------------------------------------------------->
@@ -112,7 +124,7 @@
                 Top
                 <input type="radio" name="dockPosition" value="top">
                 Bottom
-                <input type="radio" name="dockPosition" value="bottom">'
+                <input type="radio" name="dockPosition" value="bottom">
             </fieldset>
 
             <input type="button" value="Apply">

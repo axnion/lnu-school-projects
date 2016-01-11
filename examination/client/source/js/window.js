@@ -1,3 +1,5 @@
+//TODO Gör så att fönsterna inte kan gå utanför skärmen.
+
 "use strict";
 
 var lastIndex = 0;

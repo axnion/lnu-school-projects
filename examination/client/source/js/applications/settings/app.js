@@ -1,6 +1,3 @@
-//TODO Spara settings i localstorage.
-//TODO Hide taskbar
-
 function settings(container) {
     var form;
     var inputs;
