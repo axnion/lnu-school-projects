@@ -4,16 +4,22 @@
     <link rel="stylesheet" href="./stylesheet/style.css"/>
 </head>
 <body>
+
+
+    <!-- Dock --------------------------------------------------------------------------------------------------------->
+
     <div id="dock"></div>
 
-    <script src="./javascript/build.js"></script>
+    <template id="appButtonTemplate">
+        <a href="#"></a>
+    </template>
 
     <!-- window ------------------------------------------------------------------------------------------------------->
 
     <template id="appWindowTemplate">
         <div class="appWindow">
             <div class="topbar">
-                <div class="closeWindowButton"></div>
+                <a href class="closeWindowButton"></a>
                 <img class="appIcon">
                 <p class="appTitle"></p>
             </div>
@@ -132,5 +138,7 @@
             <input type="button" value="Reset To Default">
         </form>
     </template>
+
+    <script src="./javascript/build.js"></script>
 </body>
 </html>

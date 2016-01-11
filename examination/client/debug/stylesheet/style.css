@@ -172,15 +172,21 @@ h1 {
 
 .memoryGameBoard {
     margin: 0 auto;
-    width: 460;
-    background-color: beige;
+    width: 460px;
+    position: relative;
+    top: 47%;
+    transform: translateY(-50%);
 }
 
-.memoryGameBoard img {
+.brickWidth4 {
     width: 25%;
 }
 
-.memoryGameBoard .remove {
+.brickWidth2 {
+    width: 50%;
+}
+
+.remove {
     visibility: hidden;
 }
 

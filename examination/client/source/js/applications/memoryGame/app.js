@@ -64,10 +64,14 @@ function memoryGame(container) {
             var a;
 
             a = document.importNode(templateContent, true);
-
             addGameMechanics(a, tile, index);
-
             div.appendChild(a);
+
+            if (cols === 2) {
+                a.firstElementChild.className = "brickWidth2";
+            } else if (cols === 4) {
+                a.firstElementChild.className = "brickWidth4";
+            }
 
             if ((index + 1) % cols === 0) {
                 div.appendChild(document.createElement("br"));
@@ -83,6 +87,7 @@ function memoryGame(container) {
             event.preventDefault();
 
             img = event.target.nodeName === "IMG" ? event.target : event.target.firstElementChild;
+
             gameLogic(tile, index, img);
         });
     }

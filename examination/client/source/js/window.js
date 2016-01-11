@@ -71,7 +71,8 @@ function createWindow(app) {
         appWindow.style.zIndex = lastIndex;
     });
 
-    topbar.querySelector(".closeWindowButton").addEventListener("click", function() {
+    topbar.querySelector(".closeWindowButton").addEventListener("click", function(event) {
+        event.preventDefault();
         appWindow.remove();
     });
 

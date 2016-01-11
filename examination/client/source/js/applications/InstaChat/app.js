@@ -68,7 +68,13 @@ function instaChat(container) {
         var usernameElement;
         var chatBox = container.querySelector(".chatBox");
         var date = new Date();
-        var time = date.getHours() + ":" + date.getMinutes();
+        var time = date.getHours() + ":";
+        if (date.getMinutes() < 10) {
+            time += 0;
+        }
+
+        time += date.getMinutes();
+
 
         template = document.querySelector("#messageTemplate");
         fragment = document.importNode(template.content, true);

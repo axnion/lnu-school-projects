@@ -39,14 +39,20 @@ function dockHideShow() {
 }
 
 function addButton(app) {
-    dock.style.width = dock.offsetWidth + 45;
-    var button = document.createElement("div");
+    var template;
+    var button;
+
+    template = document.querySelector("#appButtonTemplate");
+    button = document.importNode(template.content.firstElementChild, false);
+
     button.className = "appButton";
     button.style.backgroundColor = app.backgroundColor;
     button.style.backgroundImage = "url(" + app.img + ")";
     dock.appendChild(button);
+    dock.style.width = dock.offsetWidth + 45;
 
-    button.addEventListener("click", function() {
+    button.addEventListener("click", function(evemt) {
+        event.preventDefault();
         launcher.launcher(app);
     });
 
