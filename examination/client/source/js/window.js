@@ -1,5 +1,3 @@
-//TODO Gör så att fönsterna inte kan gå utanför skärmen.
-
 "use strict";
 
 var lastIndex = 0;
@@ -21,8 +19,14 @@ function moveElement(event) {
     positionX = event.clientX;
     positionY = event.clientY;
     if (element) {
-        element.style.left = positionX - (offsetX + 2) + "px";
-        element.style.top = positionY - (offsetY + 2) + "px";
+        var newLeft = positionX - (offsetX + 2);
+        var newTop = positionY - (offsetY + 2);
+
+        newLeft = newLeft < 0 ? 0 : newLeft;
+        newTop = newTop < 0 ? 0 : newTop;
+
+        element.style.left = newLeft + "px";
+        element.style.top = newTop + "px";
     }
 }
 

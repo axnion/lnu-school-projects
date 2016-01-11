@@ -1,6 +1,6 @@
 [
     {"id": "instaChat", "img": "../image/instaChat.png", "backgroundColor": "yellowgreen"},
-    {"id": "memoryGame", "img": "../image/testApp.png", "backgroundColor": "lightblue"},
-    {"id": "settings", "img": "../image/settings.png", "backgroundColor": "yellow"}
+    {"id": "memoryGame", "img": "../image/testApp.png", "backgroundColor": "cornflowerBlue"},
+    {"id": "settings", "img": "../image/settings.png", "backgroundColor": "Gold"}
 ]
 

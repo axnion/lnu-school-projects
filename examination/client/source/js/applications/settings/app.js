@@ -1,3 +1,4 @@
+"use strict";
 
 function settings(container) {
     var form;

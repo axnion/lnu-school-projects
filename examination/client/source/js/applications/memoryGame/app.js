@@ -1,5 +1,4 @@
-//TODO Lite mer fluff och CSS
-//TODO Byta bilderna
+"use strict";
 
 function memoryGame(container) {
     var gameBoard;
@@ -28,15 +27,19 @@ function memoryGame(container) {
     function printStartScreen() {
         var template;
         var div;
-        var i = 0;
+        var credits;
+        var i;
         var boardSize;
 
         template = document.querySelector("#memoryGameStartTemplate");
         div = document.importNode(template.content.firstElementChild, true);
 
+        template = div.querySelector("#memoryCreditsTemplate");
+        credits = document.importNode(template.content, true);
+        div.appendChild(credits);
+
         container.appendChild(div);
 
-        //TODO Lägg till en reject!
         return new Promise (function(resolve) {
             for (i = 1; i < 4; i += 1) {
                 div.children[i].addEventListener("click", function(event) {
@@ -157,6 +160,7 @@ function memoryGame(container) {
         var template;
         var gameEndDiv;
         var highScore;
+        var credits;
 
         highScore = JSON.parse(localStorage.getItem(storageName));
 
@@ -171,7 +175,6 @@ function memoryGame(container) {
         });
 
         printHighScore();
-
         container.appendChild(gameEndDiv);
 
         function printHighScore() {

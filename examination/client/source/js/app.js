@@ -1,4 +1,4 @@
 "use strict";
 
-var dock = require("./dock");
+var dock = require("./pwd");
 dock.init();

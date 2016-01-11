@@ -178,6 +178,36 @@ h1 {
     transform: translateY(-50%);
 }
 
+.memoryGameBoard h2 p{
+    text-align: center;
+}
+
+.saveHighscoreForm {
+    margin: 0 auto;
+}
+
+.memoryMeny h1 {
+    text-align: center;
+    font-size: 70px;
+}
+
+.memoryMeny h2 {
+    text-align: center;
+    font-size: 50px;
+    display: inline-block;
+    margin: 39px;
+}
+
+.memoryCredits {
+    text-align: center;
+    bottom: 0;
+}
+
+.highscore{
+    text-align: center;
+    background-color: white;
+}
+
 .brickWidth4 {
     width: 25%;
 }

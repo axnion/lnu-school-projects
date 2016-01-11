@@ -18,9 +18,16 @@ function Applications() {
         app.launch(container);
     };
 
-    //TODO Ta bort allt i fönstret innan
+
     this.error = function(container, err) {
-        var text = document.createTextNode(err);
+        var elements = container.children;
+        var text;
+
+        for (var i = 1; i < elements.length; i += 1) {
+            elements[i].remove();
+        }
+
+        text = document.createTextNode(err);
         container.appendChild(text);
     };
 }

@@ -1,5 +1,3 @@
-//Om jag har tid lägg till så kan kan lägga till och ta bort kanaler i en oonfig fil
-
 "use strict";
 
 function instaChat(container) {
@@ -37,7 +35,6 @@ function instaChat(container) {
         var template;
         var node;
         var options;
-        var i;
 
         template = document.querySelector("#instaChatTemplate");
         node = document.importNode(template.content, true);
@@ -49,12 +46,10 @@ function instaChat(container) {
         container.querySelector(".topbar").appendChild(node);
 
         node.addEventListener("change", function() {
-            var selected
+            var selected;
             options = node.children;
 
             selected = node.options[node.selectedIndex];
-
-            debugger;
 
             config.channel = selected.value;
             printNotification("Switched to " + selected.firstChild.data + " channel", false);
@@ -74,7 +69,6 @@ function instaChat(container) {
         }
 
         time += date.getMinutes();
-
 
         template = document.querySelector("#messageTemplate");
         fragment = document.importNode(template.content, true);
@@ -116,7 +110,6 @@ function instaChat(container) {
         printLoginScreen();
         var loginDiv = container.querySelector(".instaChatLogin");
 
-        //TODO Lägg till en reject!
         return new Promise(function(resolve) {
 
             if (sessionStorage.username) {
@@ -150,8 +143,7 @@ function instaChat(container) {
             });
 
             socket.addEventListener("error", function() {
-                //TODO Denna koden bör testas
-                reject("Det gick fel");
+                reject("An error has occured");
             });
 
             socket.addEventListener("message", function(event) {
@@ -162,8 +154,10 @@ function instaChat(container) {
                         printMessage(message);
                     }
                 } else if (message.type === "notification") {
-                    printNotification(message.data+ " Welcome " + sessionStorage.getItem("username"), true);
+                    printNotification(message.data + " Welcome " + sessionStorage.getItem("username"), true);
                 }
+
+                container.scrollTo(0, 100);
             });
         });
     }
