@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * This is the main settings function. This creates a the settings application inside the container.
+ * @param container The HTML element the application is created in.
+ */
 function settings(container) {
     var form;
     var inputs;
@@ -18,7 +22,7 @@ function settings(container) {
         apply();
     });
 
-    form.addEventListener("change", function(event) {
+    form.addEventListener("change", function() {
         inputs[5].disabled = false;
         inputs[6].disabled = false;
     });
@@ -33,6 +37,10 @@ function settings(container) {
         resetToDefault();
     });
 
+    /**
+     * Takes the settings saved in the local storage and fills the form with that information. Is used when the
+     * application is launched and when we want to reset settings instead of applying.
+     */
     function fillFormWithData() {
         var settings = JSON.parse(localStorage.getItem("PWDSettings"));
 
@@ -54,6 +62,10 @@ function settings(container) {
         inputs[6].disabled = true;
     }
 
+    /**
+     * This creates an object and fills it with the data from the form and puts it in the local storage. useSettings
+     * is then called to put the settings to use.
+     */
     function apply(){
         var newSetting = {
             wallpaper: inputs[0].value,
@@ -61,22 +73,32 @@ function settings(container) {
             dockPosition: inputs[3].checked ? "top" : "bottom"
         };
         localStorage.setItem("PWDSettings", JSON.stringify(newSetting));
-        useNewSettings();
+        useSettings();
     }
 
+    /**
+     * Is used when we want to return to our default settings. It loads settings from defaultSettings.json and puts it
+     * in the local storage. fillFormWithData is then used to fill the form, and useSettings to use our new settings.
+     */
     function resetToDefault() {
         localStorage.setItem("PWDSettings", JSON.stringify(require("../../defaultSettings.json")));
         fillFormWithData();
-        useNewSettings();
+        useSettings();
     }
 
-    function useNewSettings() {
+    /**
+     * useSettings is when we want our settings to be changed visually in the application. It takes the settings out of
+     * local storage and then depending on the values of the objects members different settings is set.
+     */
+    function useSettings() {
         var i;
         var settings = JSON.parse(localStorage.getItem("PWDSettings"));
         var buttons;
 
+        //Set wallpaper
         document.querySelector("body").style.backgroundImage = "url(" + settings.wallpaper + ")";
 
+        //Hide/Show Dock
         if (settings.hideDock === "false") {
             document.querySelector("#dock").style.height = "60px";
             buttons = document.querySelector("#dock").children;
@@ -93,6 +115,7 @@ function settings(container) {
             }
         }
 
+        //Dock Position
         if (settings.dockPosition === "top") {
             document.querySelector("#dock").className = "dockTop";
         } else {

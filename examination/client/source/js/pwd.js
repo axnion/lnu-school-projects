@@ -5,14 +5,20 @@
 var dock = document.querySelector("#dock");
 var buttons = [];
 var launcher = require("./launcher");
-
 var applications = require("./applicationsList");
 
+/**
+ * Takes the dock and places it in the center of the screen.
+ */
 function centralize() {
     var width = dock.offsetWidth;
     dock.style.marginLeft = (width / 2) * -1;
 }
 
+/**
+ * Adds two event listeners on the dock. If the mouse is over the dock an event is triggered so the dock is visible. If
+ * the mouse moves out of the dock and hideDock is set to true, the dock will hide.
+ */
 function dockHideShow() {
     var i;
 
@@ -37,6 +43,10 @@ function dockHideShow() {
     });
 }
 
+/**
+ * Adds a button to the dock. Loads the template, adds style to it and an event listener to launch the app.
+ * @param app An object containing information about an application.
+ */
 function addButton(app) {
     var template;
     var button;
@@ -50,7 +60,7 @@ function addButton(app) {
     dock.appendChild(button);
     dock.style.width = dock.offsetWidth + 45;
 
-    button.addEventListener("click", function(evemt) {
+    button.addEventListener("click", function(event) {
         event.preventDefault();
         launcher.launcher(app);
     });
@@ -58,6 +68,10 @@ function addButton(app) {
     buttons.push(button);
 }
 
+/**
+ * Checks if there are settings in the localstorage, if not data is loaded from defaultSettings.json and uploaded to
+ * localstorage. Settings are then applied to the web application.
+ */
 function loadSettings() {
     var settings;
     if (!localStorage.getItem("PWDSettings")) {
@@ -74,17 +88,21 @@ function loadSettings() {
     }
 }
 
-function init() {
+/**
+ * Prepares and starts the fundamental functionalities of the PWD. Creates the dock and the buttons and links them to
+ * an application, loads settings and applies them.
+ */
+function initialize() {
     var i;
+
+    loadSettings();
 
     for (i = 0; i < applications.length; i += 1) {
         addButton(applications[i]);
     }
 
-    loadSettings();
     centralize();
     dockHideShow();
-
 }
 
-module.exports.init = init;
+module.exports.initialize = initialize;
