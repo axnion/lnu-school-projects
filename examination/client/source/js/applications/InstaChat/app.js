@@ -1,7 +1,10 @@
 "use strict";
 
+/**
+ * This is the main instaChat function. This creates the application and displays it in the container.
+ * @param container The HTML element the application is created in.
+ */
 function instaChat(container) {
-
     var socket = null;
     var config = {
         adress: "ws://vhost3.lnu.se:20080/socket/",
@@ -22,6 +25,9 @@ function instaChat(container) {
         });
     });
 
+    /**
+     * Loads the template and prints the login screen in the container.
+     */
     function printLoginScreen() {
         var template;
         var node;
@@ -31,6 +37,11 @@ function instaChat(container) {
         container.appendChild(node);
     }
 
+    /**
+     * Loads the template for operations. So the charBox and textarea is created. The select element with the channel
+     * options is also added together with an event listener listening for change in the select. When there is a change
+     * the new channel is used to both listen on and write to. A notification is also printed.
+     */
     function printOperationsScreen() {
         var template;
         var node;
@@ -56,6 +67,12 @@ function instaChat(container) {
         });
     }
 
+    /**
+     * Prints a message to the chat box. Also ads a timestamp to each message so we know when we got it. The username of
+     * the person who sent it is also displayed. If the message was sent by this user then the message will have
+     * a different class to look different and instead of the username it will say "you".
+     * @param message An objects from the server containing a message and other information.
+     */
     function printMessage(message) {
         var template;
         var fragment;
@@ -88,6 +105,11 @@ function instaChat(container) {
         chatBox.appendChild(fragment);
     }
 
+    /**
+     * Prints a notification in the chatBox. If temporary is true then the message will disapear after 5 seconds.
+     * @param message A message we want in the notification.
+     * @param temporary True if we want the message to disappear after 5 seconds. If not the false.
+     */
     function printNotification(message, temporary) {
         var template = document.querySelector("#notificationTemplate");
         var notification = document.importNode(template.content.firstElementChild, true);
@@ -106,6 +128,14 @@ function instaChat(container) {
         }
     }
 
+    /**
+     * Creates the login functionality. Returns a promise containing an if statement and an event listener. The if
+     * statement checks if a username already exists in this session. If so we use that name and remove the loginDiv
+     * and call resolve. The event listener is created if we can't find a username. It will listen to a press of the
+     * enter key on the loginDiv. If there is nothing in the text input then a text is shows to the user. But if there
+     * is a text then we save the name in session and move on.
+     * @returns {Promise} A promise of a username.
+     */
     function login() {
         printLoginScreen();
         var loginDiv = container.querySelector(".instaChatLogin");
@@ -132,6 +162,13 @@ function instaChat(container) {
         });
     }
 
+    /**
+     * This functions is called to connect to the server. It returns a Promise. In this Promise we create a web socket
+     * connection to the server. We then listen for the event open from the server. We also listen for an error so we
+     * know if something when wrong. An event listener for messages is also added. The type of the message is checked
+     * and depending on what type it is then it will be printed as a message, a notification or not printed at all.
+     * @returns {Promise}
+     */
     function connect() {
         return new Promise(function(resolve, reject) {
             socket = new WebSocket(config.adress);
@@ -139,6 +176,7 @@ function instaChat(container) {
                 container.querySelector(".closeWindowButton").addEventListener("click", function() {
                     socket.close();
                 });
+
                 resolve();
             });
 
@@ -162,6 +200,11 @@ function instaChat(container) {
         });
     }
 
+    /**
+     * This function is used to send messages to the server. We create an object and fill it with the information it
+     * needs and then use send method.
+     * @param text Text we want to send to the server and in turn the other users.
+     */
     function send(text) {
         var data = {
             type: "message",

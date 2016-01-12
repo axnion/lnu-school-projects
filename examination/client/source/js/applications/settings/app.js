@@ -30,9 +30,11 @@ function settings(container) {
     inputs[5].addEventListener("click", function() {
         apply();
     });
+
     inputs[6].addEventListener("click", function() {
         fillFormWithData();
     });
+
     inputs[7].addEventListener("click", function() {
         resetToDefault();
     });
@@ -66,7 +68,7 @@ function settings(container) {
      * This creates an object and fills it with the data from the form and puts it in the local storage. useSettings
      * is then called to put the settings to use.
      */
-    function apply(){
+    function apply() {
         var newSetting = {
             wallpaper: inputs[0].value,
             hideDock: inputs[1].checked ? "true" : "false",
