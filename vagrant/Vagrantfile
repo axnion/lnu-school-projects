@@ -3,95 +3,64 @@
 
 Vagrant.configure(2) do |config|
     config.vm.box = "ubuntu/yakkety64"
-    config.vm.network :forwarded_port, guest: 30000, host: 3000
-   #config.vm.provision :shell, path: "update.sh"
-   #config.vm.provision :shell, privileged: false, path: "ruby.sh"
-
+    #config.vm.network :forwarded_port, guest: 30000, host: 3000
 
     config.vm.provision :shell, inline: <<-SHELL
         apt-get update
         apt-get -y upgrade
 
+        apt-get -y remove ruby
+
         # Installing core dependencies
-        apt-get -y install git-core curl build-essential gcc libssl-dev libreadline-dev zliblg-dev
+        apt-get -y install git-core curl build-essential gcc libssl-dev libreadline-dev
+        #apt-get -y install zliblg-dev
 
         # Installing dependencies for rvm
         apt-get -y install libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
 
         # installing dependencies for Hours
         apt-get -y install postgresql libpq-dev memcached
-        apt-get -y install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
+        apt-get -y install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x nodejs
+        #apt-get -y install libqt4-dev libqtwebkit-dev
     SHELL
-
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-        curl -sSL https://get.rvm.io | bash -s stable
-        source ~/.rvm/scripts/rvm
-
-        rvm install 2.3.1
-        rvm use 2.3.1 --default
-        gem install bundler
-    SHELL
-
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        rm -rf Hours
-        git clone https://github.com/DefactoSoftware/Hours.git
-        cd Hours
-        #bundle install
-
-
-    SHELL
-
-#    config.vm.provision :shell, inline <<-SHELL
-#        apt-get update
-#        apt-get -y upgrade
-#
-#        apt-get -y install git-core curl build-essential gcc libssl-dev libreadline-dev zliblg-dev
-#        apt-get -y install postgresql memcached
-#        apt-get -y install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-#    SHELL
 
 #    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-#        git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-#        git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-#
-#        RBENV_PATH='export PATH="$HOME/.rbenv/bin:$PATH"'
-#        echo $RBENV_PATH >> ~/.bash_profile
-#        RBENV_INIT='eval "$(rbenv init -)"'
-#        echo $RBENV_INIT >> ~/.bash_profile
-#
-#        rbenv install 2.3.1
-#        rbenv global 2.3.1
-#
-#        gem install bundler
-#    SHELL
-
-#    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-#        sudo apt-get -y binstall libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
 #        gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 #        curl -sSL https://get.rvm.io | bash -s stable
 #        source ~/.rvm/scripts/rvm
+#
 #        rvm install 2.3.1
 #        rvm use 2.3.1 --default
 #        gem install bundler
 #    SHELL
 
-#    config.vm.provision :shell, privileged: true, inline: <<-SHELL
-#        git clone https://github.com/thoughtbot/capybara-webkit.git
-#        cd capybara-webkit
-#        ./vagrant_setup.sh
-#    SHELL
+    config.vm.provision :shell, privileged: false, inline: <<-SHELL
+        git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+        git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 
+        RBENV_PATH='export PATH="$HOME/.rbenv/bin:$PATH"'
+        echo $RBENV_PATH >> ~/.bash_profile
+        RBENV_INIT='eval "$(rbenv init -)"'
+        echo $RBENV_INIT >> ~/.bash_profile
+    SHELL
 
-#   config.vm.provision :shell, privileged: false, inline: <<-SHELL
-#        cd /vagrant
-#        rm -rf Hours
-#        git clone https://github.com/DefactoSoftware/Hours.git
+    config.vm.provision :shell, privileged: false, inline: <<-SHELL
+        rbenv install 2.3.1
+        rbenv global 2.3.1
+    SHELL
 
-#        cd Hours
-#        bundle install
+    config.vm.provision :shell, privileged: false, inline: <<-SHELL
+        gem install bundler
+    SHELL
 
-#        #./bin/setup
-#        #foreman start
-#    SHELL
+    config.vm.provision :shell, privileged: false, inline: <<-SHELL
+        cd /vagrant
+        rm -rf Hours
+        git clone https://github.com/DefactoSoftware/Hours.git
+        cd Hours
+        #bundle install
+        sudo -u redash
+        ./bin/setup
+        #foreman start
+    SHELL
 end
