@@ -13,8 +13,6 @@ Then I added all other dependencies mentioned under System Dependencies, or atle
 ### Thu 21/10/16
 I continued tackling my dependency problem today by adding scripts to install parts that where failing in the bundle install. I started by switching from rbenv to rvm, just to see if that made any diffrence, but it did not.
 
-I found that the install that failed was either unf_ext or capybara-webkit, and I think the problems had something to do with QT and Qmake. but the error where not very clear at this point. I found some instructions on [Installing Qt and compiling capybara webkit](https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit#ubuntu-trusty-1404) which helped a bit but the installation still failed.
+I found that the install that failed was either unf_ext or capybara-webkit, and I think the problems had something to do with QT and Qmake. but the error where not very clear at this point. I found some instructions on [Installing Qt and compiling capybara webkit](https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit#ubuntu-trusty-1404) which helped a bit but the installation still failed. I decided to try to move to Ubuntu 16.04 to see if that made a diffrence, which it did and bundle install now works using ubuntu 16.04.
 
-I decided to try to move to Ubuntu 16.04 instead and if that did not work I would move to Fedora. But when switich to Ubuntu 16.04, bundle install now worked.
-
-* Ran into postgres problem with error "FATAL:  role "ubuntu" does not exist"
+Next problem has something to do with postgres. When the setup script runs the "bundle exec rake db:setup" command it produces the error "FATAL:  role "ubuntu" does not exist". And I don't have time to fix that today so that will be fixed tomorrow.
