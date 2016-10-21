@@ -10,3 +10,31 @@ config.vm.provision :shell, privileged: false, inline: <<-SHELL
     rvm use 2.3.1 --default
     gem install bundler
 SHELL
+
+# Installing prax
+config.vm.provision :shell, privileged: false, inline: <<-SHELL
+    git clone https://github.com/ysbaddaden/prax.cr.git
+
+    echo 'Installing the NSSWitch extension'
+    cd ~/prax.cr/ext
+    make
+    sudo make install
+
+    echo 'Installing the iptables rules'
+    cd ~/prax.cr
+    sudo cp install/debian/initd /etc/init.d/prax
+    sudo update-rc.d prax defaults
+    #sudo /etc/init.d/prax start
+
+    echo 'Instaling prax'
+    make
+    make CRYSTAL_BIN=/opt/crystal/bin/crystal
+    mkdir ~/.prax
+
+    cd /vagrant/Hours
+    prax link
+
+    echo 'Starting prax'
+    cd ~/prax.cr
+    ./bin/prax start
+SHELL

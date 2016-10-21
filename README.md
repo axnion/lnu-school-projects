@@ -19,3 +19,5 @@ Next problem has something to do with postgres. When the setup script runs the "
 
 ### Fri 22/10/16
 Started by fixing the problem with missing role in the postgres database. It was not easy finding a solid answer on google, but after a while I found the commands which creates an ubuntu user and a database.
+
+* Tried getting pow to work, but it seems to only work on OSX
