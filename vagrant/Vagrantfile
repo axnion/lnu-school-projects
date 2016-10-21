@@ -3,7 +3,8 @@
 
 Vagrant.configure(2) do |config|
     config.vm.box = "ubuntu/yakkety64"
-    config.vm.network :forwarded_port, guest: 7000, host: 8080
+    #config.vm.network :forwarded_port, guest: 7000, host: 8080
+    config.vm.network :forwarded_port, guest: 80, host: 8080
 
     config.vm.provision :shell, inline: <<-SHELL
         apt-get update
@@ -30,53 +31,18 @@ Vagrant.configure(2) do |config|
         apt-get install crystal
     SHELL
 
-    # Adding ubuntu user and databse to Postgres
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        echo 'Adding ubuntu user and databse to Postgres'
-        sudo -u postgres createuser --superuser ubuntu
-        sudo -u postgres createdb ubuntu
-    SHELL
 
-    # Installing rbenv
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        echo 'Installing Rbenv'
-        git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-        git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-
-        RBENV_PATH='export PATH="$HOME/.rbenv/bin:$PATH"'
-        echo $RBENV_PATH >> ~/.bash_profile
-        RBENV_INIT='eval "$(rbenv init -)"'
-        echo $RBENV_INIT >> ~/.bash_profile
-    SHELL
-
-    # Installing Ruby 2.3.1
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        echo 'Installing Ruby 2.3.1'
-        rbenv install 2.3.1
-        rbenv global 2.3.1
-    SHELL
-
-    # Installing Bundler
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        echo 'Installing Bundler'
-        gem install bundler
-    SHELL
 
     # Setting up Hours
     config.vm.provision :shell, privileged: false, inline: <<-SHELL
         echo 'Installing Hours'
         cd /vagrant
-        rm -rf Hours
-        git clone https://github.com/DefactoSoftware/Hours.git
-        cd Hours
+        rm -rf hours
+        git clone https://github.com/DefactoSoftware/Hours.git /vagrant/hours
+
+        cd hours
         ./bin/setup
-        #foreman start
     SHELL
 
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        wget https://github.com/ysbaddaden/prax.cr/releases/download/v0.6.0/prax_0.6.0-1_amd64.deb
-        sudo dpkg -i prax_0.6.0-1_amd64.deb
-        mkdir ~/.prax
-    SHELL
 
 end

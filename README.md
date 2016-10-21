@@ -18,6 +18,8 @@ I found that the install that failed was either unf_ext or capybara-webkit, and 
 Next problem has something to do with postgres. When the setup script runs the "bundle exec rake db:setup" command it produces the error "FATAL:  role "ubuntu" does not exist". And I don't have time to fix that today so that will be fixed tomorrow.
 
 ### Fri 22/10/16
-Started by fixing the problem with missing role in the postgres database. It was not easy finding a solid answer on google, but after a while I found the commands which creates an ubuntu user and a database.
+Started by fixing the problem with missing role in the postgres database. It was not easy finding a solid answer on google, but after a while I found the commands which creates an ubuntu user and a database. So by running forman start command I could now access the frontpage of the application, but I could not do more than that.
 
-* Tried getting pow to work, but it seems to only work on OSX
+Then I started with trying to get pow to work so I would not have to have nginx in the dev versions. But I realised that pow only works on Mac OS. I did however find an alternative called prax. I managed to connect to it from the host but I did not get access to the hours application. I think the problem has to do with the symlink used by prax has a capital letter. But I did not have time to test this due to massive DDOS attacks which took down DNS servers so I could not connect to github.
+
+Had to stop due to DDOS attacks...
