@@ -4,6 +4,7 @@
 Vagrant.configure(2) do |config|
     config.vm.box = "ubuntu/yakkety64"
     config.vm.network :forwarded_port, guest: 80, host: 80
+    config.vm.network :forwarded_port, guest: 80, host: 8080
 
     config.vm.provision :shell, inline: <<-SHELL
         apt-get update
@@ -20,7 +21,7 @@ Vagrant.configure(2) do |config|
         echo 'Installing dependencies for Hours'
         apt-get -y install postgresql libpq-dev memcached
         apt-get -y install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-        apt-get -y install nodejs npm
+        apt-get -y install nodejs npm firefox
     SHELL
 
     # Adding ubuntu user and databse to Postgres
@@ -83,10 +84,10 @@ Vagrant.configure(2) do |config|
         prax link
     SHELL
 
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        prax start &
-
-        cd /vagrant/hours
-        foreman start &
-    SHELL
+#    config.vm.provision :shell, privileged: false, inline: <<-SHELL
+#        prax start &
+#
+#        cd /vagrant/hours
+#        foreman start &
+#    SHELL
 end
