@@ -1,0 +1,6 @@
+FROM postgres:9.4.5
+
+ENV POSTGRES_USER=hours
+ENV POSTGRES_PASSWORD=mypassword
+
+EXPOSE 5432

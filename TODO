@@ -1,6 +1,8 @@
 # Vagrant
 * Connect port 80 to 80.
 * Autostart foreman and prax when runnning vagrant up
+* Go though packages and check what is needed and what can be removed
+* Remove rm hours
 
 # Docker-dev
 

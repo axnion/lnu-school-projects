@@ -26,3 +26,8 @@ There is (hopefully) only two problems remaining on the vagrant machine. The big
 
 ### Sat 22/10/16
 Started by trying to make the starting of both prax and foreman as simple as posible. So I created a start script which runs prax in the background and start foreman. Prax is run in the background because it has a stop function while foreman does not.
+
+Started on docker-dev
+* Started with a quick overview of how I can divide the application into containers
+* Started configuring app container
+* Configuring hours application, taking inspiration from "Build it yourself" in exercise-docker-compose-ror-dev.
