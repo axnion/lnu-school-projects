@@ -30,3 +30,12 @@ Started today by trying to make the starting of both prax and foreman as simple 
 Then I moved on to the docker development version. First I wanted and overview of how the application shoule be divided. I decided for this version only to have an hours container and a database container, and maybe a cache container but I don't think it's nessecary for development. So I started trying to configure the application with inspiration from the docker-ror-dev excercise and the "Build it yourself" document. I could however not get the application running.
 
 ### Sun 23/10/16
+Today I started over again to get the docker development version up, so removed the old one and started over. Most of the time was spent trying diffrent configurations to see what works and what did not work. I continued to use the "Build it yourself" document and my result in that excercise as a refrence. That combined with the example configurations for the application helped me figure out a solution.
+
+Some of the problems I ran into had to do with connecting the application to the database. I could not use the same method that used in the docker-RoR-dev excercise because then I got error saying gsub was missing. I did not know how to fix this error so instead I took inspiration from the database.yml.example where I instead of using gsub method I could define a database for development, testing, and production and still use the url to the postgres database.
+
+Another problem I had trubble figuring out was that I got an error complining that my application was locked to a version 11.2.2, and because of this I could not create or migrate the database. After a while I realised it was because when creating the image I had to copy both the Gemfile and the Gemfile.lock.
+
+Most of the day has been trial and error, because the errors often did not give me anything to go on so I just had to go back to my last working state and work from there. An example of a weird error was SaaS complaining of the $helvetica variable not being defined.
+
+But I have learned much about the application during all of this trial and error, for example the subdomains in multitenant mode works as they should even though it said on Hours github page that I would not work.
