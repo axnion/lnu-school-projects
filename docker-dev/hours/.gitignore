@@ -3,7 +3,6 @@
 *.swo
 *.swp
 /.bundle
-/.env
 /.foreman
 /coverage/*
 /db/*.sqlite3
@@ -11,4 +10,3 @@
 /public/system
 /tags
 /tmp/*
-/config/database.yml

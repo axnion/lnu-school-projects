@@ -1,0 +1,17 @@
+# config/database.yml
+development: &default
+  adapter: postgresql
+  database: hours_dev
+  encoding: utf8
+  min_messages: warning
+  pool: 2
+  timeout: 5000
+  url: <%= ENV["DB_URL"] %>
+
+test:
+  <<: *default
+  database: hours_test
+
+production:
+  <<: *default
+  database: hours_prod

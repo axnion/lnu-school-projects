@@ -402,6 +402,7 @@ DEPENDENCIES
   rails (~> 4.2.5)
   rails-assets-chartjs!
   rails_12factor
+  rake (= 11.2.2)
   recipient_interceptor
   redcarpet
   rspec-rails (~> 3.0)
@@ -424,4 +425,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.12.5
+   1.13.5
