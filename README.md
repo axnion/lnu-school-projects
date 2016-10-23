@@ -25,9 +25,8 @@ Then I started with trying to get pow to work so I would not have to have nginx 
 There is (hopefully) only two problems remaining on the vagrant machine. The biggest one is that I can't for some reason link port 80 on the host to port 80 on the guest in vagrant because prax does not respond to it, however when mapping port 80 to 8080 on the host prax respond and hours work fine until I want to login. When trying to log in the port disappears from the browser and it's imposible for me to log in. The second problem is just starting foreman and prax at the same time when running vagrant up.
 
 ### Sat 22/10/16
-Started by trying to make the starting of both prax and foreman as simple as posible. So I created a start script which runs prax in the background and start foreman. Prax is run in the background because it has a stop function while foreman does not.
+Started today by trying to make the starting of both prax and foreman as simple as posible. So I created a start script which runs prax in the background and start foreman. Prax is run in the background because it has a stop function while foreman does not.
 
-Started on docker-dev
-* Started with a quick overview of how I can divide the application into containers
-* Started configuring app container
-* Configuring hours application, taking inspiration from "Build it yourself" in exercise-docker-compose-ror-dev.
+Then I moved on to the docker development version. First I wanted and overview of how the application shoule be divided. I decided for this version only to have an hours container and a database container, and maybe a cache container but I don't think it's nessecary for development. So I started trying to configure the application with inspiration from the docker-ror-dev excercise and the "Build it yourself" document. I could however not get the application running.
+
+### Sun 23/10/16

@@ -1,15 +1,23 @@
 version: '2'
-
 services:
-    app:
-        build: ./app
-        env_file: ./app/.hours.env
+    db:
+        image: postgres:9.4.5
+        volumes:
+            - ./db/backups:/var/lib/postgresql/data
+        environment:
+            - DB_USER=hours
+            - DB_PASS=mypass
+        volumes:
+            - ./backups:/var/lib/postgresql/data
+        expose:
+            - "5432"
+    hours:
+        build: hours
+        env_file:
+            - hours/.env
         links:
             - db:postgres
+        depends_on:
+            - db
         ports:
             - "8080:8080"
-
-    db:
-        build: ./db
-    cache:
-        build: ./cache
