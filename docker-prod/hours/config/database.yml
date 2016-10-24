@@ -1,0 +1,12 @@
+# config/database.yml
+development: &default
+  url: <%= ENV["DB_URL"] %>
+  database: hours_dev
+
+test:
+  <<: *default
+  database: hours_test
+
+production:
+  <<: *default
+  database: hours_prod

@@ -1,5 +1,8 @@
+# All
+* Find what makes port 80 not work
+
 # Vagrant
-* Connect port 80 to 80.
+* Take what I've learned from Docker-dev to vagrant like just running unicorn.
 * Autostart foreman and prax when runnning vagrant up
 * Go though packages and check what is needed and what can be removed
 * Remove rm hours
