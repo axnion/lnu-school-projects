@@ -12,3 +12,10 @@ services:
             - db:postgres
         ports:
             - "8080:8080"
+    proxy:
+        build: proxy
+        ports:
+            - "80:80"
+            - "443:443"
+        links:
+            - hours
