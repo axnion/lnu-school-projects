@@ -1,5 +1,24 @@
 # Axel Nilsson Examination 1DV032
 
+## How to run
+
+#### Docker Development
+Start the application
+```
+docker-compose build
+
+# Run these commands if it's the first time this container is going up
+docker-compose up -d db
+docker-compose run --rm hours rake db:create db:migrate RAILS_ENV=development
+
+docker-compose up
+```
+
+Create a new user
+```
+docker-compose run --rm hours rake create_user
+```
+
 ## Diary
 ### Wen 19/10/16
 I started by reading though the examination and looking at the Hours github page to get an idea of where I should start.
