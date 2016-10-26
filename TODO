@@ -1,13 +1,13 @@
 # All
-* Find what makes port 80 not work
 
 # Vagrant
-* Take what I've learned from Docker-dev to vagrant like just running unicorn.
-* Autostart foreman and prax when runnning vagrant up
-* Go though packages and check what is needed and what can be removed
-* Remove rm hours
+* Devide vagrantfile into scripts, atleast try.
+* Add performance
 
 # Docker-dev
+* Try replacing db:create db:migrate with db:setup
 
 # Docker-Prod
 * Add exmple .env to testing instructions
+* Try replacing db:create db:migrate with db:setup
+* Lägg till caching

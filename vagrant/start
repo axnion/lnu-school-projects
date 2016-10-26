@@ -1,3 +1,0 @@
-prax start &
-cd /vagrant/hours
-foreman start
