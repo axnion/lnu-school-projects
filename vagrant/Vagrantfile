@@ -10,65 +10,12 @@ Vagrant.configure(2) do |config|
         v.cpus = 2
     end
 
-    config.vm.provision :shell, inline: <<-SHELL
-        apt-get update
-        apt-get -y upgrade
-        apt-get -y remove ruby
-
-        apt-get -y install git-core curl build-essential gcc libssl-dev libreadline-dev \
-            postgresql libpq-dev memcached nodejs npm firefox qt5-default \
-            libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-    SHELL
-
-    # Setting default folder you will get into when running vagrant ssh
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        echo "cd /vagrant" >> ~/.bash_profile
-    SHELL
-
-    # Adding ubuntu user and databse to Postgres
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        echo 'Adding ubuntu user and databse to Postgres'
-        sudo -u postgres createuser --superuser ubuntu
-        sudo -u postgres createdb ubuntu
-    SHELL
-
-    # Installing rbenv
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        echo 'Installing Rbenv'
-        git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-        git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-
-        RBENV_PATH='export PATH="$HOME/.rbenv/bin:$PATH"'
-        echo $RBENV_PATH >> ~/.bash_profile
-        RBENV_INIT='eval "$(rbenv init -)"'
-        echo $RBENV_INIT >> ~/.bash_profile
-    SHELL
-
-    # Installing Ruby 2.3.1
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        echo 'Installing Ruby 2.3.1'
-        rbenv install 2.3.1
-        rbenv global 2.3.1
-    SHELL
-
-    # Installing Bundler
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        echo 'Installing Bundler'
-        gem install bundler
-    SHELL
-
-    # Setting up Hours
-    config.vm.provision :shell, privileged: false, inline: <<-SHELL
-        echo 'Installing Hours'
-
-        if [ ! -d "/vagrant/hours" ]; then
-            echo 'Downloading Hours'
-            git clone https://github.com/DefactoSoftware/Hours.git /vagrant/hours
-        else
-            echo 'Hours already downloaded'
-        fi
-
-        cd /vagrant/hours
-        ./bin/setup
+    config.vm.provision :shell, path: "os_bootstrap"
+    config.vm.provision :shell, privileged: false, path: "user_bootstrap"
+    config.vm.provision :shell, privileged: false, path: "rbenv_install"
+    config.vm.provision :shell, privileged: false, path: "ruby_install"
+    config.vm.provision :shell, privileged: false, path: "hours_setup"
+    config.vm.provision :shell, run: 'always', privileged: false, inline: <<-SHELL
+        cd hours ; bundle exec unicorn -c config/unicorn.rb
     SHELL
 end

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo 'Installing Hours'
+
+if [ ! -d "/vagrant/hours" ]; then
+    echo 'Downloading Hours'
+    git clone https://github.com/DefactoSoftware/Hours.git /vagrant/hours
+else
+    echo 'Hours already downloaded'
+fi
+
+cd /vagrant/hours ; bundle install
+
+cp /vagrant/hours/config/database.yml.example /vagrant/hours/config/database.yml
+cp /vagrant/.demo.env /vagrant/hours/.env
+
+cd /vagrant/hours ; bundle exec rake db:setup

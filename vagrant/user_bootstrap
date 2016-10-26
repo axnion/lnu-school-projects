@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "cd /vagrant" >> ~/.bash_profile
+
+echo 'Adding ubuntu user and databse to Postgres'
+sudo -u postgres createuser --superuser ubuntu
+sudo -u postgres createdb ubuntu

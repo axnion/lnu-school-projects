@@ -1,10 +1,11 @@
 # All
+* I wikin so lägg till tids categorigrejen
 
 # Vagrant
 * Devide vagrantfile into scripts, atleast try.
+* Create my own setup script so single tenant more is turned on.
 
 # Docker-dev
 
 # Docker-Prod
-* Add exmple .env to testing instructions
 * Lägg till caching and update instructions
