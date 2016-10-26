@@ -2,12 +2,9 @@
 
 # Vagrant
 * Devide vagrantfile into scripts, atleast try.
-* Add performance
 
 # Docker-dev
-* Try replacing db:create db:migrate with db:setup
 
 # Docker-Prod
 * Add exmple .env to testing instructions
-* Try replacing db:create db:migrate with db:setup
-* Lägg till caching
+* Lägg till caching and update instructions

@@ -1,5 +1,7 @@
 FROM ruby:2.3.1
 
+EXPOSE 8000
+
 RUN apt-get update && apt-get install -qq -y build-essential nodejs libpq-dev \
     postgresql-client-9.4 qt5-default libqt5webkit5-dev iceweasel \
     --fix-missing --no-install-recommends
