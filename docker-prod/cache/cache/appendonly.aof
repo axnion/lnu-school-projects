@@ -1,0 +1,171 @@
+*2
+$6
+SELECT
+$1
+0
+*3
+$3
+set
+$79
+cache:views/users/1-20161026222639039716000/en/d34854c3e5617fe9554665ea463aca57
+$234
+o: ActiveSupport::Cache::Entry:@valueI"‰<div class='title-container'>
+<h1>Axel's entries</h1>
+
+</div>
+
+<a href="/users/axel-nilsson/entries.csv">Download all entries as CSV</a>
+:ET:@created_atf1477521207.7525315:@expires_in0
+*3
+$3
+set
+$79
+cache:views/users/1-20161026222639039716000/en/d191247b1a515639aed6987b5c98c63f
+$1891
+o: ActiveSupport::Cache::Entry:@valueI"<div class='nav-user'>
+<ul>
+<li class='dropdown' id='user-nav'>
+<a href='javascript:void(0)'>
+Axel
+<span class='caret'></span>
+</a>
+<div class='dropdown-menu'>
+<div class='dropdown-arrow'></div>
+<div class='dropdown-content'>
+<div class='user-info'>
+<a href="/users/axel-nilsson"><div class='avatar' style='background-color: #BE8270;'>
+AN
+<img class="image-circle" title="Axel Nilsson" src="https://secure.gravatar.com/avatar/b115b2a1f803e9871653633ad8debdbc?default=blank&secure=true" alt="Gravatar" width="80" height="80" />
+</div>
+</a>
+<span class='user-name'>Axel</span>
+</div>
+<ul>
+<li><a href="/categories">Categories</a></li>
+<li><a href="/users">Users</a></li>
+<li><a href="/billables">Billable Entries</a></li>
+<li><a href="/clients">Clients</a></li>
+<li><a href="/archives">Archives</a></li>
+<li><a href="/reports">Reporting</a></li>
+<li><a href="/user/edit">Edit profile</a></li>
+<li>
+<div class='modal'>
+<label for='modal-1'>
+<a>Help me!</a>
+</label>
+<input class='modal-state' id='modal-1' type='checkbox'>
+<div class='modal-window'><form action='https://example.io/incoming_message' method='post' target='_b'>
+<div class='modal-inner'>
+<div class='content'>
+<label class='modal-close' for='modal-1'></label>
+<h3>Need help?</h3>
+<p>Have a question about Hours? Need some help getting started?</p>
+<input name='account' type='hidden' value='helpful_account'>
+<input id='email' name='email' type='hidden' value='lobodomy94@gmail.com'>
+<textarea id='content' name='content' placeholder='Write your question here...' type='text'></textarea>
+</div>
+<div class='actions'>
+<input class='submit-button' type='submit' value='Submit'>
+</div>
+</div>
+</form></div>
+
+</div>
+</li>
+<li class='devider'></li>
+<li><a href="/users/sign_out">Sign Out</a></li>
+</ul>
+</div>
+</div>
+</li>
+</ul>
+</div>
+:ET:@created_atf1477521210.4317873:@expires_in0
+*3
+$3
+set
+$93
+cache:views//projects/all-page-0-//categories/all-page-0-/en/a197f3d5de6324ce888228e5b9a14f9e
+$380
+o: ActiveSupport::Cache::Entry:@valueI"<div class='info'>
+<p>It looks like you don't have any projects set up yet, you can set one up <a href="/projects/new">here</a>.</p>
+</div>
+<div class='info'>
+<p>It looks like you don't have any categories set up yet, you can set one up <a href="/categories">here</a>.</p>
+</div>
+
+
+:ET:@created_atf1477521251.2379787:@expires_in0
+*3
+$3
+set
+$69
+cache:views//hours/all-page-0-/en/en/a197f3d5de6324ce888228e5b9a14f9e
+$97
+o: ActiveSupport::Cache::Entry:@valueI"
+:ET:@created_atf1477521251.2448678:@expires_in0
+*3
+$3
+set
+$79
+cache:views/users/2-20161026223509197163000/en/d191247b1a515639aed6987b5c98c63f
+$1892
+o: ActiveSupport::Cache::Entry:@valueI"<div class='nav-user'>
+<ul>
+<li class='dropdown' id='user-nav'>
+<a href='javascript:void(0)'>
+Axel
+<span class='caret'></span>
+</a>
+<div class='dropdown-menu'>
+<div class='dropdown-arrow'></div>
+<div class='dropdown-content'>
+<div class='user-info'>
+<a href="/users/axel-karlsson"><div class='avatar' style='background-color: #5CA1B3;'>
+AK
+<img class="image-circle" title="Axel Karlsson" src="https://secure.gravatar.com/avatar/f1b810e2b63587002f6c15200b88d926?default=blank&secure=true" alt="Gravatar" width="80" height="80" />
+</div>
+</a>
+<span class='user-name'>Axel</span>
+</div>
+<ul>
+<li><a href="/categories">Categories</a></li>
+<li><a href="/users">Users</a></li>
+<li><a href="/billables">Billable Entries</a></li>
+<li><a href="/clients">Clients</a></li>
+<li><a href="/archives">Archives</a></li>
+<li><a href="/reports">Reporting</a></li>
+<li><a href="/user/edit">Edit profile</a></li>
+<li>
+<div class='modal'>
+<label for='modal-1'>
+<a>Help me!</a>
+</label>
+<input class='modal-state' id='modal-1' type='checkbox'>
+<div class='modal-window'><form action='https://example.io/incoming_message' method='post' target='_b'>
+<div class='modal-inner'>
+<div class='content'>
+<label class='modal-close' for='modal-1'></label>
+<h3>Need help?</h3>
+<p>Have a question about Hours? Need some help getting started?</p>
+<input name='account' type='hidden' value='helpful_account'>
+<input id='email' name='email' type='hidden' value='blablabla@gmail.com'>
+<textarea id='content' name='content' placeholder='Write your question here...' type='text'></textarea>
+</div>
+<div class='actions'>
+<input class='submit-button' type='submit' value='Submit'>
+</div>
+</div>
+</form></div>
+
+</div>
+</li>
+<li class='devider'></li>
+<li><a href="/users/sign_out">Sign Out</a></li>
+</ul>
+</div>
+</div>
+</li>
+</ul>
+</div>
+:ET:@created_atf1477521309.4646661:@expires_in0

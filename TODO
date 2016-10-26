@@ -1,11 +1,15 @@
 # All
 * I wikin so lägg till tids categorigrejen
+* Add times to diary
+* Fixa länkarna i wikin (se på github)
+* Lägg till i insturctionerna att man behöver root acces eller köra mitt awesome command.
+* Lägg till how to test if cache is working
 
 # Vagrant
-* Devide vagrantfile into scripts, atleast try.
-* Create my own setup script so single tenant more is turned on.
+* Om jag har tid så försök lägga till en test användare.
 
 # Docker-dev
 
 # Docker-Prod
 * Lägg till caching and update instructions
+* Lägg till om bad gateway i instructions

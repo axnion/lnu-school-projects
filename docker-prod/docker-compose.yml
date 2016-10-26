@@ -10,6 +10,7 @@ services:
             - hours/.env
         links:
             - db:postgres
+            - cache:cache
     proxy:
         build: proxy
         ports:
@@ -17,3 +18,7 @@ services:
             - "443:443"
         links:
             - hours
+    cache:
+        build: cache
+        volumes:
+            - ./cache/cache:/data
