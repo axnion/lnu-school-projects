@@ -28,6 +28,7 @@
   "disallowKeywords": [ "with" ],
   "disallowMultipleLineBreaks": true,
   "disallowMultipleVarDecl": true,
+  "disallowSemicolons": true,
   "requireSpaceBeforeBlockStatements": 1,
   "requireParenthesesAroundIIFE": true,
   "requireSpacesInConditionalExpression": true,

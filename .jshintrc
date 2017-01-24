@@ -1,4 +1,5 @@
 {
+    "asi" : true,
     "maxparams": 5,
     "maxdepth": 5,
     "maxstatements": 25,
@@ -28,7 +29,7 @@
     "unused": true,
     "nonew": true,
     "bitwise": true,
-    "latedef": true,
+    "latedef": "nofunc",
     "nonbsp": true,
     "quotmark": "double"
 }
