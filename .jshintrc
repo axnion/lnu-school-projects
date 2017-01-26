@@ -31,6 +31,6 @@
     "bitwise": true,
     "latedef": "nofunc",
     "nonbsp": true,
-    "quotmark": "double"
+    "quotmark": "double",
 	"esversion": 6
 }
