@@ -32,4 +32,5 @@
     "latedef": "nofunc",
     "nonbsp": true,
     "quotmark": "double"
+	"esversion": 6
 }
