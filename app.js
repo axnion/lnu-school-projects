@@ -1,6 +1,7 @@
 "use strict"
 
 const calendarScraper = require("./lib/calendar")
+const cinemaScraper = require("./lib/cinema")
 
 // TODO: Validate argument so it's a valid URI
 // TODO: Check so the protocol is specified. HTTP should always be included
@@ -22,7 +23,9 @@ calendarScraper.getLinks(frontPage).then(function(links) {
     return calendarScraper.getAllFriends(links)
 }).then(function(friends) {
     let dates = calendarScraper.findSuitableDates(friends)
-    return cinemaScraper.findMovies(dates)
+    return cinemaScraper.findMovies(cinemaURL, dates)
+}).then(function(movies) {
+    console.dir(movies)
 }).catch(function(error) {
     console.log(error)
 })
