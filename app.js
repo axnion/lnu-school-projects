@@ -7,21 +7,13 @@ const cinemaScraper = require("./lib/cinema")
 const restaurantScraper = require("./lib/restaurant")
 
 // TODO: Write documentation on how to run the application
-// TODO: Go though all promises and check so they are needed. Remove any unnessecary
 // TODO: Add the booking functionallity
-// TODO: DONE Validate argument so it's a valid URI
-// TODO: DONE Check so the protocol is specified. HTTP should always be included
+// TODO: Try to remove any global variables
 let frontPage = process.argv[2]
 
 let calendarURL
 let cinemaURL
 let restaurantURL
-
-let dates = []
-let movies = []
-
-// TODO: Get JSON data from cinema with this link: http://vhost3.lnu.se:20080/cinema/check?day=05&movie=03
-// TODO: Throw exeptions when for example there are no dates available
 
 validateURL(frontPage).then(function() {
 
@@ -35,10 +27,8 @@ validateURL(frontPage).then(function() {
 }).then(function(links) {
     return calendarScraper.getAllFriends(links)
 }).then(function(friends) {
-    dates = calendarScraper.findSuitableDates(friends)
-    return cinemaScraper.findMovies(cinemaURL, dates)
-}).then(function(availableMovies) {
-    movies = availableMovies
+    return cinemaScraper.findMovies(cinemaURL, calendarScraper.findSuitableDates(friends))
+}).then(function(movies) {
     return restaurantScraper.getSuitableBookings(restaurantURL, movies)
 }).then(function(bookings) {
     presentBookings(bookings)
@@ -49,7 +39,8 @@ validateURL(frontPage).then(function() {
 function presentBookings(bookings) {
     for (let i = 0; i < bookings.length; i += 1) {
         console.log("Alternative #" + (i + 1))
-        console.log("Movie: " + bookings[i].movie.movie)
+        console.log("Movie: " + bookings[i].movie.title)
+        console.log("Movie id: " + bookings[i].movie.movie)
         console.log("Restaurant booking: " + bookings[i].booking.from + ":00 to " + bookings[i].booking.to + ":00\n")
     }
 }
