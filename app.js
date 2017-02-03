@@ -34,7 +34,9 @@ validateURL(frontPage).then(function() {
     presentAlternatives(bookings)
     return restaurantScraper.askForBookingTable(bookings)
 }).then(function(finalBooking) {
-    return restaurantScraper.bookTable(finalBooking)
+    console.dir(finalBooking)
+    return restaurantScraper.bookTable(finalBooking, restaurantURL)
+}).then(function(finalBooking) {
     presentFinalBooking(finalBooking)
 }).catch(function(error) {
     console.log(error)
