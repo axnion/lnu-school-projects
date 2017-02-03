@@ -18,6 +18,8 @@
   "homepage": "https://github.com/1dv023/an222yp-examination-1#readme",
   "dependencies": {
     "cheerio": "^0.22.0",
+    "inquirer": "^3.0.1",
+    "prompt-promise": "^1.0.3",
     "request": "^2.79.0",
     "request-promise": "^4.1.1"
   }

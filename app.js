@@ -31,18 +31,28 @@ validateURL(frontPage).then(function() {
 }).then(function(movies) {
     return restaurantScraper.getSuitableBookings(restaurantURL, movies)
 }).then(function(bookings) {
-    presentBookings(bookings)
+    presentAlternatives(bookings)
+    return restaurantScraper.askForBookingTable(bookings)
+}).then(function(finalBooking) {
+    return restaurantScraper.bookTable(finalBooking)
+    presentFinalBooking(finalBooking)
 }).catch(function(error) {
     console.log(error)
 })
 
-function presentBookings(bookings) {
+function presentAlternatives(bookings) {
     for (let i = 0; i < bookings.length; i += 1) {
         console.log("Alternative #" + (i + 1))
+        console.log("Day: " + bookings[i].movie.day)
         console.log("Movie: " + bookings[i].movie.title)
         console.log("Movie id: " + bookings[i].movie.movie)
-        console.log("Restaurant booking: " + bookings[i].booking.from + ":00 to " + bookings[i].booking.to + ":00\n")
+        console.log("Restaurant booking: " + bookings[i].booking.from + ":00 to " +
+            bookings[i].booking.to + ":00\n")
     }
+}
+
+function presentFinalBooking(booking) {
+    console.dir(booking)
 }
 
 function validateURL(url) {
