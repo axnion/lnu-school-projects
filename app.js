@@ -7,8 +7,6 @@ const cinemaScraper = require("./lib/cinema")
 const restaurantScraper = require("./lib/restaurant")
 
 // TODO: Write documentation on how to run the application
-// TODO: Add the booking functionallity
-// TODO: Try to remove any global variables
 let frontPage = process.argv[2]
 
 let calendarURL
