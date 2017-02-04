@@ -34,10 +34,10 @@ validateURL(frontPage).then(function() {
     presentAlternatives(bookings)
     return restaurantScraper.askForBookingTable(bookings)
 }).then(function(finalBooking) {
-    console.dir(finalBooking)
     return restaurantScraper.bookTable(finalBooking, restaurantURL)
 }).then(function(finalBooking) {
     presentFinalBooking(finalBooking)
+    process.exit()
 }).catch(function(error) {
     console.log(error)
 })
@@ -45,16 +45,15 @@ validateURL(frontPage).then(function() {
 function presentAlternatives(bookings) {
     for (let i = 0; i < bookings.length; i += 1) {
         console.log("Alternative #" + (i + 1))
-        console.log("Day: " + bookings[i].movie.day)
+        console.log("Day: " + bookings[i].day)
         console.log("Movie: " + bookings[i].movie.title)
-        console.log("Movie id: " + bookings[i].movie.movie)
-        console.log("Restaurant booking: " + bookings[i].booking.from + ":00 to " +
-            bookings[i].booking.to + ":00\n")
+        console.log("Restaurant booking: " + bookings[i].table.from + ":00 to " +
+            bookings[i].table.to + ":00\n")
     }
 }
 
 function presentFinalBooking(booking) {
-    console.dir(booking)
+    console.log("Table has been booked from " + booking.table.from + " to " + booking.table.to)
 }
 
 function validateURL(url) {
