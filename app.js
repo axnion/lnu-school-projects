@@ -27,7 +27,8 @@ validate.url(url).then(function() {
     return calendar.getAllFriends(links)
 }).then(function(friends) {
     // Get the movies which are shown on the days where all friends are available
-    return cinema.findMovies(cinemaURL, calendar.findSuitableDates(friends))
+    let commonDates = calendar.findCommonDates(friends)
+    return cinema.findMovies(cinemaURL, commonDates)
 }).then(function(movies) {
     // Match movies and table bookings. Return object containing a suggestion with a movie and an
     // available table.
@@ -41,7 +42,7 @@ validate.url(url).then(function() {
     return restaurant.bookTable(finalBooking, restaurantURL)
 }).then(function(finalBooking) {
     // Present the final booking and exit
-    presentation.presentFinalBooking(finalBooking)
+    presentation.presentBookedTable(finalBooking)
     process.exit()
 }).catch(function(error) {
     // Display error in console and exit
