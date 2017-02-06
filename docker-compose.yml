@@ -1,7 +1,7 @@
 version: '2'
 services:
     node:
-        build .
+        build: .
         links:
             - redis
             - mongo
@@ -9,15 +9,12 @@ services:
             - "8080:8080"
         volumes:
             - .:/opt/app
-
-
     redis:
         image: redis:latest
         expose:
             - "6379"
         volumes:
             - ./cache:/var/lib/redis/data
-
     mongo:
         image: mongo:latest
         expose:
