@@ -1,8 +1,8 @@
 # Node Docker Dev
-Simple docker compose configuration for development with Node.js, MongoDB, and Redis. This configuration is ment to provide an isolated development enviroment in a similar to Vagrant, but with the added benifits of Docker. Because of that, this configuration is NOT made to package applications in containers and should NEVER be used anywhere near production.
+A very simple docker compose configuration for development with Node.js, MongoDB, and Redis. This configuration is ment to provide an isolated development enviroment in a similar to Vagrant, but with the added benifits of Docker. Because of that, this configuration is NOT made to package applications in containers and should NEVER be used anywhere near production.
 
 ## Setup
-I've tried to make the instructions as beginner friendly as possible. If you feel anything is missing, please create an issue or a pull request.
+I've tried to make the instructions as beginner friendly as possible. If you feel anything is missing or have any questions, please create an issue or a pull request.
 
 ### Getting Started
 To use this configuration you will need to [install Docker Engine](https://docs.docker.com/engine/installation/) to run the Docker containers. You will also need to [install Docker Compose](https://docs.docker.com/compose/install/) since this configuration uses three containers. If you have never used Docker before I would recommend you look at [Get started with Docker](https://docs.docker.com/engine/getstarted/).
@@ -24,7 +24,9 @@ First a couple of things you should know about this specific configuration befor
 For a more practical example imagine that we have a files `app.js` located in the project root, and we want to run this application in our node service container. To do this we will need to run `node app.js` in the container. Since the command always are executed from the project root the command will look like `docker-compose run node node app.js`. The double node is not an error, the first node is the name of the service, the second is the start of the `node app.js` command.
 
 #### Run bash
-TBA
+If you want something that reminds more of the `vagrant ssh` command this is a more fitting solution for you. Since we can run commands inside the container using the run command we can start any program we would like, even a shell. So we can run the command bash to start a bash session `docker-compose <service_name> bash`.
+
+You will then land in the work directory of the container and have a normal bash interface where you can navigate and run commands inside the container.
 
 ### Good to know
 The the Redis and MongoDB container will create two folder in your project root called `cache` and `db` where it will store data.
