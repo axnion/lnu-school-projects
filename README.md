@@ -1,6 +1,7 @@
+Instructions has not been updates since I changed to nodemon
+
 # Node Docker Dev
 A very simple docker compose configuration for development with Node.js, MongoDB, and Redis. This configuration is ment to provide an isolated development enviroment in a similar to Vagrant, but with the added benifits of Docker. Because of that, this configuration is NOT made to package applications in containers and should NEVER be used anywhere near production.
-
 
 ## Setup
 My intention with this configuration is not only to use it by myself, but also share with students who might not have use Docker before. Becuase if this I tried to make the instructions as detailed as possible. If you feel anything is missing or have any questions, please create an issue or a pull request.
