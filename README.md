@@ -46,8 +46,6 @@ The database and cache container can not be accessible from the host machine (ex
 * redis
 
 ### Good to know
-The the Redis and MongoDB container will create two folder in your project root called `cache` and `db` where it will store data.
-
 The signed in user on the local machine will not have write access to files created by the containers, so you might need to use `sudo` every now and again. If anyone has a fix for this, please share.
 
 Here are a couple of good to know commands to know. If something goes wrong with your containers these command together will more or less return you to the state before running `docker-compose up`.
