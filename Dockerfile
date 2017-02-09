@@ -1,11 +1,15 @@
 FROM node:latest
 
-WORKDIR /opt/app
-ENV APP_MAIN=app.js
+ENV APP_MAIN = app.js
 
+RUN mkdir -p /opt/app
+
+ADD package.json /opt/app/package.json
+RUN cd /opt/app && npm install
 RUN npm install nodemon -g
-RUN npm install
+
+WORKDIR /opt/app
 
 EXPOSE 8080
 
-CMD ./node_modules/nodemon/bin/nodemon.js --legacy-watch $APP_MAIN
+CMD nodemon -L $APP_MAIN
