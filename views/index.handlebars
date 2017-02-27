@@ -1,1 +1,16 @@
 <h1>Hello!</h1>
+<div id="test-div">
+</div>
+
+<script src='/socket.io/socket.io.js'></script>
+<script>
+    var socket = io("http://localhost:8080")
+
+    socket.on("test", function(data) {
+        let div = document.getElementById("test-div")
+
+        data.forEach(function(el) {
+            div.innerHTML += "<h3>" + el + "</h3>"
+        })
+    })
+</script>

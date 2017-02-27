@@ -4,8 +4,11 @@ const express       = require("express")
 const exphbs        = require("express-handlebars")
 const path          = require("path")
 const bodyParser    = require("body-parser")
+const http          = require("http")
 
-const app = express()
+const app       = express()
+const server    = http.createServer(app)
+const io        = require("socket.io")(server)
 
 app.engine("handlebars", exphbs({defaultLayout: "main"}))
 app.set("view engine", "handlebars")
@@ -16,7 +19,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
 app.use("/", require("./routes/index"))
+app.use("/webhook", require("./routes/webhook"))
 
-//app.use("/webhook", require("./routes/webhook"))
+app.set("socketio", io)
 
-app.listen(8080)
+io.on("connection", function(socket) {
+    console.log("Client connected")
+})
+
+server.listen(8080)
