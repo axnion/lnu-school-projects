@@ -2,20 +2,9 @@ version: '2'
 services:
     app:
         build: .
-        links:
-            - redis
-            - mongo
         ports:
             - "8080:8080"
         volumes:
             - .:/opt/app
         env_file:
             - .env
-    redis:
-        image: redis:latest
-        expose:
-            - "6379"
-    mongo:
-        image: mongo:latest
-        expose:
-            - "27017"
