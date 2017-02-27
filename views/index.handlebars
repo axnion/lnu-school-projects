@@ -1,16 +1,18 @@
 <h1>Hello!</h1>
-<div id="test-div">
+<div class="notification-wrapper">
+    <h3>Notifications</h3>
+    <ul id="notifications">
+
+    </ul>
 </div>
 
 <script src='/socket.io/socket.io.js'></script>
 <script>
-    var socket = io("http://localhost:8080")
+    var socket = io("http://localhost:8080") // NEEDS TO CHANGE TO THE DOMAIN TO WORK ON THE INTERNETZ
 
-    socket.on("test", function(data) {
-        let div = document.getElementById("test-div")
+    socket.on("notification", function(data) {
+        let div = document.getElementById("notifications")
 
-        data.forEach(function(el) {
-            div.innerHTML += "<h3>" + el + "</h3>"
-        })
+        div.innerHTML += "<li>" + data.action + " | " + data.title + "</li>"
     })
 </script>
