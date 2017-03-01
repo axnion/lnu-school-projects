@@ -24,5 +24,3 @@ function createNotification(data) {
 }
 
 module.exports = router
-
-//91jgr8u3jgr98ijg29j

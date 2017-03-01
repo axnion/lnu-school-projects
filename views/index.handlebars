@@ -5,6 +5,16 @@
 
     </ul>
 </div>
+<div class="issue-wrapper">
+    <h3>Issues</h3>
+    <ul id="issues">
+        {{#each issues}}
+            <li>
+                {{url}}
+            </li>
+        {{/each}}
+    </ul>
+</div>
 
 <script src='/socket.io/socket.io.js'></script>
 <script>
