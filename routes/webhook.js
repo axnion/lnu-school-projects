@@ -3,23 +3,29 @@
 const router = require("express").Router()
 
 router.route("/").post(function(req, res) {
-    console.log("NOTIFICATION!")
-
     let io = req.app.get("socketio")
-    let test = ["Back", "blalba", "bla"]
+    let notification = createNotification(req.body)
 
-    io.sockets.emit("notification", createNotification(req.body))
-
-    console.log("I'm hooked!")
+    console.log(notification)
+    io.sockets.emit("notification", notification)
     res.redirect("/")
 })
 
 function createNotification(data) {
+    console.log(data)
     return {
         action: data.action,
-        title: data.issue.title,
+        id: data.issue.id,
         url: data.issue.url,
-        creator: data.issue.user.login
+        title: data.issue.title,
+        number: data.issue.number,
+        comments: data.issue.comments,
+        user: {
+            username: data.issue.user.login,
+            avatar: data.issue.user.avatar_url
+        },
+        createdAt: data.issue.created_at,
+        updatedAt: data.issue.updated_at
     }
 }
 

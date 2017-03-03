@@ -27,10 +27,11 @@ function mapIssues(json) {
 
     return issues.map(function(issue) {
         return {
+            id: issue.id,
             url: issue.url,
             title: issue.title,
             number: issue.number,
-            state: issue.state,
+            comments: issue.comments,
             user: {
                 username: issue.user.login,
                 avatar: issue.user.avatar_url

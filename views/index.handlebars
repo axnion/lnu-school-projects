@@ -9,8 +9,17 @@
     <h3>Issues</h3>
     <ul id="issues">
         {{#each issues}}
-            <li>
-                {{url}}
+            <li id="{{id}}">
+                {{title}}
+                <ul>
+                    <li>Id: {{id}}</li>
+                    <li>URL: {{url}}</li>
+                    <li>Number: {{number}}</li>
+                    <li>Comments: {{comments}}</li>
+                    <li>Creator: {{user.username}}</li>
+                    <li>Created at: {{createdAt}}</li>
+                    <li>Updated at: {{updatedAt}}</li>
+                </ul>
             </li>
         {{/each}}
     </ul>
@@ -21,8 +30,39 @@
     var socket = io("http://localhost:8080") // NEEDS TO CHANGE TO THE DOMAIN TO WORK ON THE INTERNETZ
 
     socket.on("notification", function(data) {
-        let div = document.getElementById("notifications")
+        let ul = document.getElementById("notifications")
+        ul.innerHTML = "<li>" + data.action + " | " + data.title + "</li>" + ul.innerHTML
 
-        div.innerHTML += "<li>" + data.action + " | " + data.title + "</li>"
+        if (data.action === "closed") {
+            removeIssueById(data.id)
+        } else if (data.action === "reopened" || data.action ==="opened") {
+            addIssue(data)
+        } else if (data.action === "created" || data.action === "deleted" || data.action === "edited") {
+            removeIssueById(data.id)
+            addIssue(data)
+        }
     })
+
+    function removeIssueById(id) {
+        let element = document.getElementById(id)
+        element.parentNode.removeChild(element)
+    }
+
+    function addIssue(data) {
+        let ul = document.getElementById("issues")
+        let html = "<li id=\"" + data.id + "\">"
+        html += data.title
+        html += "<ul>"
+        html += "<li>Id: " + data.id + "</li>"
+        html += "<li>URL: " + data.url + "</li>"
+        html += "<li>Number: " + data.number + "</li>"
+        html += "<li>Comments: " + data.comments + "</li>"
+        html += "<li>Creator: " + data.user.username + "</li>"
+        html += "<li>Created at: " + data.createdAt + "</li>"
+        html += "<li>Updated at: " + data.updatedAt + "</li>"
+        html += "</ul>"
+        html += "</li>"
+
+        ul.innerHTML = html + ul.innerHTML
+    }
 </script>
