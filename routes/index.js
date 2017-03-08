@@ -5,15 +5,17 @@ const request   = require("request-promise")
 
 router.route("/").get(function(req, res, next) {
     let options = {
-        url: "https://api.github.com/repos/1dv023/an222yp-examination-3/issues",
+        url: "https://api.github.com/repos/" + process.env.REPO + "/issues",
         headers: {
             Host: "api.github.com",
             Authorization: "Basic " + new Buffer(
-                process.env.GITHUB_USER + ":" + process.env.GITHUB_API
+                process.env.USER + ":" + process.env.API
             ).toString("base64"),
-            "User-Agent": "an222yp@student.lnu.se"
+            "User-Agent": process.env.USER_AGENT
         }
     }
+
+    console.log(options.url)
 
     request(options).then(function(json) {
         res.render("index", {issues: mapIssues(json)})
@@ -28,7 +30,7 @@ function mapIssues(json) {
     return issues.map(function(issue) {
         return {
             id: issue.id,
-            url: issue.url,
+            url: issue.html_url,
             title: issue.title,
             number: issue.number,
             comments: issue.comments,

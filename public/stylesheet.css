@@ -1,0 +1,55 @@
+h4 {
+    padding: 0;
+    margin: 0;
+}
+
+.notification-wrapper {
+    float: left;
+    padding-left: 20px;
+}
+
+.issue-wrapper {
+    float: left;
+}
+
+#issues {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#issues li {
+    padding-bottom: 5px;
+}
+
+.issue {
+    margin-bottom: 5px;
+    padding: 5px;
+    width: 200px;
+    border: 2px solid black;
+}
+
+.issue img {
+    width: 50px;
+    float: right;
+}
+
+.date {
+    padding: 0;
+    margin: 0;
+    font-size: 10px;
+}
+
+#notifications {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#notifications li {
+    background-color: darkgrey;
+}
+
+#notifications p {
+    margin: 0;
+}

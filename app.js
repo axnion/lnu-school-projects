@@ -10,6 +10,8 @@ const app       = express()
 const server    = http.createServer(app)
 const io        = require("socket.io")(server)
 
+// TODO: In npm create dev and prod dependencies
+
 app.engine("handlebars", exphbs({defaultLayout: "main"}))
 app.set("view engine", "handlebars")
 
@@ -27,4 +29,4 @@ io.on("connection", function(socket) {
     console.log("Client connected")
 })
 
-server.listen(8080)
+server.listen(80)

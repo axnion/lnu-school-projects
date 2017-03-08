@@ -1,46 +1,56 @@
-<h1>Hello!</h1>
+<div class="issue-wrapper">
+    <h3>Issues</h3>
+    <ul id="issues">
+        {{#each issues}}
+            <li id="{{id}}">
+                <div class="issue">
+                    <h4><a href="{{url}}">#{{number}} - {{title}}</a></h4>
+                    <img src="{{user.avatar}}">
+                    <p class="username">{{user.username}}
+                    <p class="comments">Comments: {{comments}}
+                    <p class="date">{{createdAt}}
+                    <p class="date">{{updatedAt}}
+                </div>
+            </li>
+        {{/each}}
+    </ul>
+</div>
 <div class="notification-wrapper">
     <h3>Notifications</h3>
     <ul id="notifications">
 
     </ul>
 </div>
-<div class="issue-wrapper">
-    <h3>Issues</h3>
-    <ul id="issues">
-        {{#each issues}}
-            <li id="{{id}}">
-                {{title}}
-                <ul>
-                    <li>Id: {{id}}</li>
-                    <li>URL: {{url}}</li>
-                    <li>Number: {{number}}</li>
-                    <li>Comments: {{comments}}</li>
-                    <li>Creator: {{user.username}}</li>
-                    <li>Created at: {{createdAt}}</li>
-                    <li>Updated at: {{updatedAt}}</li>
-                </ul>
-            </li>
-        {{/each}}
-    </ul>
-</div>
 
 <script src='/socket.io/socket.io.js'></script>
 <script>
-    var socket = io("http://localhost:8080") // NEEDS TO CHANGE TO THE DOMAIN TO WORK ON THE INTERNETZ
+    var socket = io()
 
     socket.on("notification", function(data) {
         let ul = document.getElementById("notifications")
-        ul.innerHTML = "<li>" + data.action + " | " + data.title + "</li>" + ul.innerHTML
+        let notification = "<li class=\"notification\">"
 
         if (data.action === "closed") {
             removeIssueById(data.id)
+            notification += "<h4>#" + data.number + "</h4><p>Closed Issue"
         } else if (data.action === "reopened" || data.action ==="opened") {
             addIssue(data)
-        } else if (data.action === "created" || data.action === "deleted" || data.action === "edited") {
+            notification += "<h4>#" + data.number + "</h4><p>Opened Issue"
+        } else if (data.action === "created") {
             removeIssueById(data.id)
             addIssue(data)
+            notification += "<h4>#" + data.number + "</h4><p>New Comment"
+        } else if (data.action === "deleted") {
+            removeIssueById(data.id)
+            addIssue(data)
+            notification += "<h4>#" + data.number + "</h4><p>Removed Comment"
+        } else if (data.action === "edited") {
+            removeIssueById(data.id)
+            addIssue(data)
+            notification += "<h4>#" + data.number + "</h4><p>Updated Comment"
         }
+
+        ul.innerHTML = notification + "</li>" + ul.innerHTML
     })
 
     function removeIssueById(id) {
@@ -51,16 +61,13 @@
     function addIssue(data) {
         let ul = document.getElementById("issues")
         let html = "<li id=\"" + data.id + "\">"
-        html += data.title
-        html += "<ul>"
-        html += "<li>Id: " + data.id + "</li>"
-        html += "<li>URL: " + data.url + "</li>"
-        html += "<li>Number: " + data.number + "</li>"
-        html += "<li>Comments: " + data.comments + "</li>"
-        html += "<li>Creator: " + data.user.username + "</li>"
-        html += "<li>Created at: " + data.createdAt + "</li>"
-        html += "<li>Updated at: " + data.updatedAt + "</li>"
-        html += "</ul>"
+        html += "<div class=\"issue\">"
+        html += "<h4><a href=\"" + data.url + "\">Issue #" + data.number + " - " + data.title + "</a></h4>"
+        html += "<img src=\"" + data.user.avatar + "\">"
+        html += "<p class=\"username\">" + data.user.username
+        html += "<p class=\"comments\">Comments: " + data.comments
+        html += "<p class=\"date\">" + data.createdAt
+        html += "<p class=\"date\">" + data.updatedAt
         html += "</li>"
 
         ul.innerHTML = html + ul.innerHTML
