@@ -9,7 +9,7 @@ The easiest way to run this web application is using Docker and Docker Compose. 
 ### Create docker-compose configuration
 On your server create a folder where you want the application files to be located, I will simply put it in the home folder and call it app `mkdir ~/app`. Navigate into the folder `cd ~/app`.
 
-Create a new file `touch docker-compose.yml` and add the following text to it.
+Create a new file `touch docker-compose.yml` and open it in a text editor like vim or nano, I will use vim `vim docker-compose.yml`. Add the following text to it.
 ```
 version: '2'
 services:
@@ -35,7 +35,7 @@ The application container needs a .env file to function which will let a couple 
 The nginx container need a bit more attention. First it listens on port 80 and 443 to catch both http and https requests. It's also linked to the app container to create a network connection between them. It also has a couple of volumes which we will use when configuring nginx.
 
 ### Enviroment file
-The enviroment file is places in the root folder of the project which we created earlier. Create a new files .env `touch ~/app/.env`. Then open it using you preferred text editor, in my case I will use vim `vim ~/app/.env`. Then add the following to the files and change all parts within <> to suit your application.
+The enviroment file is places in the root folder of the project which we created earlier. Create a new files .env `touch ~/app/.env`. Then open it using you preferred text editor `vim ~/app/.env`. Then add the following to the files and change all parts within <> to suit your application.
 
 ```
 REPO=<owner>/<repo>
@@ -82,7 +82,7 @@ server {
 
 server {
         listen 80;
-        server_name axnion.tech www.axnion.tech;
+        server_name localhost;
         return 301 https://$host$request_uri;
 }
 ```
@@ -122,14 +122,14 @@ Next we need to edit the nginx.conf file.
 
 We added a new volume to the docker compose config `./letsencrypt:/var/www`. This is used when creating the certificates since we will be using the webroot plugin in letsencrypt. We need to create this folder `mkdir ~/app/letsencrypt`, but we also need to create the contents. First we need a folder with the domain, so in my case I create a folder called `domain.com` like this `mkdir ~/app/letsencrypt/domain.com`. And last, in the domain folder create a new folder called `.well-known`, so `mkdir ~/app/letsencrypt/domain.com/.well-known`.
 
-Now we need to change the nginx.conf file. We start by changing the location of the certificates. Remember to change domain.com to your domain.
+Now we need to change the nginx.conf file. We start by changing the location of the certificates. These are already configured for self signed certificates and should already exists in the first server in nginx.conf. Remember to change domain.com to your domain.
 
 ```
 ssl_certificate /etc/letsencrypt/live/domain.com/fullchain.pem;
 ssl_certificate_key /etc/letsencrypt/live/domain.com/privkey.pem;
 ```
 
-We also need to add the `/.well-known` location so letsencrypt can find it.
+We also need to add the `/.well-known` location to `nginx.conf` so letsencrypt can find it.
 ```
 location /.well-known {
     alias /var/www/axnion.tech/.well-known;
@@ -199,7 +199,14 @@ server {
 
 server {
         listen 80;
-        server_name axnion.tech www.axnion.tech;
+        server_name localhost;
         return 301 https://$host$request_uri;
 }
 ```
+
+Next we need to create the certificates. We will do so by running the letsencrypt client.
+
+The command will look like this `letsencrypt certonly --webroot -w ~/app/letsencrypt/domain.com -d domain.com -d www.domain.com`
+
+### Run application
+Running the application is very easy. Navigate to the app folder `cd ~/app` and run `docker-compose up`. This will create the application and nginx container and everything should start up and your application should now be accessible.
