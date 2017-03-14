@@ -15,8 +15,6 @@ router.route("/").get(function(req, res, next) {
         }
     }
 
-    console.log(options.url)
-
     request(options).then(function(json) {
         res.render("index", {issues: mapIssues(json)})
     }).catch(function(err) {
