@@ -3,6 +3,7 @@
 const router    = require("express").Router()
 const request   = require("request-promise")
 
+// TODO: Remove all api calls and use githubApiCLient
 router.route("/").get(function(req, res, next) {
     let options = {
         url: "https://api.github.com/repos/" + process.env.REPO + "/issues",

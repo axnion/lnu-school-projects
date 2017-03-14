@@ -1,19 +1,105 @@
-<ul>
-    {{#each repos}}
-        <li><span>{{full_name}}<button onclick="watch(this, '{{full_name}}')">Watch</button></span></li>
-    {{/each}}
-</ul>
+<div class="repo-wrapper">
+    <h3>Repositories</h3>
+    <ul>
+        {{#each repos}}
+            <li><span>{{full_name}}<button onclick="watch(this, '{{full_name}}')">Watch</button></span></li>
+        {{/each}}
+    </ul>
+</div>
+<div class="issue-wrapper">
+    <h3>Issues</h3>
+
+    <ul id="watchRepos">
+    </ul>
+</div>
+<div class="notification-wrapper">
+    <h3>Notifications</h3>
+    <ul id="notifications">
+
+    </ul>
+</div>
 
 <script src='/socket.io/socket.io.js'></script>
 <script>
     var socket = io()
 
-    socket.on("notification", function(data) {
-        console.log(data)
-    })
-
     function watch(button, repo) {
         button.remove()
         socket.emit("addWatch", repo)
+    }
+
+    socket.on("notification", function(data) {
+        let ul = document.getElementById("notifications")
+        let notification = "<li class=\"notification\">"
+
+        if (data.action === "closed") {
+            removeIssueById(data)
+            notification += "<h4>#" + data.number + "</h4><p>Closed Issue"
+        } else if (data.action === "reopened" || data.action ==="opened") {
+            addIssue(data)
+            notification += "<h4>#" + data.number + "</h4><p>Opened Issue"
+        } else if (data.action === "created") {
+            removeIssueById(data)
+            addIssue(data)
+            notification += "<h4>#" + data.number + "</h4><p>New Comment"
+        } else if (data.action === "deleted") {
+            removeIssueById(data)
+            addIssue(data)
+            notification += "<h4>#" + data.number + "</h4><p>Removed Comment"
+        } else if (data.action === "edited") {
+            removeIssueById(data)
+            addIssue(data)
+            notification += "<h4>#" + data.number + "</h4><p>Updated Comment"
+        }
+
+        ul.innerHTML = notification + "</li>" + ul.innerHTML
+    })
+
+    socket.on("addRepo", function(issues) {
+        addRepo(issues)
+    })
+
+    function addRepo(issues) {
+        let ul = document.getElementById("watchRepos")
+        let html = "<div class=\"repo\">"
+        html += "<h4>" + issues[0].repo + "</h4>"
+        html += "<ul id=\"" + issues[0].repo + "\">"
+        issues.forEach(function(issue) {
+            html += "<li id=\"" + issue.repo + issue.id + "\">"
+            html += "<div class=\"issue\">"
+            html += "<h4><a href=\"" + issue.url + "\">Issue #" + issue.number + " - " + issue.title + "</a></h4>"
+            html += "<img src=\"" + issue.user.avatar + "\">"
+            html += "<p class=\"username\">" + issue.user.username
+            html += "<p class=\"comments\">Comments: " + issue.comments
+            html += "<p class=\"date\">" + issue.createdAt
+            html += "<p class=\"date\">" + issue.updatedAt
+            html += "</li>"
+        })
+        html += "</ul>"
+        html += "</div>"
+
+        ul.innerHTML = html + ul.innerHTML
+    }
+
+    function removeIssueById(data) {
+        let element = document.getElementById(data.repo + data.id)
+        element.parentNode.removeChild(element)
+    }
+
+    function addIssue(data) {
+        let ul = document.getElementById(data.repo)
+
+
+        let html = "<li id=\"" + data.repo + data.id + "\">"
+        html += "<div class=\"issue\">"
+        html += "<h4><a href=\"" + data.url + "\">Issue #" + data.number + " - " + data.title + "</a></h4>"
+        html += "<img src=\"" + data.user.avatar + "\">"
+        html += "<p class=\"username\">" + data.user.username
+        html += "<p class=\"comments\">Comments: " + data.comments
+        html += "<p class=\"date\">" + data.createdAt
+        html += "<p class=\"date\">" + data.updatedAt
+        html += "</li>"
+
+        ul.innerHTML = html + ul.innerHTML
     }
 </script>

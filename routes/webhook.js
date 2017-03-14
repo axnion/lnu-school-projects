@@ -8,6 +8,8 @@ router.route("/:id").post(function(req, res) {
     let io = req.app.get("socketio")
 
     if (validate(JSON.stringify(req.body), process.env.WEBHOOK, req.get("X-Hub-Signature"))) {
+        let notification = createNotification(req.body)
+
         io.sockets.connected[req.params.id].emit("notification", createNotification(req.body))
         //io.sockets.emit("notification", createNotification(req.body))
     }
@@ -17,10 +19,10 @@ router.route("/:id").post(function(req, res) {
 })
 
 function createNotification(data) {
-    console.log(data)
     return {
         action: data.action,
         id: data.issue.id,
+        repo: data.repository.full_name,
         url: data.issue.html_url,
         title: data.issue.title,
         number: data.issue.number,

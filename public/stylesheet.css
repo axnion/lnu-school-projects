@@ -3,6 +3,11 @@ h4 {
     margin: 0;
 }
 
+.repo-wrapper {
+    float: left;
+    padding-left: 20px;
+}
+
 .notification-wrapper {
     float: left;
     padding-left: 20px;

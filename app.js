@@ -54,8 +54,10 @@ io.on("connection", function(socket) {
     })
 
     socket.on("addWatch", function(repo) {
-        console.log(repo)
         github.createWebhook(repo, socket.id)
+        github.getIssues(repo).then(function(issues) {
+            socket.emit("addRepo", issues)
+        })
     })
 })
 
