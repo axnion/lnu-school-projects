@@ -6,12 +6,7 @@ const linkParser    = require("parse-link-header")
 
 router.route("/").get(function(req, res, next) {
     getRepositories("https://api.github.com/user/repos").then(function(repos) {
-        console.log("Done")
-        repos.forEach(function(repo) {
-            console.log(repo.full_name)
-        })
-
-        res.render("test")
+        res.render("test", {repos: repos})
     }).catch(function(err) {
         next(err)
     })
@@ -37,7 +32,7 @@ function getRepositories(url) {
                 getRepositories(link.next.url).then(function(repos) {
                     let allRepos = repos
                     allRepos =  allRepos.concat(JSON.parse(res.body))
-                    resolve(repos)
+                    resolve(allRepos)
                 }).catch(function(err) {
                     throw err
                 })
@@ -47,6 +42,14 @@ function getRepositories(url) {
         }).catch(function(err) {
             reject(err)
         })
+    })
+}
+
+function mapRepos(repos) {
+    return repos.map(function(repo) {
+        return {
+            full_name:full_name,
+        }
     })
 }
 

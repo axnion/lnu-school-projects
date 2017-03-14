@@ -1,0 +1,19 @@
+<ul>
+    {{#each repos}}
+        <li><span>{{full_name}}<button onclick="watch(this, '{{full_name}}')">Watch</button></span></li>
+    {{/each}}
+</ul>
+
+<script src='/socket.io/socket.io.js'></script>
+<script>
+    var socket = io()
+
+    socket.on("notification", function(data) {
+        console.log(data)
+    })
+
+    function watch(button, repo) {
+        button.remove()
+        socket.emit("addWatch", repo)
+    }
+</script>

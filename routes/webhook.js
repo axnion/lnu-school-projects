@@ -3,11 +3,13 @@
 const router = require("express").Router()
 const crypto = require("crypto")
 
-router.route("/").post(function(req, res) {
+router.route("/:id").post(function(req, res) {
+    console.log("webhook!")
     let io = req.app.get("socketio")
 
     if (validate(JSON.stringify(req.body), process.env.WEBHOOK, req.get("X-Hub-Signature"))) {
-        io.sockets.emit("notification", createNotification(req.body))
+        io.sockets.connected[req.params.id].emit("notification", createNotification(req.body))
+        //io.sockets.emit("notification", createNotification(req.body))
     }
 
     //console.log(notification)
