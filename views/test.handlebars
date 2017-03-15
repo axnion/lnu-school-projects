@@ -2,7 +2,7 @@
     <h3>Repositories</h3>
     <ul>
         {{#each repos}}
-            <li><span>{{full_name}}<button onclick="watch(this, '{{full_name}}')">Watch</button></span></li>
+            <li>{{full_name}}<a href="#" onclick="watch(this, '{{full_name}}')">Watch</a></li>
         {{/each}}
     </ul>
 </div>
@@ -55,22 +55,17 @@
         ul.innerHTML = notification + "</li>" + ul.innerHTML
     })
 
-    socket.on("addRepo", function(issues) {
-        addRepo(issues)
-    })
-
-    function addRepo(issues) {
+    socket.on("addRepo", function(repo) {
         let ul = document.getElementById("watchRepos")
         let html = "<div class=\"repo\">"
-        html += "<h4>" + issues[0].repo + "</h4>"
-        html += "<ul id=\"" + issues[0].repo + "\">"
-        issues.forEach(function(issue) {
-            html += "<li id=\"" + issue.repo + issue.id + "\">"
+        html += "<h4>" + repo.name + "</h4>"
+        html += "<ul id=\"" + repo.name + "\">"
+        repo.issues.forEach(function(issue) {
+            html += "<li id=\"" + repo.name + issue.id + "\">"
             html += "<div class=\"issue\">"
             html += "<h4><a href=\"" + issue.url + "\">Issue #" + issue.number + " - " + issue.title + "</a></h4>"
-            html += "<img src=\"" + issue.user.avatar + "\">"
-            html += "<p class=\"username\">" + issue.user.username
-            html += "<p class=\"comments\">Comments: " + issue.comments
+            html += "<p class=\"date\">" + issue.user.username
+            html += "<p class=\"date\">Comments: " + issue.comments
             html += "<p class=\"date\">" + issue.createdAt
             html += "<p class=\"date\">" + issue.updatedAt
             html += "</li>"
@@ -79,7 +74,7 @@
         html += "</div>"
 
         ul.innerHTML = html + ul.innerHTML
-    }
+    })
 
     function removeIssueById(data) {
         let element = document.getElementById(data.repo + data.id)
@@ -93,9 +88,8 @@
         let html = "<li id=\"" + data.repo + data.id + "\">"
         html += "<div class=\"issue\">"
         html += "<h4><a href=\"" + data.url + "\">Issue #" + data.number + " - " + data.title + "</a></h4>"
-        html += "<img src=\"" + data.user.avatar + "\">"
-        html += "<p class=\"username\">" + data.user.username
-        html += "<p class=\"comments\">Comments: " + data.comments
+        html += "<p class=\"date\">" + data.user.username
+        html += "<p class=\"date\">Comments: " + data.comments
         html += "<p class=\"date\">" + data.createdAt
         html += "<p class=\"date\">" + data.updatedAt
         html += "</li>"
