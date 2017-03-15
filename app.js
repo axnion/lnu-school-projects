@@ -11,10 +11,6 @@ const app       = express()
 const server    = http.createServer(app)
 const io        = require("socket.io")(server)
 
-// TODO: Move all Github API handling to a lib
-// TODO: Security, including the websockets
-
-app.engine("handlebars", exphbs({defaultLayout: "main"}))
 app.set("view engine", "handlebars")
 
 app.use(express.static(path.join(__dirname, "public")))
