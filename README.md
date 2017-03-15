@@ -96,7 +96,6 @@ The nginx container need a bit more attention. First it listens on port 80 and 4
 I will show two ways of making https work. The easiest way is self signed certificates which should only be used for development or testing since it does not provide any security to the user. The other way is using Letsencrypt which does require a bit of reconfiguration of the container setup.
 
 ### Self signed
-#### Create script
 1. Create file for cert generator `touch ~/app/certgen`
 1. Open in text editor `vim ~/app/certgen`
 1. Add the following code to the file
@@ -111,7 +110,8 @@ I will show two ways of making https work. The easiest way is self signed certif
     chmod 600 ./sslcerts/key.pem ./sslcerts/cert.pem
     ```
 1. Make the script executable `chmod +x ~/app/certgen`
-1. Run the script `~/app/certgen`
+1. Move into the app directory `cd ~/app`
+1. Run the script `./certgen`
 1. Follow the instructions of the script
 1. Open docker compose file in a text editor `vim ~/app/docker-compose.yml`
 1. Add the following volume for nginx: `- ./sslcerts:/etc/letsencrypt`
@@ -131,7 +131,7 @@ I will show two ways of making https work. The easiest way is self signed certif
             links:
                 - "app:app"
             volumes:
-                - ./nginx.conf:/etc/nginx/conf.d/default.conf
+                - ./default.conf:/etc/nginx/conf.d/default.conf
                 - ./sslcerts:/etc/letsencrypt
     ```
 
@@ -147,11 +147,11 @@ IMPORTANT! If you are running with self sign certificates and with all http traf
 Letsencrypt will take som modifications of existing configuration and also some new additions. If you already have done the self signed certificates you will have to revert back to how the configuration before you created the self certificates.
 
 #### Create certificates
-1. Create file structure for Let's Encrypt to use when validating domain `mkdir -p ~/app/letsencrypt/domain.com/.well-known`
+1. Create file structure for Let's Encrypt to use when validating domain `mkdir -p ~/app/letsencrypt/domain.com/.well-known`. Remember to replace domain.com with your domain.
 1. Open docker compose file in a text editor `vim ~/app/docker-compose.yml`
 1. Add a new volume to nginx container `- ./letsencrypt:/var/www`
 1. Open the default.conf file in a text editor `vim ~/app/default.conf`
-1. Change the last server which listens on port 80 to look like this.
+1. Change the last server which listens on port 80 to look like this. Don't forget to change domain.com to your domain.
     ```
     server {
         listen 80;
@@ -170,7 +170,7 @@ Letsencrypt will take som modifications of existing configuration and also some 
     ```
 1. See to it that you are in the app directory `cd ~/app`
 1. Run docker compose in detached mode `docker-compose up -d`
-1. Run the Let's Encrypt client with the following command `letsencrypt certonly --webroot -w ~/app/letsencrypt/domain.com -d domain.com -d www.domain.com`
+1. Run the Let's Encrypt client with the following command `letsencrypt certonly --webroot -w ~/app/letsencrypt/domain.com -d domain.com -d www.domain.com`. Remember to change domain.com to your domain.
 1. Hopefully you got a message saying that you where successful, if you did not go back and check you configurations.
 
 #### Activate certificates
@@ -178,7 +178,7 @@ Letsencrypt will take som modifications of existing configuration and also some 
 1. Remove the `- ./letsencrypt:/var/www` volume that we added earlier
 1. Add a new volume on nginx `- /etc/letsencrypt:/etc/letsencrypt`
 1. Open default.conf in a text editor `vim ~/app/default.conf`
-1. Remove the comment marks we added to the ssl lines on the first server. But also change the lines to point at the new certificates. Should look something like this
+1. Remove the comment marks we added to the ssl lines on the first server. But also change the lines to point at the new certificates. Should look something like this, but change domain.com to your domain.
     ```
     ssl on;
     ssl_certificate /etc/letsencrypt/live/domain.com/fullchain.pem;
