@@ -26,7 +26,7 @@ The easiest way to run this web application is using Docker and Docker Compose. 
             links:
                 - "app:app"
             volumes:
-                - ./nginx.conf:/etc/nginx/conf.d/default.conf
+                - ./default.conf:/etc/nginx/conf.d/default.conf
     ```
 
 This docker compose configuration will download two images, the first one is axnion/ex3 which contains the web application, and the second one which has nginx to be used as a reverse proxy.
@@ -38,7 +38,7 @@ The nginx container need a bit more attention. First it listens on port 80 and 4
 ## Enviroment file
 1. Create .env file `touch ~/app/.env`
 1. Open file in text editor `vim ~/app/.env`
-1. Put the following text into the file
+1. Put the following text into the file and change the values to fit your application
     ```
     REPO=<owner>/<repo>
     USER=<github username>
@@ -79,7 +79,7 @@ The nginx container need a bit more attention. First it listens on port 80 and 4
                     proxy_pass http://app;
                     proxy_http_version 1.1;
                     proxy_set_header Upgrade $http_upgrade;
-                    proxy_set_header Connection 'upgrade';
+                    proxy_set_header Connection 'upgr46.101.129.208ade';
                     proxy_set_header Host $host;
                     proxy_cache_bypass $http_upgrade;
             }
@@ -88,7 +88,6 @@ The nginx container need a bit more attention. First it listens on port 80 and 4
     server {
             listen 80;
             server_name localhost;
-            server_name axnion.tech www.axnion.tech;
             return 301 https://$host$request_uri;
     }
     ```
@@ -141,6 +140,8 @@ Your application is now ready to run using self signed certificates.
 1. Move into the app directory `cd ~/app`
 1. Start the containers `docker-compose up`
 1. Your application should now be running. If you get any errors check so you configured everything correctly.
+
+IMPORTANT! If you are running with self sign certificates and with all http traffic rerouted to https the webhooks will not work. Either you'll have to use a real certificate, or you should open up http so the webhooks can use it.
 
 ### Let's Encrypt
 Letsencrypt will take som modifications of existing configuration and also some new additions. If you already have done the self signed certificates you will have to revert back to how the configuration before you created the self certificates.
