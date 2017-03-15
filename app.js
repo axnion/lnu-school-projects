@@ -51,6 +51,7 @@ io.on("connection", function(socket) {
 
     socket.on("disconnect", function() {
         console.log("Client " + socket.id + " disconnected")
+        github.removeWebhooks(socket.id)
     })
 
     socket.on("addWatch", function(repo) {
