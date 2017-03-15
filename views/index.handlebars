@@ -28,31 +28,61 @@
         socket.emit("addWatch", repo)
     }
 
-    socket.on("notification", function(data) {
-        let ul = document.getElementById("notifications")
-        let notification = "<li class=\"notification\">"
+    // socket.on("notification", function(data) {
+    //     let ul = document.getElementById("notifications")
+    //     let notification = "<li class=\"notification\">"
+    //
+    //     if (data.action === "closed") {
+    //         removeIssue(data)
+    //         notification += "<h4>#" + data.number + "</h4><p>Closed Issue"
+    //     } else if (data.action === "reopened" || data.action ==="opened") {
+    //         addIssue(data)
+    //         notification += "<h4>#" + data.number + "</h4><p>Opened Issue"
+    //     } else if (data.action === "created") {
+    //         removeIssue(data)
+    //         addIssue(data)
+    //         notification += "<h4>#" + data.number + "</h4><p>New Comment"
+    //     } else if (data.action === "deleted") {
+    //         removeIssue(data)
+    //         addIssue(data)
+    //         notification += "<h4>#" + data.number + "</h4><p>Removed Comment"
+    //     } else if (data.action === "edited") {
+    //         removeIssue(data)
+    //         addIssue(data)
+    //         notification += "<h4>#" + data.number + "</h4><p>Updated Comment"
+    //     }
+    //
+    //     ul.innerHTML = notification + "</li>" + ul.innerHTML
+    // })
 
-        if (data.action === "closed") {
-            removeIssueById(data)
-            notification += "<h4>#" + data.number + "</h4><p>Closed Issue"
-        } else if (data.action === "reopened" || data.action ==="opened") {
-            addIssue(data)
-            notification += "<h4>#" + data.number + "</h4><p>Opened Issue"
-        } else if (data.action === "created") {
-            removeIssueById(data)
-            addIssue(data)
-            notification += "<h4>#" + data.number + "</h4><p>New Comment"
-        } else if (data.action === "deleted") {
-            removeIssueById(data)
-            addIssue(data)
-            notification += "<h4>#" + data.number + "</h4><p>Removed Comment"
-        } else if (data.action === "edited") {
-            removeIssueById(data)
-            addIssue(data)
-            notification += "<h4>#" + data.number + "</h4><p>Updated Comment"
-        }
+    socket.on("closed", function(data) {
+        removeIssue(data)
+        createNotification(data)
+    })
 
-        ul.innerHTML = notification + "</li>" + ul.innerHTML
+    socket.on("opened", function(data) {
+        addIssue(data)
+        createNotification(data)
+    })
+
+    socket.on("reopened", function(data) {
+        addIssue(data)
+        createNotification(data)
+    })
+
+    socket.on("created", function(data) {
+        updateIssue(data)
+        createNotification(data)
+    })
+
+    socket.on("deleted", function(data) {
+        updateIssue(data)
+        createNotification(data)
+    })
+
+    socket.on("edited", function(data) {
+        updateIssue(data)
+        createNotification(data)
     })
 
     socket.on("addRepo", function(repo) {
@@ -76,15 +106,54 @@
         ul.innerHTML = html + ul.innerHTML
     })
 
-    function removeIssueById(data) {
+    function createNotification(data) {
+        let ul = document.getElementById("notifications")
+        let notification = "<li class=\"notification\">"
+        notification += "<h4>" + data.repo + "#" + data.number + "</h4>"
+        notification += "<img src=\"" + data.user.avatar + "\">"
+
+        switch(data.action) {
+            case "closed":
+                notification += "<p class=\"action\">Closed Issue"
+                break;
+            case "opened":
+                notification += "<p class=\"action\">Opened Issue"
+                break;
+            case "reopened":
+                notification += "<p class=\"action\">Reopened Issue"
+                break;
+            case "created":
+                notification += "<p class=\"action\">Commented"
+                break;
+            case "deleted":
+                notification += "<p class=\"action\">Removed Comment"
+                break;
+            case "edited":
+                notification += "<p class=\"action\">Edited Comment"
+                break;
+        }
+
+        notification += "<p><b>" + data.user.username + "</b>"
+        ul.innerHTML = notification + "</li>" + ul.innerHTML
+    }
+
+    function updateIssue(data) {
+        try {
+            removeIssue(data)
+        } catch(err) {
+            return
+        }
+
+        addIssue(data)
+    }
+
+    function removeIssue(data) {
         let element = document.getElementById(data.repo + data.id)
         element.parentNode.removeChild(element)
     }
 
     function addIssue(data) {
         let ul = document.getElementById(data.repo)
-
-
         let html = "<li id=\"" + data.repo + data.id + "\">"
         html += "<div class=\"issue\">"
         html += "<h4><a href=\"" + data.url + "\">Issue #" + data.number + " - " + data.title + "</a></h4>"

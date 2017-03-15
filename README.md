@@ -42,6 +42,7 @@ USER=<github username>
 API=<API token>
 WEBHOOK=<webhook secret>
 USER_AGENT=<your email address>
+URL=<url to website ex http://domain.com>
 ```
 
 ## Nginx configuration

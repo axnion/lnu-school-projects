@@ -7,8 +7,13 @@ router.route("/:id").post(function(req, res) {
     let io = req.app.get("socketio")
 
     if (validate(JSON.stringify(req.body), process.env.WEBHOOK, req.get("X-Hub-Signature"))) {
+        if (!req.body.issue) {
+            res.redirect("/")
+            return
+        }
+
         let notification = createNotification(req.body)
-        io.sockets.connected[req.params.id].emit("notification", createNotification(req.body))
+        io.sockets.connected[req.params.id].emit(notification.action, createNotification(req.body))
     }
 
     res.redirect("/")
