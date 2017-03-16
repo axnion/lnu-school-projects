@@ -11,6 +11,7 @@ const app       = express()
 const server    = http.createServer(app)
 const io        = require("socket.io")(server)
 
+app.engine("handlebars", exphbs({defaultLayout: "main"}))
 app.set("view engine", "handlebars")
 
 app.use(express.static(path.join(__dirname, "public")))
