@@ -25,8 +25,5 @@ Vagrant.configure("2") do |config|
     config.vm.define :gateway do |gateway_config|
         gateway_config.vm.box = "ubuntu/xenial64"
         gateway_config.vm.hostname = "gateway"
-
-        gateway_config.vm.provision :shell, path: "init.sh"
-        gateway_config.vm.provision :shell, path: "nodejs.sh"
     end
 end
