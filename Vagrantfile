@@ -3,27 +3,71 @@
 
 Vagrant.configure("2") do |config|
 
-    # Ansible Management Machine - vagrant ssh mgmt
-    config.vm.define :mgmt do |mgmt_config|
-        mgmt_config.vm.box = "ubuntu/xenial64"
-        mgmt_config.vm.hostname = "mgmt"
+    # Ansible Management Machine
+    config.vm.define :mgmt do |mgmt|
+        mgmt.vm.box = "ubuntu/xenial64"
+
+        mgmt.vm.network :private_network, ip: "10.0.0.1"
+
+        mgmt.vm.provider "virtualbox" do |vb|
+            vb.memory = "256"
+        end
+
+        config.vm.provision "shell", privileged: true, inline: <<-SHELL
+            apt-get -y install software-properties-common
+            apt-add-repository -y ppa:ansible/ansible
+            apt-get update
+            apt-get -y install ansible
+        SHELL
     end
 
-    # Little Boy - vagrant ssh littleboy
-    config.vm.define :littleboy do |littleboy_config|
-        littleboy_config.vm.box = "ubuntu/xenial64"
-        littleboy_config.vm.hostname = "littleboy"
+    # API Gateway
+    config.vm.define :gateway do |gateway|
+        gateway.vm.box = "ubuntu/xenial64"
+        gateway.network :private_network, ip: "10.0.0.2"
     end
 
-    # Fat-Man - vagrant ssh fatman
-    config.vm.define :fatman do |fatman_config|
-        fatman_config.vm.box = "ubuntu/xenial64"
-        fatman_config.vm.hostname = "fatman"
+    # LITTLE BOY -----------------------------------------------------------------------------------
+
+    # Little Boy
+    (1..1).each do |i|
+        config.vm.define "littleboy#{i}" do |littleboy|
+            littleboy.vm.box = "ubuntu/xenial64"
+            littleboy.vm.network :private_network, ip: "10.0.1.1#{i}"
+        end
+    end
+    # Little Boy Load Balancer
+    config.vm.define :littleboy_lb do |littleboy_lb|
+        littleboy_lb.vm.box = "ubuntu/xenial64"
+        littleboy_lb.vm.network :private_network, ip: "10.0.1.0"
     end
 
-    # API Gateway vagrant ssh gateway
-    config.vm.define :gateway do |gateway_config|
-        gateway_config.vm.box = "ubuntu/xenial64"
-        gateway_config.vm.hostname = "gateway"
+    # MongoDB
+    config.vm.define :mongo do |mongo|
+        mongo.vm.box = "ubunty/xenial64"
+        mongo.vm.network :private_network, ip: "10.0.1.1"
     end
+
+    # FAT MAN --------------------------------------------------------------------------------------
+
+    # Fat Man
+    (1..1).each do |i|
+        config.vm.define :fatman{i} do |fatman|
+            fatman.vm.box = "ubuntu/xenial64"
+            fatman.vm.network :private_network, ip: "10.0.2.1#{i}"
+        end
+    end
+
+    # Fat Man Load Balancer
+    config.vm.define :fatman_lb do |fatman_lb|
+        fatman_lb.vm.box = "ubuntu/xenial64"
+        fatman_lb.vm.network :private_network, ip: "10.0.2.0"
+    end
+
+    # PostgreSQL
+    config.vm.define :postgres do |postgres|
+        postgres.vm.box = "ubuntu/xenial64"
+        postgres.vm.network :private_network, ip: "10.0.2.1"
+    end
+
 end
