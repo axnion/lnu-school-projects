@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
         mgmt.vm.box = "ubuntu/trusty64"
         mgmt.vm.network :private_network, ip: "10.0.10.1"
         mgmt.vm.provider "virtualbox" do |vb|
-            vb.memory = "256"
+            vb.memory = "512"
         end
 
         config.vm.provision "shell", privileged: true, inline: <<-SHELL
@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
         gateway.vm.box = "ubuntu/trusty64"
         gateway.vm.network :private_network, ip: "10.0.10.2"
         gateway.vm.provider "virtualbox" do |vb|
-            vb.memory = "256"
+            vb.memory = "512"
         end
     end
 
@@ -37,7 +37,7 @@ Vagrant.configure("2") do |config|
         littleboy.vm.box = "ubuntu/trusty64"
         littleboy.vm.network :private_network, ip: "10.0.10.11"
         littleboy.vm.provider "virtualbox" do |vb|
-            vb.memory = "256"
+            vb.memory = "512"
         end
     end
 
@@ -46,7 +46,7 @@ Vagrant.configure("2") do |config|
         mongo.vm.box = "ubuntu/trusty64"
         mongo.vm.network :private_network, ip: "10.0.10.12"
         mongo.vm.provider "virtualbox" do |vb|
-            vb.memory = "256"
+            vb.memory = "512"
         end
     end
 
@@ -55,7 +55,7 @@ Vagrant.configure("2") do |config|
         fatman.vm.box = "ubuntu/trusty64"
         fatman.vm.network :private_network, ip: "10.0.10.21"
         fatman.vm.provider "virtualbox" do |vb|
-            vb.memory = "256"
+            vb.memory = "512"
         end
     end
 
@@ -64,7 +64,7 @@ Vagrant.configure("2") do |config|
         postgres.vm.box = "ubuntu/trusty64"
         postgres.vm.network :private_network, ip: "10.0.10.22"
         postgres.vm.provider "virtualbox" do |vb|
-            vb.memory = "256"
+            vb.memory = "512"
         end
     end
 end
