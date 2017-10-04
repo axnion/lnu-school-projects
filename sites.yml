@@ -14,3 +14,9 @@
     become: yes
     roles:
       - db_service_a
+
+  - hosts: service_b
+    become: yes
+    roles:
+      - java
+      - fatman
