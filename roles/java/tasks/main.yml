@@ -1,0 +1,10 @@
+---
+  - name: Add Oracla Java PPA
+    apt_repository:
+      repo: ppa:webupd8team/java
+      state: present
+
+  - name: Install Oracle Java 1.9 without promted about Oracle License
+    - shell: echo oracle-java9-installer-set-default shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+
+  
