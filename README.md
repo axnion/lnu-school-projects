@@ -6,3 +6,4 @@
 1. In the mgmt machine run `ansible-playbook ssh-setup.yml --ask-pass`
 1. When asked for password put in `vagrant`
 1. Test with `ansible all -m ping`
+1. Run `ansible-playbook sites.yml` to install software on nodes
