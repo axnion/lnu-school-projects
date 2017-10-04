@@ -1,0 +1,21 @@
+---
+  - name: Add MongoDB GPG key
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: 0C49F3730359A14518585931BC711F9BA15703C6
+
+  - name: Create list file
+    lineinfile:
+      path: /etc/apt/sources.list.d/mongodb-org-3.4.list
+      line: 'deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse'
+      create: yes
+
+  - name: Install latest stable version
+    apt:
+      name: mongodb-org
+      update_cache: yes
+
+  - name: Start MongoDB service
+    service:
+      name: mongod
+      state: started

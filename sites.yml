@@ -1,6 +1,6 @@
 ---
   - hosts: all
-
+    gather_facts: no
     roles:
       - common
 
@@ -8,3 +8,9 @@
     become: yes
     roles:
       - service_a
+      - node
+
+  - hosts: db_service_a
+    become: yes
+    roles:
+      - db_service_a
