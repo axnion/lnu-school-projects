@@ -1,0 +1,54 @@
+---
+  - name: Install SSL prerequisites
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - python-urllib3
+      - python-openssl
+      - python-pyasn1
+      - python-pip
+
+  - name: Install SSL prerequisites - pip
+    pip:
+      name: ndg-httpsclient
+
+  - name: Download node setup script
+    get_url:
+      url: https://deb.nodesource.com/setup_7.x
+      force: yes
+      dest: /tmp/
+      mode: 0755
+
+  - name: Run node setup script
+    command: /tmp/setup_7.x
+    args:
+      chdir: /tmp/
+
+  - name: Remove setup script
+    file:
+      path: /tmp/setup_7.x
+      state: absent
+
+  - name: Install nodejs
+    apt:
+      name: nodejs
+
+  - name: Install n
+    npm:
+      name: n
+      global: yes
+
+  - name: Get latest Node version
+    command: n latest
+
+  - name: Uninstall nodejs module
+    apt:
+      name: nodejs
+      state: absent
+
+  - name: Symlink node
+    file:
+      src: /usr/bin/nodejs
+      dest: /usr/bin/node
+      state: link
+      force: yes

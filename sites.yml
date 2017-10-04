@@ -1,0 +1,10 @@
+---
+  - hosts: all
+
+    roles:
+      - common
+
+  - hosts: service_a
+    become: yes
+    roles:
+      - service_a
