@@ -12,26 +12,14 @@
     pip:
       name: ndg-httpsclient
 
-  - name: Download node setup script
-    get_url:
-      url: https://deb.nodesource.com/setup_7.x
-      force: yes
-      dest: /tmp/
-      mode: 0755
+  - name: Check if npm is installed
+    command: dpkg-query -l npm
+    register: npm_check
+    failed_when: npm_check.rc > 1
+    changed_when: no
 
-  - name: Run node setup script
-    command: /tmp/setup_7.x
-    args:
-      chdir: /tmp/
-
-  - name: Remove setup script
-    file:
-      path: /tmp/setup_7.x
-      state: absent
-
-  - name: Install nodejs
-    apt:
-      name: nodejs
+  - import_tasks: install_node.yml
+    when: npm_check.stderr.find('no packages found') != -1
 
   - name: Install n
     npm:
