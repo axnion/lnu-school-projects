@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
 
     # Ansible Management Machine
     config.vm.define :mgmt do |mgmt|
-        mgmt.vm.box = "ubuntu/trusty64"
+        mgmt.vm.box = "bento/ubuntu-16.04"
         mgmt.vm.network :private_network, ip: "10.0.10.10"
         mgmt.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
 
     # API Gateway
     config.vm.define :gateway do |gateway|
-        gateway.vm.box = "ubuntu/trusty64"
+        gateway.vm.box = "bento/ubuntu-16.04"
         gateway.vm.network :private_network, ip: "10.0.10.11"
         gateway.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
 
     # Little Boy
     config.vm.define :littleboy do |littleboy|
-        littleboy.vm.box = "ubuntu/trusty64"
+        littleboy.vm.box = "bento/ubuntu-16.04"
         littleboy.vm.network :private_network, ip: "10.0.10.21"
         littleboy.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
@@ -54,7 +54,7 @@ Vagrant.configure("2") do |config|
 
     # PostgreSQL
     config.vm.define :postgres do |postgres|
-        postgres.vm.box = "ubuntu/trusty64"
+        postgres.vm.box = "bento/ubuntu-16.04"
         postgres.vm.network :private_network, ip: "10.0.10.32"
         postgres.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
