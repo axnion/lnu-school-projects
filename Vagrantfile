@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
 
     # Fat Man
     config.vm.define :fatman do |fatman|
-        fatman.vm.box = "ubuntu/trusty64"
+        fatman.vm.box = "bento/ubuntu-16.04"
         fatman.vm.network :private_network, ip: "10.0.10.31"
         fatman.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
