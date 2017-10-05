@@ -1,0 +1,15 @@
+[Unit]
+Description=Fatman service
+
+[Service]
+User=nobody
+# The configuration file application.properties should be here:
+WorkingDirectory={{ install_path }}
+ExecStart=/usr/bin/java -Xmx256m -jar fat-man-{{ version }}-fat.jar
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
