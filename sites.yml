@@ -20,3 +20,7 @@
     roles:
       - java
       - fatman
+
+  - hosts: gateway
+    become: yes
+    roles:
