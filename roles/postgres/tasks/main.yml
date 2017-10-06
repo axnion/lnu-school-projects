@@ -1,0 +1,16 @@
+---
+  - name: Install PostgreSQL and other software
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - postgresql
+      - libpq-dev
+      - python-psycopg2
+
+  - name: Add Postgres account
+    postgresql_user:
+      name: "{{ db_user }}"
+      password: "{{ db_pass }}"
+      state: present
+    become: yes
+    become_user: postgres
