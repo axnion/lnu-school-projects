@@ -3,17 +3,21 @@ all:
   hosts:
     mgmt:
       ansible_host: 10.0.10.10
-    db_service_a:
-      ansible_host: 10.0.10.22
   children:
     gateway:
       hosts:
         gateway1:
           ansible_host: 10.0.10.11
     service_a:
-      hosts:
-        serv_a1:
-          ansible_host: 10.0.10.21
+      children:
+        littleboy:
+          hosts:
+            littleboy1:
+              ansible_host: 10.0.10.21
+        service_a_db:
+          hosts:
+            db_service_a:
+              ansible_host: 10.0.10.22
     service_b:
       vars:
         db_port: 5432

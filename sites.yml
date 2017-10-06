@@ -4,11 +4,11 @@
     roles:
       - common
 
-  - hosts: service_a
+  - hosts: littleboy
     become: yes
     roles:
-      - service_a
       - node
+      - littleboy
 
   - hosts: db_service_a
     become: yes
