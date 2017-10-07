@@ -1,2 +1,2 @@
-gateway_path: $PWD/gateway
-gateway_config_path: $PWD/gateway/config
+gateway_path: $HOME/gateway
+gateway_config_path: $HOME/gateway/config
