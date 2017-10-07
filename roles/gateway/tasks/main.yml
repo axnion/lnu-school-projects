@@ -25,6 +25,11 @@
     args:
       chdir: "{{ gateway_path }}"
 
+  - name: Copy service file
+    template:
+      src: gateway.service.j2
+      dest: /etc/systemd/system/gateway.service
+
   - name: Install "forever"
     npm:
       name: forever
