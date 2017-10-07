@@ -24,17 +24,13 @@ pipelines:
     apiEndpoints:
       - api
     policies:
-      expression:
+      - expression:
         - action:
           jscode: 'req.url = "/hello";'
-      proxy:
-      -
-        conditions:
-          name: pathExact
-          path: /serviceA
-        action:
-          serviceEndpoint: serviceA
-          changeOrigin: false
+      - proxy:
+          action:
+            serviceEndpoint: serviceA
+            changeOrigin: false
 
 # Majoritenten av av nedanstående följer följande exempel:
 # http://www.express-gateway.io/docs/policies/customization/conditions
