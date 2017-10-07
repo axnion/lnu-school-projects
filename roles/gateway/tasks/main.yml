@@ -8,7 +8,7 @@
   - name: Copy gateway files to server
     copy:
       src: "{{ role_path }}/files/gateway"
-      dest: $PWD
+      dest: $HOME
 
   - name: Copy gateway config
     template:
