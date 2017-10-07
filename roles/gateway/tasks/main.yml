@@ -1,18 +1,16 @@
 ---
-  - name: Install express-gateway
+  - name: Install "express-gateway"
     npm:
       name: express-gateway
-      path: /vagrant/
-      state: latest
+      path: /vagrant
       global: true
 
-  - name: "Install forever (to run Node.js app)."
+  - name: Install "forever"
     npm:
       name: forever
       global: yes
-      state: present
 
-  - name: "Check list of Node.js apps running."
+  - name: Check list of Node.js apps running.
     command: forever list
     register: forever_list
     changed_when: false
