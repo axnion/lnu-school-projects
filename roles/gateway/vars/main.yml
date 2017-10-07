@@ -1,2 +1,2 @@
-gateway_path: /vagrant/gateway
-gateway_config_path: /vagrant/gateway/config
+gatway_path: $PWD/gateway
+gateway_config_path: $PWD/gateway/config
