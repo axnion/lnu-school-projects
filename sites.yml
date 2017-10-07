@@ -28,6 +28,11 @@
       - java
       - fatman
 
+  - hosts: db_service_b
+    become: yes
+    roles:
+      - postgres
+
   - hosts: gateway
     become: yes
     roles:

@@ -19,6 +19,11 @@ all:
             db_service_a:
               ansible_host: 10.0.10.22
     service_b:
+      vars:
+        db_port: 5432
+        db_name: ubuntu
+        db_user: ubuntu
+        db_pass: ubuntu
       children:
         fatman:
           hosts:
