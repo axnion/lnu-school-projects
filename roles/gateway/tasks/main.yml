@@ -8,7 +8,7 @@
   - name: Copy gateway files to server
     copy:
       src: "{{ role_path }}/files/gateway"
-      dest: /vagrant
+      dest: $PWD
 
   - name: Copy gateway config
     template:
