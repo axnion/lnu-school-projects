@@ -23,6 +23,7 @@ Vagrant.configure("2") do |config|
     config.vm.define :gateway do |gateway|
         gateway.vm.box = "bento/ubuntu-16.04"
         gateway.vm.network :private_network, ip: "10.0.10.11"
+        gateway.vm.network "forwarded_port", guest: 8080, host: 8080
         gateway.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
         end
@@ -31,8 +32,6 @@ Vagrant.configure("2") do |config|
     # Little Boy
     config.vm.define :littleboy do |littleboy|
         littleboy.vm.box = "bento/ubuntu-16.04"
-	      # Temporary port forwarding to test the service
-	      littleboy.vm.network "forwarded_port", guest: 8080, host: 4567
         littleboy.vm.network :private_network, ip: "10.0.10.21"
         littleboy.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
