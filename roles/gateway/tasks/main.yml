@@ -25,6 +25,11 @@
     args:
       chdir: "{{ gateway_path }}"
 
+  - name: Start Gateway
+    shell: npm start
+    args:
+      chdir: "{{ gateway_path }}"
+
   - name: Install "forever"
     npm:
       name: forever
