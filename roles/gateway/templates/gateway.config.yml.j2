@@ -1,5 +1,5 @@
 http:
-  port: 8080
+  port: {{ hostvars['gateway1']['ansible_port'] }}
 admin:
   port: 9876
   hostname: localhost
@@ -29,12 +29,12 @@ pipelines:
     apiEndpoints:
       - serviceA
     policies:
-      - expression: # policy name
+      - expression:
           condition:
             name: pathExact
-            path: /servicea # Måste matcha
+            path: /servicea
           action:
-            jscode: 'req.url = "/hello"; ' #  ändra request url
+            jscode: 'req.url = "/hello"; '
       - proxy:
           action:
             serviceEndpoint: serviceA
@@ -46,10 +46,10 @@ pipelines:
       - expression:
           condition:
             name: pathExact
-            path: /serviceb # Måste matcha
+            path: /serviceb
           action:
-            jscode: 'req.url = "/"; ' #  ändra request url
+            jscode: 'req.url = "/"; '
       - proxy:
           action:
-            serviceEndpoint: serviceB # Skicka request till serviceEndpoint
+            serviceEndpoint: serviceB
             changeOrigin: false
