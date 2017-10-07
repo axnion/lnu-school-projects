@@ -1,0 +1,6 @@
+mongodb_user_name: 2dv514
+mongodb_user_password: changeme
+mongodb_user_admin_name: useradmin
+mongodb_user_admin_password: changeme
+
+mongodb_database_name: 2dv514
