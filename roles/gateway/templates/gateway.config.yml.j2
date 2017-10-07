@@ -8,7 +8,7 @@ admin:
 
 serviceEndpoints:
   servicea: # Används som referens av proxy policy
-    url: 'http://10.0.10.21:8080/hello'
+    url: 'http://10.0.10.21:8080'
   serviceb: # Används som referens av proxy policy
     url: 'http://10.0.10.31:9876'
 
@@ -42,28 +42,25 @@ pipelines:
     apiEndpoints:
       - servicea
     policies:
+      condition:
+          name: pathExact
+          path: /servicea # Måste matcha
+      expression: # policy name
+        - action:
+            jscode: 'req.url = "/hello"; ' #  ändra request url
       proxy:
-        condition:
-            name: pathExact
-            path: /servicea # Måste matcha
-        expression: # policy name
-          - action:
-              jscode: 'req.url = "/hello"; ' #  ändra request url
         action:
-          name: proxy
           serviceEndpoint: servicea # Skicka request till serviceEndpoint
   serviceb:
     apiEndpoints:
       - servicea
     policies:
-      -
-        proxy:
-          condition:
-              name: pathExact
-              path: /serviceb # Måste matcha
-          expression: # policy name
-            - action:
-                jscode: 'req.url = "/"; ' #  ändra request url
-          action:
-            name: proxy
-            serviceEndpoint: serviceb # Skicka request till serviceEndpoint
+      condition:
+          name: pathExact
+          path: /serviceb # Måste matcha
+      expression: # policy name
+        - action:
+            jscode: 'req.url = "/"; ' #  ändra request url
+      proxy:
+        action:
+          serviceEndpoint: serviceb # Skicka request till serviceEndpoint
