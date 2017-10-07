@@ -1,2 +1,2 @@
-gateway_path: $HOME/gateway
-gateway_config_path: $HOME/gateway/config
+gateway_path: /opt/gateway
+gateway_config_path: /opt/gateway/config
