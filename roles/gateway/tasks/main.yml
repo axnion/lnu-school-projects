@@ -10,6 +10,16 @@
       src: "{{ role_path }}/files/gateway"
       dest: /vagrant
 
+  - name: Copy gateway config
+    template:
+      src: gateway.config.yml.j2
+      dest: "{{ gateway_config_path }}/gateway.config.yml"
+
+  - name: Copy system config
+    template:
+      src: system.config.yml.j2
+      dest: "{{ gateway_config_path }}/system.config.yml"
+
   - name: Install "forever"
     npm:
       name: forever
