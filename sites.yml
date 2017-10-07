@@ -36,3 +36,6 @@
   - hosts: gateway
     become: yes
     roles:
+      - node
+      - git
+      - gateway
