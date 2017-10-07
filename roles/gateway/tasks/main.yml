@@ -35,3 +35,8 @@
       name: gateway
       state: started
       enabled: yes
+
+  - name: Restart gateway service
+    systemd:
+      name: gateway
+      state: restarted

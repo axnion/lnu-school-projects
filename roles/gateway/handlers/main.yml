@@ -1,0 +1,5 @@
+---
+  - name: restart express-gateway
+    service:
+      name: gateway
+      state: restarted
