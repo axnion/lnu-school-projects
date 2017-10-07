@@ -30,6 +30,13 @@
       src: gateway.service.j2
       dest: /etc/systemd/system/gateway.service
 
+  - name: Start and enable gateway server
+    systemd:
+      name: gateway
+      state: started
+      enabled: yes
+
+
   - name: Install "forever"
     npm:
       name: forever
