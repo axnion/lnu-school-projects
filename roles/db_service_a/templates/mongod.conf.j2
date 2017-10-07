@@ -23,7 +23,7 @@ systemLog:
 net:
   port: 27017
 # Change this to a list of little boys
-#  bindIp: {{ hostvars['littleboy1']['ansible_enp0s8']['ipv4']['address'] }}
+  bindIp: [127.0.0.1, {{ hostvars['littleboy1']['ansible_enp0s8']['ipv4']['address'] }}]
 
 
 #processManagement:
