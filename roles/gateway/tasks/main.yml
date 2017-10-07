@@ -5,6 +5,11 @@
       path: /vagrant
       global: true
 
+  - name: Copy gateway files to server
+    copy:
+      src: "{{ role_path }}/files/gateway"
+      dest: /vagrant
+
   - name: Install "forever"
     npm:
       name: forever
