@@ -1,2 +1,2 @@
-gatway_path: $PWD/gateway
+gateway_path: $PWD/gateway
 gateway_config_path: $PWD/gateway/config
