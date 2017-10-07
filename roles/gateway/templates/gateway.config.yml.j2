@@ -1,15 +1,26 @@
+# Majoritenten av av nedanstående följer följande exempel:
+# http://www.express-gateway.io/docs/policies/customization/conditions
 http:
   port: 8080
 admin:
   port: 9876
   hostname: localhost
-apiEndpoints:
-  api:
-    host: localhost
-    paths: '/hello'
+
 serviceEndpoints:
-  serviceA:
-    url: 'http://10.0.10.21:8080'
+  servicea: # Används som referens av proxy policy
+    url: 'http://10.0.10.21:8080/hello'
+  serviceb: # Används som referens av proxy policy
+    url: 'http://10.0.10.31:9876'
+
+apiEndpoints:
+  servicea:
+    host: 'localhost' # Host
+    paths: /servicea # Path som tar emot request Se andra exemplet -> http://www.express-gateway.io/docs/configuration/gateway.config.yml/apiEndpoints
+  serviceb:
+    host: 'localhost' # Host
+    paths: /serviceb # Path som tar emot request Se andra exemplet -> http://www.express-gateway.io/docs/configuration/gateway.config.yml/apiEndpoints
+
+# Enable policies
 policies:
   - basic-auth
   - cors
@@ -19,12 +30,40 @@ policies:
   - oauth2
   - proxy
   - rate-limit
+
+# Notera om proxy används enligt: http://www.express-gateway.io/docs/policies/proxy
+# Så skickas request URL (apiEndpoints.service.path) vidare och läggs på som sub-url på serviceEndpoint.service.url
+# vilket i inte vill. Istället vill vi mappa t.ex host/servicea mot servicea/hello.
+# Vilket vi kan åstakomma genom att använda pathExact enligt först exemplet här: http://www.express-gateway.io/docs/policies/expression
+
+
 pipelines:
-  basic:
+  servicea:
     apiEndpoints:
-      - api
+      - servicea
     policies:
-      - proxy:
+      proxy:
+        condition:
+            name: pathExact
+            path: /servicea # Måste matcha
+        expression: # policy name
           - action:
-              serviceEndpoint: serviceA
-              changeOrigin: false
+              jscode: 'req.url = "/hello"; ' #  ändra request url
+        action:
+          name: proxy
+          serviceEndpoint: servicea # Skicka request till serviceEndpoint
+  serviceb:
+    apiEndpoints:
+      - servicea
+    policies:
+      -
+        proxy:
+          condition:
+              name: pathExact
+              path: /serviceb # Måste matcha
+          expression: # policy name
+            - action:
+                jscode: 'req.url = "/"; ' #  ändra request url
+          action:
+            name: proxy
+            serviceEndpoint: serviceb # Skicka request till serviceEndpoint
