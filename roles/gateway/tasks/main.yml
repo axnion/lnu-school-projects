@@ -20,6 +20,11 @@
       src: system.config.yml.j2
       dest: "{{ gateway_config_path }}/system.config.yml"
 
+  - name: Install gateway-express dependencies
+    shell: npm install
+    args:
+      chdir: "{{ gateway_path }}"
+
   - name: Install "forever"
     npm:
       name: forever
