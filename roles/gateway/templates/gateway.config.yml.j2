@@ -6,7 +6,7 @@ admin:
 apiEndpoints:
   api:
     host: localhost
-    paths: '/hello'
+    paths: '/serviceA'
 serviceEndpoints:
   serviceA:
     url: 'http://10.0.10.21:8080'
@@ -24,10 +24,17 @@ pipelines:
     apiEndpoints:
       - api
     policies:
-      - proxy:
-          - action:
-              serviceEndpoint: serviceA
-              changeOrigin: false
+      expression:
+        - action:
+          jscode: 'req.url = "/hello";'
+      proxy:
+      -
+        conditions:
+          name: pathExact
+          path: /serviceA
+        action:
+          serviceEndpoint: serviceA
+          changeOrigin: false
 
 # Majoritenten av av nedanstående följer följande exempel:
 # http://www.express-gateway.io/docs/policies/customization/conditions
