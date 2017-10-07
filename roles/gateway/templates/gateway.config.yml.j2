@@ -12,9 +12,9 @@ apiEndpoints:
     paths: '/serviceB'
 serviceEndpoints:
   serviceA:
-    url: 'http://{{ hostvars['littleboy1']['ansible_host'] }}:8080'
+    url: 'http://{{ hostvars['littleboy1']['ansible_host'] }}:{{hostvars['littleboy1']['ansible_port']}}'
   serviceB:
-    url: 'http://{{ hostvars['fatman1']['ansible_host'] }}:9876'
+    url: 'http://{{ hostvars['fatman1']['ansible_host'] }}:{{hostvars['fatman1']['ansible_port']}}'
 policies:
   - basic-auth
   - cors
