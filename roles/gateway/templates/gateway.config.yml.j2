@@ -6,10 +6,14 @@ admin:
 apiEndpoints:
   api:
     host: localhost
-    paths: '/serviceA'
+    paths:
+      - '/servicea'
+      - '/serviceb'
 serviceEndpoints:
   serviceA:
     url: 'http://10.0.10.21:8080'
+  serviceB:
+    url: 'http://10.0.10.31:9876'
 policies:
   - basic-auth
   - cors
@@ -24,12 +28,25 @@ pipelines:
     apiEndpoints:
       - api
     policies:
-      - expression:
+      - expression: # policy name
+        - condition:
+            name: pathExact
+            path: /servicea # Måste matcha
         - action:
-          jscode: 'req.url = "/hello";'
+            jscode: 'req.url = "/hello"; ' #  ändra request url
       - proxy:
           action:
             serviceEndpoint: serviceA
+            changeOrigin: false
+      - expression: # policy name
+        - condition:
+            name: pathExact
+            path: /serviceb # Måste matcha
+        - action:
+            jscode: 'req.url = ""; ' #  ändra request url
+      - proxy:
+          action:
+            serviceEndpoint: serviceB
             changeOrigin: false
 
 # Majoritenten av av nedanstående följer följande exempel:
