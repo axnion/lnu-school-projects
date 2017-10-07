@@ -40,7 +40,7 @@ Vagrant.configure("2") do |config|
 
     # MongoDB
     config.vm.define :mongo do |mongo|
-        mongo.vm.box = "ubuntu/trusty64"
+        mongo.vm.box = "bento/ubuntu-16.04"
         mongo.vm.network :private_network, ip: "10.0.10.22"
         mongo.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
