@@ -7,6 +7,7 @@ all:
     gateway:
       vars:
         port_used: 8080
+        admin_port: 9876
         littleboy_port: 8080
         fatman_port: 9876
       hosts:

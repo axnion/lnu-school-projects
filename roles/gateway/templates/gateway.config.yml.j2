@@ -1,7 +1,7 @@
 http:
   port: {{ port_used }}
 admin:
-  port: 9876
+  port: {{ admin_port }}
   hostname: localhost
 apiEndpoints:
   serviceA:
@@ -16,14 +16,8 @@ serviceEndpoints:
   serviceB:
     url: 'http://{{ hostvars['fatman1']['ansible_host'] }}:{{ fatman_port }}'
 policies:
-  - basic-auth
-  - cors
   - expression
-  - key-auth
-  - log
-  - oauth2
   - proxy
-  - rate-limit
 pipelines:
   servicea:
     apiEndpoints:
