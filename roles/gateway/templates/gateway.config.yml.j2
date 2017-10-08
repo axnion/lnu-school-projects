@@ -1,8 +1,13 @@
+# Ports for gateway.
+# Do not touch!
+# Ports located in inventory
 http:
   port: {{ port_used }}
 admin:
   port: {{ admin_port }}
   hostname: localhost
+
+# API Endpoint on the Gateway
 apiEndpoints:
   serviceA:
     host: localhost
@@ -10,14 +15,20 @@ apiEndpoints:
   serviceB:
     host: localhost
     paths: '/serviceB'
+
+# API Endpoints on the services
 serviceEndpoints:
   serviceA:
     url: 'http://{{ hostvars['littleboy1']['ansible_host'] }}:{{ littleboy_port }}'
   serviceB:
     url: 'http://{{ hostvars['fatman1']['ansible_host'] }}:{{ fatman_port }}'
+
+# Enabled policies
 policies:
   - expression
   - proxy
+
+# Pipelines from Gatway endpoints to Service Endpoints 
 pipelines:
   servicea:
     apiEndpoints:
