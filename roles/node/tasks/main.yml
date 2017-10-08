@@ -27,8 +27,8 @@
       global: yes
     register: n
 
-  - name: Get latest Node version
-    command: n latest
+  - name: Get Node 8.6.0
+    command: n 8.6.0
     when: n.changed
 
   - name: Uninstall nodejs module
