@@ -9,6 +9,7 @@
     copy:
       src: "{{ role_path }}/files/gateway"
       dest: /opt
+    register: gateway_files
 
   - name: Copy gateway config
     template:
@@ -22,9 +23,9 @@
 
   - name: Install gateway-express dependencies
     shell: npm install --unsafe-perm
-    state: present
     args:
       chdir: "{{ gateway_path }}"
+    when: gateway_files.changed
 
   - name: Copy service file
     template:
