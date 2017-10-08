@@ -5,17 +5,19 @@ all:
       ansible_host: 10.0.10.10
   children:
     gateway:
+      vars:
+        port_used: 8080
+        littleboy_port: 8080
+        fatman_port: 9876
       hosts:
         gateway1:
           ansible_host: 10.0.10.11
-          #ansible_port: 8080
     service_a:
       children:
         littleboy:
           hosts:
             littleboy1:
               ansible_host: 10.0.10.21
-              #ansible_port: 8080
         service_a_db:
           hosts:
             db_service_a:
@@ -31,7 +33,6 @@ all:
           hosts:
             fatman1:
               ansible_host: 10.0.10.31
-              #ansible_port: 9876
         service_b_db:
           hosts:
             db_service_b:

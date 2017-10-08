@@ -1,5 +1,5 @@
 http:
-  port: {{ hostvars['gateway1']['ansible_port'] }}
+  port: {{ port_used }}
 admin:
   port: 9876
   hostname: localhost
@@ -12,9 +12,9 @@ apiEndpoints:
     paths: '/serviceB'
 serviceEndpoints:
   serviceA:
-    url: 'http://{{ hostvars['littleboy1']['ansible_host'] }}:{{hostvars['littleboy1']['ansible_port']}}'
+    url: 'http://{{ hostvars['littleboy1']['ansible_host'] }}:{{ littleboy_port }}'
   serviceB:
-    url: 'http://{{ hostvars['fatman1']['ansible_host'] }}:{{hostvars['fatman1']['ansible_port']}}'
+    url: 'http://{{ hostvars['fatman1']['ansible_host'] }}:{{ fatman_port }}'
 policies:
   - basic-auth
   - cors
