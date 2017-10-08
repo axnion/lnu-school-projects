@@ -15,6 +15,7 @@
     template:
       src: gateway.config.yml.j2
       dest: "{{ gateway_config_path }}/gateway.config.yml"
+    register: gateway_config
 
   - name: Copy system config
     template:
@@ -31,6 +32,7 @@
     template:
       src: gateway.service.j2
       dest: /etc/systemd/system/gateway.service
+    register: gateway_service
 
   - name: Start and enable gateway server
     systemd:
@@ -42,3 +44,4 @@
     systemd:
       name: gateway
       state: restarted
+    when: gateway_config.changed
