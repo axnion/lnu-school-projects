@@ -9,52 +9,50 @@ admin:
 
 # API Endpoint on the Gateway
 apiEndpoints:
-  serviceA:
+  {{serviceA}}:
     host: localhost
-    paths: '/serviceA'
-  serviceB:
+    paths: /{{ serviceA }}
+  {{serviceB}}:
     host: localhost
-    paths: '/serviceB'
+    paths: /{{ serviceB }}
 
 # API Endpoints on the services
 serviceEndpoints:
-  serviceA:
-    url: 'http://{{ hostvars['littleboy1']['ansible_host'] }}:{{ littleboy_port }}'
-  serviceB:
-    url: 'http://{{ hostvars['fatman1']['ansible_host'] }}:{{ fatman_port }}'
+  {{serviceA}}:
+    url: {{serviceAURL}}
+  {{serviceB}}:
+    url: {{serviceBURL}}
 
 # Enabled policies
 policies:
   - expression
   - proxy
 
-# Pipelines from Gatway endpoints to Service Endpoints 
+# Pipelines from Gatway endpoints to Service Endpoints
 pipelines:
   servicea:
     apiEndpoints:
-      - serviceA
+      - {{serviceA}}
     policies:
       - expression:
           condition:
             name: pathExact
-            path: /servicea
+            path: {{serviceA2}}
           action:
-            jscode: 'req.url = "/hello"; '
+            jscode: 'req.url = "{{serviceARoot}}"; '
       - proxy:
           action:
-            serviceEndpoint: serviceA
-            changeOrigin: false
+            serviceEndpoint: {{serviceA}}
   serviceb:
     apiEndpoints:
-      - serviceB
+      - {{serviceB}}
     policies:
       - expression:
           condition:
             name: pathExact
-            path: /serviceb
+            path: {{serviceB2}}
           action:
-            jscode: 'req.url = "/"; '
+            jscode: 'req.url = "{{serviceBRoot}}"; '
       - proxy:
           action:
-            serviceEndpoint: serviceB
-            changeOrigin: false
+            serviceEndpoint: {{serviceB}}
