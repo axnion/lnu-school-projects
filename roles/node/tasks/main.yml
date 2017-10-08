@@ -25,9 +25,11 @@
     npm:
       name: n
       global: yes
+    register: n
 
   - name: Get latest Node version
     command: n latest
+    when: n.changed
 
   - name: Uninstall nodejs module
     apt:

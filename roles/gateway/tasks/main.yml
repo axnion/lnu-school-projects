@@ -22,6 +22,7 @@
 
   - name: Install gateway-express dependencies
     shell: npm install --unsafe-perm
+    state: present
     args:
       chdir: "{{ gateway_path }}"
 
