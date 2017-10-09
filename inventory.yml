@@ -23,6 +23,10 @@ all:
           hosts:
             db_service_a:
               ansible_host: 10.0.10.22
+        mongobackup:
+          hosts:
+            mongobackup1:
+              ansible_host: 10.0.10.23
     service_b:
       vars:
         db_port: 5432

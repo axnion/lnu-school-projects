@@ -27,8 +27,8 @@
       global: yes
     register: n
 
-  - name: Get Node 8.6.0
-    command: n 8.6.0
+  - name: Get correct node version
+    command: n {{ nodejs_version }}
     when: n.changed
 
   - name: Uninstall nodejs module

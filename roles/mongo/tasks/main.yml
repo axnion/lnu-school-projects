@@ -14,9 +14,9 @@
       line: 'deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse'
       create: yes
 
-  - name: Install latest stable version
+  - name: Install correct MongoDB version
     apt:
-      name: mongodb-org
+      name: "mongodb-org={{ mongodb_version }}"
       update_cache: yes
 
   - name: Install pymongo prerequisite
@@ -39,6 +39,9 @@
       name: mongod
       state: restarted
 
+  - name: wait for MongoDB port to be listening
+    wait_for: host=127.0.0.1 port=27017 delay=5 state=started
+
   - name: Check if admin user already exists
     command: >
       mongo --quiet -u {{ mongodb_user_admin_name }} \
@@ -46,7 +49,6 @@
     register: mongodb_user_admin_check
     changed_when: false
     ignore_errors: true
-    no_log: true
 
   - name: Create database admin user
     mongodb_user:
@@ -70,3 +72,5 @@
       name: mongod
       state: restarted
       enabled: yes
+
+  - import_tasks: backup.yml
