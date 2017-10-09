@@ -47,6 +47,15 @@ Vagrant.configure("2") do |config|
         end
     end
 
+    # MongoDB backup
+    config.vm.define :mongobackup do |mongobackup|
+	      mongobackup.vm.box = "bento/ubuntu-16.04"
+        mongobackup.vm.network :private_network, ip: "10.0.10.23"
+        mongobackup.vm.provider "virtualbox" do |vb|
+            vb.memory = "512"
+        end
+    end
+
     # Fat Man
     config.vm.define :fatman do |fatman|
         fatman.vm.box = "bento/ubuntu-16.04"

@@ -34,10 +34,28 @@
       src: mongod.service
       dest: /etc/systemd/system/mongod.service
 
+  - name: Create mongobackup directory
+    file:
+      path: /opt/mongobackup
+      state: directory
+
+  - name: Copy mongobackup.conf
+    template:
+      src: mongobackup.conf.j2
+      dest: /opt/mongobackup/mongobackup.conf
+
+  - name: Copy mongobackup.sh
+    copy:
+      src: mongobackup.sh
+      dest: /opt/mongobackup/
+
   - name: Restart MongoDB service
     systemd:
       name: mongod
       state: restarted
+
+  - name: wait for MongoDB port to be listening
+    wait_for: host=127.0.0.1 port=27017 delay=5 state=started
 
   - name: Check if admin user already exists
     command: >
@@ -46,7 +64,6 @@
     register: mongodb_user_admin_check
     changed_when: false
     ignore_errors: true
-    no_log: true
 
   - name: Create database admin user
     mongodb_user:

@@ -1,22 +1,21 @@
 ---
   - hosts: all
-    gather_facts: no
     roles:
       - common
 
-  # Gather facts about service_a hosts in advance so that they each have
-  # access to each other's IP addresses
-  - hosts: service_a
-
   - hosts: db_service_a
     become: yes
-    gather_facts: no
     roles:
-      - db_service_a
+      - rsync
+      - mongo
+
+  - hosts: mongobackup
+    become: yes
+    roles:
+      - rsync
 
   - hosts: littleboy
     become: yes
-    gather_facts: no
     roles:
       - node
       - git
