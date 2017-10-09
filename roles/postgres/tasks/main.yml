@@ -14,3 +14,11 @@
       state: present
     become: yes
     become_user: postgres
+
+  - name: Create database
+    postgresql_db:
+      name: "{{ db_name }}"
+      owner: "{{ db_user }}"
+      state: present
+    become: yes
+    become_user: postgres
