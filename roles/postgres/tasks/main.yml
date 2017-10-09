@@ -1,11 +1,12 @@
 ---
-  - name: Install PostgreSQL and other software
+  - name: Installing PostgreSQL
     apt:
       name: "{{ item }}"
     with_items:
       - postgresql
       - libpq-dev
       - python-psycopg2
+    register: postgresql_install
 
   - name: Add Postgres account
     postgresql_user:
@@ -14,6 +15,7 @@
       state: present
     become: yes
     become_user: postgres
+    when: postgresql_install.changed
 
   - name: Create database
     postgresql_db:
@@ -22,3 +24,21 @@
       state: present
     become: yes
     become_user: postgres
+    when: postgresql_install.changed
+
+  - name: Add access to remote hosts
+    shell: echo host all all 10.0.10.0/24 trust >> /etc/postgresql/9.5/main/pg_hba.conf
+    become: yes
+    when: postgresql_install.changed
+
+  - name: Replace postgresql.conf
+    copy:
+      src: "{{ role_path }}/files/postgresql.conf"
+      dest: /etc/postgresql/9.5/main/postgresql.conf
+    become: yes
+
+    # MAKE A HANDLER
+  - name: Restarting Postgresql
+    systemd:
+      name: postgresql
+      state: restarted
