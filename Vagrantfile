@@ -60,6 +60,7 @@ Vagrant.configure("2") do |config|
     config.vm.define :fatman do |fatman|
         fatman.vm.box = "bento/ubuntu-16.04"
         fatman.vm.network :private_network, ip: "10.0.10.31"
+        fatman.vm.network "forwarded_port", guest: 9876, host: 8081
         fatman.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
         end
