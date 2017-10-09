@@ -1,5 +1,0 @@
----
-  - name: install rsync
-    apt:
-      name: rsync
-      state: installed

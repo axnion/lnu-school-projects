@@ -34,21 +34,6 @@
       src: mongod.service
       dest: /etc/systemd/system/mongod.service
 
-  - name: Create mongobackup directory
-    file:
-      path: /opt/mongobackup
-      state: directory
-
-  - name: Copy mongobackup.conf
-    template:
-      src: mongobackup.conf.j2
-      dest: /opt/mongobackup/mongobackup.conf
-
-  - name: Copy mongobackup.sh
-    copy:
-      src: mongobackup.sh
-      dest: /opt/mongobackup/
-
   - name: Restart MongoDB service
     systemd:
       name: mongod
@@ -87,3 +72,5 @@
       name: mongod
       state: restarted
       enabled: yes
+
+  - import_tasks: backup.yml

@@ -6,13 +6,7 @@
   - hosts: db_service_a
     become: yes
     roles:
-      - rsync
       - mongo
-
-  - hosts: mongobackup
-    become: yes
-    roles:
-      - rsync
 
   - hosts: littleboy
     become: yes
