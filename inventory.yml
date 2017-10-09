@@ -26,9 +26,9 @@ all:
     service_b:
       vars:
         db_port: 5432
-        db_name: ubuntu
-        db_user: ubuntu
-        db_pass: ubuntu
+        db_name: vagrant
+        db_user: vagrant
+        db_pass: vagrant
       children:
         fatman:
           hosts:
