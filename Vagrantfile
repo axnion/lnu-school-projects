@@ -3,7 +3,7 @@
 
 Vagrant.configure("2") do |config|
 
-    config.vm.provision "shell", path: "scripts/init.sh"
+    config.vm.provision "init",type:"shell", path: "scripts/init.sh"
     config.vm.provider 'virtualbox' do |vb|
   	vb.customize ['modifyvm', :id, '--cableconnected1', 'on']
     end
@@ -17,6 +17,18 @@ Vagrant.configure("2") do |config|
         end
 
         mgmt.vm.provision "shell", path: "scripts/ansible.sh"
+    end
+
+    # Sensu Master
+    config.vm.define :monitor do |monitor|
+        monitor.vm.box = "centos/7"
+        monitor.vm.network :private_network, ip: "10.0.10.3"
+        monitor.vm.network "forwarded_port", guest: 3000, host: 3000
+        monitor.vm.provider "virtualbox" do |vb|
+            vb.memory = "512"
+        end
+
+	monitor.vm.provision "init",type:"shell", path: "scripts/centosinti.sh"
     end
 
     # API Gateway
