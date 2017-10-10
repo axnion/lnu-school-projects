@@ -6,6 +6,69 @@
       - name: "password"
         prompt: "Openstack Password"
 
+    # MACHINES ARE DEFINED HERE!!!
+    vars:
+      instances:
+        - name: mgmt
+          flavor: cpu1-ram512-disk5
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: true
+          security_groups: default,ssh
+
+        - name: api_gateway
+          flavor: cpu1-ram512-disk5
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+
+        - name: lb_service_a
+          flavor: cpu1-ram512-disk5
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+
+        - name: lb_service_b
+          flavor: cpu1-ram512-disk5
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+
+        - name: mongodb
+          flavor: cpu1-ram512-disk5
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+
+        - name: mongodb_backup
+          flavor: cpu1-ram512-disk5
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+
+        - name: postgres
+          flavor: cpu1-ram512-disk5
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+
+        - name: postgres_backup
+          flavor: cpu1-ram512-disk5
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+
+        - name: service_a1
+          flavor: cpu1-ram512-disk5
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+
+        - name: service_b1
+          flavor: cpu1-ram512-disk5
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+
     tasks:
       - name: Create network
         os_network:
@@ -14,7 +77,7 @@
             username: "{{ username }}"
             password: "{{ password }}"
             project_name: Group01_project
-          name: testnet
+          name: acme_lan
           state: present
           external: false
 
@@ -25,9 +88,9 @@
             username: "{{ username }}"
             password: "{{ password }}"
             project_name: Group01_project
-          name: testsubnet
+          name: lan
           state: present
-          network_name: testnet
+          network_name: acme_lan
           cidr: 10.0.10.0/24
           dns_nameservers:
             - 194.47.199.41
@@ -40,11 +103,11 @@
             username: "{{ username }}"
             password: "{{ password }}"
             project_name: Group01_project
-          name: routis
+          name: acme_router
           state: present
           network: internetlan
           interfaces:
-            - testsubnet
+            - lan
 
       - name: Create security group ssh
         os_security_group:
@@ -70,7 +133,7 @@
           port_range_max: 22
           remote_ip_prefix: 0.0.0.0/0
 
-      - name: Create a machine
+      - name: Create Ansible management machine
         os_server:
           state: present
           auth:
@@ -78,10 +141,11 @@
             username: "{{ username }}"
             password: "{{ password }}"
             project_name: Group01_project
-          name: testVM
-          image: ba7be78b-9986-4631-9242-c7d87540b50f
-          flavor: cpu1-ram512-disk5
-          network: testnet
+          name: "{{ item.name }}"
+          image: "{{ item.image }}"
+          flavor: "{{ item.flavor }}"
+          network: acme_lan
           key_name: cloud
-          auto_ip: true
-          security_groups: default,ssh
+          auto_ip: "{{ item.public_ip }}"
+          security_groups: "{{ item.security_groups }}"
+        with_items: "{{ instances }}"
