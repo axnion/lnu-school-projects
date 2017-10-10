@@ -14,60 +14,70 @@
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: true
           security_groups: default,ssh
+          private_ip: 10.0.10.50
 
         - name: api_gateway
           flavor: cpu1-ram512-disk5
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
+          private_ip: 10.0.10.51
 
         - name: lb_service_a
           flavor: cpu1-ram512-disk5
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
+          private_ip: 10.0.10.52
 
         - name: lb_service_b
           flavor: cpu1-ram512-disk5
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
+          private_ip: 10.0.10.53
 
         - name: mongodb
           flavor: cpu1-ram512-disk5
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
+          private_ip: 10.0.10.54
 
         - name: mongodb_backup
           flavor: cpu1-ram512-disk5
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
+          private_ip: 10.0.10.55
 
         - name: postgres
           flavor: cpu1-ram512-disk5
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
+          private_ip: 10.0.10.56
 
         - name: postgres_backup
           flavor: cpu1-ram512-disk5
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
+          private_ip: 10.0.10.57
 
         - name: service_a1
           flavor: cpu1-ram512-disk5
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
+          private_ip: 10.0.10.58
 
         - name: service_b1
           flavor: cpu1-ram512-disk5
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
+          private_ip: 10.0.10.59
 
     tasks:
       - name: Create network
@@ -133,7 +143,21 @@
           port_range_max: 22
           remote_ip_prefix: 0.0.0.0/0
 
-      - name: Create Ansible management machine
+      - name: Create ports with fixed ips
+        os_port:
+          auth:
+            auth_url: https://labcloudftk2.lnu.se:5000
+            username: "{{ username }}"
+            password: "{{ password }}"
+            project_name: Group01_project
+          name: "{{ item.name }}_port"
+          state: present
+          network: acme_lan
+          fixed_ips:
+            - ip_address: "{{ item.private_ip }}"
+        with_items: "{{ instances }}"
+
+      - name: Create instances
         os_server:
           state: present
           auth:
@@ -144,8 +168,9 @@
           name: "{{ item.name }}"
           image: "{{ item.image }}"
           flavor: "{{ item.flavor }}"
-          network: acme_lan
+          security_groups: "{{ item.security_groups }}"
+          nics:
+            - port-name: "{{ item.name }}_port"
           key_name: cloud
           auto_ip: "{{ item.public_ip }}"
-          security_groups: "{{ item.security_groups }}"
         with_items: "{{ instances }}"
