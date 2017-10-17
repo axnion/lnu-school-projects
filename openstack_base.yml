@@ -99,7 +99,7 @@
         project_name: Group01_project
       name: mgmt
       image: ba7be78b-9986-4631-9242-c7d87540b50f
-      flavor: cpu1-ram512-disk5
+      flavor: cpu2-ram4096-disk20
       nics:
         - port-name: "mgmt_port"
       security_groups: default,ssh
@@ -107,9 +107,11 @@
       auto_ip: true
       userdata: |
         {%- raw -%}#!/bin/bash
-        sudo apt-get -y install software-properties-common python
+        sudo apt-get -y install software-properties-common
         sudo apt-add-repository -y ppa:ansible/ansible
         sudo apt-get update
         sudo apt-get -y install ansible
+        sudo apt-get -y install python-pip
         sudo pip install shade
+        touch /home/ubuntu/done
         {% endraw %}

@@ -10,63 +10,63 @@
       auth_url: https://labcloudftk2.lnu.se:5000
       instances:
         - name: api_gateway
-          flavor: cpu1-ram512-disk5
+          flavor: cpu2-ram4096-disk20
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.11
 
         - name: lb_service_a
-          flavor: cpu1-ram512-disk5
+          flavor: cpu2-ram4096-disk20
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.24
 
         - name: lb_service_b
-          flavor: cpu1-ram512-disk5
+          flavor: cpu2-ram4096-disk20
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.34
 
         - name: mongodb
-          flavor: cpu1-ram512-disk5
+          flavor: cpu2-ram4096-disk20
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.22
 
         - name: mongodb_backup
-          flavor: cpu1-ram512-disk5
+          flavor: cpu2-ram4096-disk20
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.23
 
         - name: postgres
-          flavor: cpu1-ram512-disk5
+          flavor: cpu2-ram4096-disk20
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.32
 
         - name: postgres_backup
-          flavor: cpu1-ram512-disk5
+          flavor: cpu2-ram4096-disk20
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.33
 
         - name: service_a1
-          flavor: cpu1-ram512-disk5
+          flavor: cpu2-ram4096-disk20
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.31
 
         - name: service_b1
-          flavor: cpu1-ram512-disk5
+          flavor: cpu2-ram4096-disk20
           image: ba7be78b-9986-4631-9242-c7d87540b50f
           public_ip: false
           security_groups: default
