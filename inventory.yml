@@ -10,9 +10,11 @@ all:
         admin_port: 9876
         littleboy_port: 8080
         fatman_port: 9876
+        nodejs_version: 8.6.0
       hosts:
         gateway1:
           ansible_host: 10.0.10.11
+
     service_a:
       children:
         littleboy:
@@ -27,18 +29,20 @@ all:
           hosts:
             mongobackup1:
               ansible_host: 10.0.10.23
+
     service_b:
       vars:
         db_port: 5432
         db_name: vagrant
         db_user: vagrant
         db_pass: vagrant
+      hosts:
+        db_service_b:
+          ansible_host: 10.0.10.32
+        postgresbackup1:
+          ansible_host: 10.0.10.33
       children:
         fatman:
           hosts:
             fatman1:
               ansible_host: 10.0.10.31
-        service_b_db:
-          hosts:
-            db_service_b:
-              ansible_host: 10.0.10.32

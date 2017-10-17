@@ -20,16 +20,16 @@ Vagrant.configure("2") do |config|
     end
 
     # Sensu Master
-    config.vm.define :monitor do |monitor|
-        monitor.vm.box = "centos/7"
-        monitor.vm.network :private_network, ip: "10.0.10.3"
-        monitor.vm.network "forwarded_port", guest: 3000, host: 3000
-        monitor.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
-        end
-
-	monitor.vm.provision "init",type:"shell", path: "scripts/centosinti.sh"
-    end
+#    config.vm.define :monitor do |monitor|
+#        monitor.vm.box = "centos/7"
+#        monitor.vm.network :private_network, ip: "10.0.10.3"
+#        monitor.vm.network "forwarded_port", guest: 3000, host: 3000
+#        monitor.vm.provider "virtualbox" do |vb|
+#            vb.memory = "512"
+#        end
+#
+#	      monitor.vm.provision "init",type:"shell", path: "scripts/centosinti.sh"
+#    end
 
     # API Gateway
     config.vm.define :gateway do |gateway|
@@ -41,11 +41,11 @@ Vagrant.configure("2") do |config|
         end
     end
 
-    # Little Boy
-    config.vm.define :littleboy do |littleboy|
-        littleboy.vm.box = "bento/ubuntu-16.04"
-        littleboy.vm.network :private_network, ip: "10.0.10.21"
-        littleboy.vm.provider "virtualbox" do |vb|
+    # Service A
+    config.vm.define :service_a do |service_a|
+        service_a.vm.box = "bento/ubuntu-16.04"
+        service_a.vm.network :private_network, ip: "10.0.10.21"
+        service_a.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
         end
     end
@@ -68,21 +68,48 @@ Vagrant.configure("2") do |config|
         end
     end
 
-    # Fat Man
-    config.vm.define :fatman do |fatman|
-        fatman.vm.box = "bento/ubuntu-16.04"
-        fatman.vm.network :private_network, ip: "10.0.10.31"
-        fatman.vm.network "forwarded_port", guest: 9876, host: 8081
-        fatman.vm.provider "virtualbox" do |vb|
+    # Service A Load Balancer
+    config.vm.define :service_a_lb do |service_a_lb|
+        service_a_lb.vm.box = "bento/ubuntu-16.04"
+        service_a_lb.vm.network :private_network, ip: "10.0.10.24"
+        service_a_lb.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
         end
     end
+
+    # Service B
+    config.vm.define :service_b do |service_b|
+        service_b.vm.box = "bento/ubuntu-16.04"
+        service_b.vm.network :private_network, ip: "10.0.10.31"
+        service_b.vm.provider "virtualbox" do |vb|
+            vb.memory = "512"
+        end
+    end
+
 
     # PostgreSQL
     config.vm.define :postgres do |postgres|
         postgres.vm.box = "bento/ubuntu-16.04"
         postgres.vm.network :private_network, ip: "10.0.10.32"
         postgres.vm.provider "virtualbox" do |vb|
+            vb.memory = "512"
+        end
+    end
+
+    # PostgreSQL Backup
+    config.vm.define :postgres_backup do |postgres_backup|
+        postgres_backup.vm.box = "bento/ubuntu-16.04"
+        postgres_backup.vm.network :private_network, ip: "10.0.10.33"
+        postgres_backup.vm.provider "virtualbox" do |vb|
+            vb.memory = "512"
+        end
+    end
+
+    # Service B Load Balancer
+    config.vm.define :service_b_lb do |service_b_lb|
+        service_b_lb.vm.box = "bento/ubuntu-16.04"
+        service_b_lb.vm.network :private_network, ip: "10.0.10.34"
+        service_b_lb.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
         end
     end
