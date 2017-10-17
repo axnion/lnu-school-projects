@@ -1,7 +1,5 @@
 ---
   - hosts: localhost
-    vars:
-      - auth_url: https://labcloudftk2.lnu.se:5000
     vars_prompt:
       - name: "username"
         prompt: "Openstack Username"
@@ -9,6 +7,7 @@
         prompt: "Openstack Password"
 
     vars:
+      auth_url: https://labcloudftk2.lnu.se:5000
       instances:
         - name: api_gateway
           flavor: cpu1-ram512-disk5
@@ -73,34 +72,35 @@
           security_groups: default
           private_ip: 10.0.10.21
 
-    - name: Create ports with fixed ips
-      os_port:
-        auth:
-          auth_url: "{{ auth_url }}"
-          username: "{{ username }}"
-          password: "{{ password }}"
-          project_name: Group01_project
-        name: "{{ item.name }}_port"
-        state: present
-        network: acme_lan
-        fixed_ips:
-          - ip_address: "{{ item.private_ip }}"
-      with_items: "{{ instances }}"
+    tasks:
+      - name: Create ports with fixed ips
+        os_port:
+          auth:
+            auth_url: "{{ auth_url }}"
+            username: "{{ username }}"
+            password: "{{ password }}"
+            project_name: Group01_project
+          name: "{{ item.name }}_port"
+          state: present
+          network: acme_lan
+          fixed_ips:
+            - ip_address: "{{ item.private_ip }}"
+        with_items: "{{ instances }}"
 
-    - name: Create instances
-      os_server:
-        state: present
-        auth:
-          auth_url: "{{ auth_url }}"
-          username: "{{ username }}"
-          password: "{{ password }}"
-          project_name: Group01_project
-        name: "{{ item.name }}"
-        image: "{{ item.image }}"
-        flavor: "{{ item.flavor }}"
-        nics:
-          - port-name: "{{ item.name }}_port"
-        security_groups: "{{ item.security_groups }}"
-        key_name: cloud
-        auto_ip: "{{ item.public_ip }}"
-      with_items: "{{ instances }}"
+      - name: Create instances
+        os_server:
+          state: present
+          auth:
+            auth_url: "{{ auth_url }}"
+            username: "{{ username }}"
+            password: "{{ password }}"
+            project_name: Group01_project
+          name: "{{ item.name }}"
+          image: "{{ item.image }}"
+          flavor: "{{ item.flavor }}"
+          nics:
+            - port-name: "{{ item.name }}_port"
+          security_groups: "{{ item.security_groups }}"
+          key_name: cloud
+          auto_ip: "{{ item.public_ip }}"
+        with_items: "{{ instances }}"
