@@ -3,6 +3,11 @@ all:
   hosts:
     mgmt:
       ansible_host: 10.0.10.10
+    service_a_lb:
+      ansible_host: 10.0.10.24
+    service_b_lb:
+      ansible_host: 10.0.10.34
+
   children:
     gateway:
       vars:
@@ -39,7 +44,7 @@ all:
       hosts:
         db_service_b:
           ansible_host: 10.0.10.32
-        postgresbackup1:
+        postgresbackup:
           ansible_host: 10.0.10.33
       children:
         fatman:

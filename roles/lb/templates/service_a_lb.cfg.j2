@@ -38,5 +38,5 @@ backend app
     bind 0.0.0.0:8080
       balance roundrobin
     {% for host in groups['fatman'] %}
-      server {{ host }} {{ hostvars[host]['ansible_host'] }} check port 8080
+      server {{ host }} {{ hostvars[host]['ansible_host'] }}:8080 check
     {% endfor %}

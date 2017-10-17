@@ -3,17 +3,17 @@
     roles:
       - common
 
-  - hosts: db_service_a
-    become: yes
-    roles:
-      - mongo
-
   - hosts: littleboy
     become: yes
     roles:
       - node
       - git
       - littleboy
+
+  - hosts: db_service_a
+    become: yes
+    roles:
+      - mongo
 
   - hosts: fatman
     become: yes
@@ -26,8 +26,17 @@
     roles:
       - postgres
 
-#  - hosts: gateway
-#    become: yes
-#    roles:
-#      - node
-#      - gateway
+  - hosts: service_a_lb
+    become: yes
+    roles:
+      - lb
+  - hosts: service_a_lb
+    become: yes
+    roles:
+      - lb
+
+  - hosts: gateway
+    become: yes
+    roles:
+      - node
+      - gateway
