@@ -26,8 +26,8 @@
     roles:
       - postgres
 
-  - hosts: gateway
-    become: yes
-    roles:
-      - node
-      - gateway
+#  - hosts: gateway
+#    become: yes
+#    roles:
+#      - node
+#      - gateway
