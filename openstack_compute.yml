@@ -103,4 +103,8 @@
           security_groups: "{{ item.security_groups }}"
           key_name: cloud
           auto_ip: "{{ item.public_ip }}"
+          userdata: |
+            {%- raw -%}#!/bin/bash
+            sudo apt-get install -y python
+            {% endraw %}
         with_items: "{{ instances }}"
