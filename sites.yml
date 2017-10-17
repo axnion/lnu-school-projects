@@ -8,6 +8,10 @@
     roles:
       - mongo
 
+  - hosts: mongobackup
+    roles:
+      - mongobackup
+
   - hosts: littleboy
     become: yes
     roles:

@@ -5,12 +5,6 @@ all:
       ansible_host: 10.0.10.50
   children:
     gateway:
-      vars:
-        # Change these values?
-        port_used: 8080
-        admin_port: 9876
-        littleboy_port: 8080
-        fatman_port: 9876
       hosts:
         gateway1:
           ansible_host: 10.0.10.51
@@ -33,12 +27,6 @@ all:
             mongobackup1:
               ansible_host: 10.0.10.55
     service_b:
-      vars:
-        # Change these values
-        db_port: 5432
-        db_name: vagrant
-        db_user: vagrant
-        db_pass: vagrant
       children:
         service_b_lb:
           hosts:
