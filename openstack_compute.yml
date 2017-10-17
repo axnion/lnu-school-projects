@@ -1,21 +1,15 @@
 ---
   - hosts: localhost
+    vars:
+      - auth_url: https://labcloudftk2.lnu.se:5000
     vars_prompt:
       - name: "username"
         prompt: "Openstack Username"
       - name: "password"
         prompt: "Openstack Password"
 
-    # MACHINES ARE DEFINED HERE!!!
     vars:
       instances:
-        - name: mgmt
-          flavor: cpu1-ram512-disk5
-          image: ba7be78b-9986-4631-9242-c7d87540b50f
-          public_ip: true
-          security_groups: default,ssh
-          private_ip: 10.0.10.50
-
         - name: api_gateway
           flavor: cpu1-ram512-disk5
           image: ba7be78b-9986-4631-9242-c7d87540b50f
@@ -79,74 +73,11 @@
           security_groups: default
           private_ip: 10.0.10.59
 
-    tasks:
-      - name: Create network
-        os_network:
-          auth:
-            auth_url: https://labcloudftk2.lnu.se:5000
-            username: "{{ username }}"
-            password: "{{ password }}"
-            project_name: Group01_project
-          name: acme_lan
-          state: present
-          external: false
-
-      - name: Create subnet
-        os_subnet:
-          auth:
-            auth_url: https://labcloudftk2.lnu.se:5000
-            username: "{{ username }}"
-            password: "{{ password }}"
-            project_name: Group01_project
-          name: lan
-          state: present
-          network_name: acme_lan
-          cidr: 10.0.10.0/24
-          dns_nameservers:
-            - 194.47.199.41
-            - 194.47.110.97
-
-      - name: Create router
-        os_router:
-          auth:
-            auth_url: https://labcloudftk2.lnu.se:5000
-            username: "{{ username }}"
-            password: "{{ password }}"
-            project_name: Group01_project
-          name: acme_router
-          state: present
-          network: internetlan
-          interfaces:
-            - lan
-
-      - name: Create security group ssh
-        os_security_group:
-          auth:
-            auth_url: https://labcloudftk2.lnu.se:5000
-            username: "{{ username }}"
-            password: "{{ password }}"
-            project_name: Group01_project
-          name: ssh
-          state: present
-          description: Security group for allowing incomming ssh connections
-
-      - name: Add SSH rule to security group ssh
-        os_security_group_rule:
-          auth:
-            auth_url: https://labcloudftk2.lnu.se:5000
-            username: "{{ username }}"
-            password: "{{ password }}"
-            project_name: Group01_project
-          security_group: ssh
-          protocol: tcp
-          port_range_min: 22
-          port_range_max: 22
-          remote_ip_prefix: 0.0.0.0/0
 
       - name: Create ports with fixed ips
         os_port:
           auth:
-            auth_url: https://labcloudftk2.lnu.se:5000
+            auth_url: "{{ auth_url }}"
             username: "{{ username }}"
             password: "{{ password }}"
             project_name: Group01_project
@@ -161,16 +92,16 @@
         os_server:
           state: present
           auth:
-            auth_url: https://labcloudftk2.lnu.se:5000
+            auth_url: "{{ auth_url }}"
             username: "{{ username }}"
             password: "{{ password }}"
             project_name: Group01_project
           name: "{{ item.name }}"
           image: "{{ item.image }}"
           flavor: "{{ item.flavor }}"
-          security_groups: "{{ item.security_groups }}"
           nics:
             - port-name: "{{ item.name }}_port"
+          security_groups: "{{ item.security_groups }}"
           key_name: cloud
           auto_ip: "{{ item.public_ip }}"
         with_items: "{{ instances }}"
