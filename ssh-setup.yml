@@ -15,26 +15,3 @@
       authorized_key: user=vagrant
                       key="{{ lookup('file', '/home/vagrant/.ssh/id_rsa.pub') }}"
                       state=present
-
-- hosts: db_service_a
-  tasks:
-    - name: check if key-pair exists
-      stat: path=/home/vagrant/.ssh/id_rsa
-      register: key_file
-
-    - name: generate SSH key-pair
-      shell: ssh-keygen -b 2048 -t rsa -f /home/vagrant/.ssh/id_rsa -q -N ""
-      when: key_file.stat.exists == False
-
-    - name: copy public key to tmp dir
-      fetch:
-        src: /home/vagrant/.ssh/id_rsa.pub
-        dest: /tmp/
-        flat: yes
-
-- hosts: mongobackup
-  tasks:
-    - name: distribute DB public key to backup machine
-      authorized_key: user=vagrant
-                      key="{{ lookup('file', '/tmp/id_rsa.pub') }}"
-                      state=present

@@ -1,0 +1,46 @@
+---
+all:
+  hosts:
+    mgmt:
+      ansible_host: 10.0.10.50
+  children:
+    gateway:
+      hosts:
+        gateway1:
+          ansible_host: 10.0.10.51
+    service_a:
+      children:
+        service_a_lb:
+          hosts:
+            lb_service_a:
+              ansible_host: 10.0.10.52
+        littleboy:
+          hosts:
+            littleboy1:
+              ansible_host: 10.0.10.58
+        service_a_db:
+          hosts:
+            db_service_a:
+              ansible_host: 10.0.10.54
+        mongobackup:
+          hosts:
+            mongobackup1:
+              ansible_host: 10.0.10.55
+    service_b:
+      children:
+        service_b_lb:
+          hosts:
+            lb_service_b:
+              ansible_host: 10.0.10.53
+        fatman:
+          hosts:
+            fatman1:
+              ansible_host: 10.0.10.59
+        service_b_db:
+          hosts:
+            db_service_b:
+              ansible_host: 10.0.10.56
+        postgres_backup:
+          hosts:
+            postgresbackup1:
+              ansible_host: 10.0.10.57

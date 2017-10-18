@@ -10,12 +10,15 @@ all:
 
   children:
     gateway:
+<<<<<<< HEAD:inventory.yml
       vars:
         port_used: 8080
         admin_port: 9876
         littleboy_port: 8080
         fatman_port: 9876
         nodejs_version: 8.6.0
+=======
+>>>>>>> dd397199969a4c22409239e9f69f5c547ab6fc6e:environments/development/inventory.yml
       hosts:
         gateway1:
           ansible_host: 10.0.10.11
@@ -36,6 +39,7 @@ all:
               ansible_host: 10.0.10.23
 
     service_b:
+<<<<<<< HEAD:inventory.yml
       vars:
         db_port: 5432
         db_name: vagrant
@@ -46,6 +50,8 @@ all:
           ansible_host: 10.0.10.32
         postgresbackup:
           ansible_host: 10.0.10.33
+=======
+>>>>>>> dd397199969a4c22409239e9f69f5c547ab6fc6e:environments/development/inventory.yml
       children:
         fatman:
           hosts:

@@ -1,0 +1,5 @@
+# Change these values in production!!
+db_port: 5432
+db_name: vagrant
+db_user: vagrant
+db_pass: vagrant

@@ -20,6 +20,7 @@ Vagrant.configure("2") do |config|
     end
 
     # Sensu Master
+<<<<<<< HEAD
 #    config.vm.define :monitor do |monitor|
 #        monitor.vm.box = "centos/7"
 #        monitor.vm.network :private_network, ip: "10.0.10.3"
@@ -30,6 +31,18 @@ Vagrant.configure("2") do |config|
 #
 #	      monitor.vm.provision "init",type:"shell", path: "scripts/centosinti.sh"
 #    end
+=======
+   # config.vm.define :monitor do |monitor|
+    #    monitor.vm.box = "centos/7"
+     #   monitor.vm.network :private_network, ip: "10.0.10.3"
+      #  monitor.vm.network "forwarded_port", guest: 3000, host: 3000
+       # monitor.vm.provider "virtualbox" do |vb|
+       #     vb.memory = "512"
+       # end
+
+#	monitor.vm.provision "init",type:"shell", path: "scripts/centosinti.sh"
+ #   end
+>>>>>>> dd397199969a4c22409239e9f69f5c547ab6fc6e
 
     # API Gateway
     config.vm.define :gateway do |gateway|
