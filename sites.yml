@@ -15,11 +15,11 @@
     roles:
       - mongo
 
-  - hosts: fatman
-    become: yes
-    roles:
-      - java
-      - fatman
+#  - hosts: fatman
+#    become: yes
+#    roles:
+#      - java
+#      - fatman
 
   - hosts: db_service_b
     become: yes
