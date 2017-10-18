@@ -1,0 +1,117 @@
+# Playbook creates the base essentials for the intrastucture.
+# Network + subnet
+# Router
+# Security Groups
+# Ansible Management Machine
+---
+- hosts: localhost
+  vars:
+    - auth_url: https://labcloudftk2.lnu.se:5000
+  vars_prompt:
+    - name: "username"
+      prompt: "Openstack Username"
+    - name: "password"
+      prompt: "Openstack Password"
+  tasks:
+  - name: Create network
+    os_network:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: Group01_project
+      name: acme_lan
+      state: present
+      external: false
+
+  - name: Create subnet
+    os_subnet:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: Group01_project
+      name: lan
+      state: present
+      network_name: acme_lan
+      cidr: 10.0.10.0/24
+      dns_nameservers:
+        - 194.47.199.41
+        - 194.47.110.97
+
+  - name: Create router
+    os_router:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: Group01_project
+      name: acme_router
+      state: present
+      network: internetlan
+      interfaces:
+        - lan
+
+  - name: Create security group ssh
+    os_security_group:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: Group01_project
+      name: ssh
+      state: present
+      description: Security group for allowing incomming ssh connections
+
+  - name: Add SSH rule to security group ssh
+    os_security_group_rule:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: Group01_project
+      security_group: ssh
+      protocol: tcp
+      port_range_min: 22
+      port_range_max: 22
+      remote_ip_prefix: 0.0.0.0/0
+
+  - name: Create port
+    os_port:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: Group01_project
+      name: "mgmt_port"
+      state: present
+      network: acme_lan
+      fixed_ips:
+        - ip_address: 10.0.10.10
+
+  - name: Create management machine
+    os_server:
+      state: present
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: Group01_project
+      name: mgmt
+      image: ba7be78b-9986-4631-9242-c7d87540b50f
+      flavor: cpu2-ram4096-disk20
+      nics:
+        - port-name: "mgmt_port"
+      security_groups: default,ssh
+      key_name: cloud
+      auto_ip: true
+      userdata: |
+        {%- raw -%}#!/bin/bash
+        sudo apt-get -y install software-properties-common
+        sudo apt-add-repository -y ppa:ansible/ansible
+        sudo apt-get update
+        sudo apt-get -y install ansible
+        sudo apt-get -y install python-pip
+        sudo pip install shade
+        touch /home/ubuntu/done
+        {% endraw %}

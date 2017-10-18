@@ -1,0 +1,110 @@
+---
+  - hosts: localhost
+    vars_prompt:
+      - name: "username"
+        prompt: "Openstack Username"
+      - name: "password"
+        prompt: "Openstack Password"
+
+    vars:
+      auth_url: https://labcloudftk2.lnu.se:5000
+      instances:
+        - name: api_gateway
+          flavor: cpu2-ram4096-disk20
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+          private_ip: 10.0.10.11
+
+        - name: lb_service_a
+          flavor: cpu2-ram4096-disk20
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+          private_ip: 10.0.10.24
+
+        - name: lb_service_b
+          flavor: cpu2-ram4096-disk20
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+          private_ip: 10.0.10.34
+
+        - name: mongodb
+          flavor: cpu2-ram4096-disk20
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+          private_ip: 10.0.10.22
+
+        - name: mongodb_backup
+          flavor: cpu2-ram4096-disk20
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+          private_ip: 10.0.10.23
+
+        - name: postgres
+          flavor: cpu2-ram4096-disk20
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+          private_ip: 10.0.10.32
+
+        - name: postgres_backup
+          flavor: cpu2-ram4096-disk20
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+          private_ip: 10.0.10.33
+
+        - name: service_a1
+          flavor: cpu2-ram4096-disk20
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+          private_ip: 10.0.10.31
+
+        - name: service_b1
+          flavor: cpu2-ram4096-disk20
+          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          public_ip: false
+          security_groups: default
+          private_ip: 10.0.10.21
+
+    tasks:
+      - name: Create ports with fixed ips
+        os_port:
+          auth:
+            auth_url: "{{ auth_url }}"
+            username: "{{ username }}"
+            password: "{{ password }}"
+            project_name: Group01_project
+          name: "{{ item.name }}_port"
+          state: present
+          network: acme_lan
+          fixed_ips:
+            - ip_address: "{{ item.private_ip }}"
+        with_items: "{{ instances }}"
+
+      - name: Create instances
+        os_server:
+          state: present
+          auth:
+            auth_url: "{{ auth_url }}"
+            username: "{{ username }}"
+            password: "{{ password }}"
+            project_name: Group01_project
+          name: "{{ item.name }}"
+          image: "{{ item.image }}"
+          flavor: "{{ item.flavor }}"
+          nics:
+            - port-name: "{{ item.name }}_port"
+          security_groups: "{{ item.security_groups }}"
+          key_name: cloud
+          auto_ip: "{{ item.public_ip }}"
+          userdata: |
+            {%- raw -%}#!/bin/bash
+            sudo apt-get install -y python
+            {% endraw %}
+        with_items: "{{ instances }}"

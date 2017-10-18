@@ -1,12 +1,8 @@
 ---
   - hosts: all
-    roles:
-      - common
-
-  - hosts: db_service_a
     become: yes
     roles:
-      - mongo
+      - common
 
   - hosts: mongobackup
     roles:
@@ -19,16 +15,30 @@
       - git
       - littleboy
 
-  - hosts: fatman
+  - hosts: db_service_a
     become: yes
     roles:
-      - java
-      - fatman
+      - mongo
+
+#  - hosts: fatman
+#    become: yes
+#    roles:
+#      - java
+#      - fatman
 
   - hosts: db_service_b
     become: yes
     roles:
       - postgres
+
+  - hosts: service_a_lb
+    become: yes
+    roles:
+      - lb
+  - hosts: service_a_lb
+    become: yes
+    roles:
+      - lb
 
   - hosts: gateway
     become: yes
