@@ -86,7 +86,6 @@ Vagrant.configure("2") do |config|
         end
     end
 
-
     # PostgreSQL
     config.vm.define :postgres do |postgres|
         postgres.vm.box = "bento/ubuntu-16.04"

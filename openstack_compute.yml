@@ -7,70 +7,77 @@
         prompt: "Openstack Password"
 
     vars:
-      auth_url: https://labcloudftk2.lnu.se:5000
+      auth_url: 	https://labcloudftk.lnu.se:5000
       instances:
         - name: api_gateway
           flavor: cpu2-ram4096-disk20
-          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          image: b4a172db-17b1-4c9a-a096-e5a42b724285
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.11
 
         - name: lb_service_a
           flavor: cpu2-ram4096-disk20
-          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          image: b4a172db-17b1-4c9a-a096-e5a42b724285
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.24
 
         - name: lb_service_b
           flavor: cpu2-ram4096-disk20
-          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          image: b4a172db-17b1-4c9a-a096-e5a42b724285
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.34
 
         - name: mongodb
-          flavor: cpu2-ram4096-disk20
-          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          flavor: cpu2-ram4096-disk80
+          image: b4a172db-17b1-4c9a-a096-e5a42b724285
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.22
 
         - name: mongodb_backup
-          flavor: cpu2-ram4096-disk20
-          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          flavor: cpu2-ram4096-disk80
+          image: b4a172db-17b1-4c9a-a096-e5a42b724285
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.23
 
         - name: postgres
-          flavor: cpu2-ram4096-disk20
-          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          flavor: cpu2-ram4096-disk80
+          image: b4a172db-17b1-4c9a-a096-e5a42b724285
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.32
 
         - name: postgres_backup
-          flavor: cpu2-ram4096-disk20
-          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          flavor: cpu2-ram4096-disk80
+          image: b4a172db-17b1-4c9a-a096-e5a42b724285
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.33
 
         - name: service_a1
           flavor: cpu2-ram4096-disk20
-          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          image: b4a172db-17b1-4c9a-a096-e5a42b724285
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.31
 
         - name: service_b1
           flavor: cpu2-ram4096-disk20
-          image: ba7be78b-9986-4631-9242-c7d87540b50f
+          image: b4a172db-17b1-4c9a-a096-e5a42b724285
           public_ip: false
           security_groups: default
           private_ip: 10.0.10.21
+
+        - name: monitor
+          flavor: cpu2-ram4096-disk20
+          image: b4a172db-17b1-4c9a-a096-e5a42b724285
+          public_ip: true
+          security_groups: default, http
+          private_ip: 10.0.10.3
 
     tasks:
       - name: Create ports with fixed ips

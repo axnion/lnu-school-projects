@@ -6,7 +6,7 @@
 ---
 - hosts: localhost
   vars:
-    - auth_url: https://labcloudftk2.lnu.se:5000
+    - auth_url: 	https://labcloudftk.lnu.se:5000
   vars_prompt:
     - name: "username"
       prompt: "Openstack Username"
@@ -61,7 +61,7 @@
         project_name: Group01_project
       name: ssh
       state: present
-      description: Security group for allowing incomming ssh connections
+      description: Security group for allowing incomming SSH connections
 
   - name: Add SSH rule to security group ssh
     os_security_group_rule:
@@ -74,6 +74,30 @@
       protocol: tcp
       port_range_min: 22
       port_range_max: 22
+      remote_ip_prefix: 0.0.0.0/0
+
+  - name: Create security group http
+    os_security_group:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: Group01_project
+      name: http
+      state: present
+      description: Security group for allowing incomming HTTP connections
+
+  - name: Add HTTP rule to security group http
+    os_security_group_rule:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: Group01_project
+      security_group: http
+      protocol: tcp
+      port_range_min: 80
+      port_range_max: 80
       remote_ip_prefix: 0.0.0.0/0
 
   - name: Create port
@@ -98,7 +122,7 @@
         password: "{{ password }}"
         project_name: Group01_project
       name: mgmt
-      image: ba7be78b-9986-4631-9242-c7d87540b50f
+      image: b4a172db-17b1-4c9a-a096-e5a42b724285
       flavor: cpu2-ram4096-disk20
       nics:
         - port-name: "mgmt_port"

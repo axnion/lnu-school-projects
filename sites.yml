@@ -4,10 +4,6 @@
     roles:
       - common
 
-  - hosts: mongobackup
-    roles:
-      - mongobackup
-
   - hosts: littleboy
     become: yes
     roles:
@@ -20,11 +16,15 @@
     roles:
       - mongo
 
-#  - hosts: fatman
-#    become: yes
-#    roles:
-#      - java
-#      - fatman
+  - hosts: mongobackup
+    roles:
+      - mongobackup
+
+  - hosts: fatman
+    become: yes
+    roles:
+      - java
+      - fatman
 
   - hosts: db_service_b
     become: yes
@@ -35,6 +35,7 @@
     become: yes
     roles:
       - lb
+
   - hosts: service_a_lb
     become: yes
     roles:
