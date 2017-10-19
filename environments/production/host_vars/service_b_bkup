@@ -2,8 +2,3 @@ flavor: cpu2-ram4096-disk-20
 image: b4a172db-17b1-4c9a-a096-e5a42b724285
 public_ip: false
 security_groups: default
-
-port_used: 8080
-admin_port: 9876
-littleboy_port: 8080
-fatman_port: 9876

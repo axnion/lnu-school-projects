@@ -1,7 +1,47 @@
 ---
-- hosts: localhost
-  tasks:
-  - name: testing with debug
-    debug:
-      msg: "{{ item }}"
-    with_items: "{{ groups['all'] }}"
+  - hosts: localhost
+    vars_prompt:
+      - name: "username"
+        prompt: "Openstack Username"
+      - name: "password"
+        prompt: "Openstack Password"
+
+    vars:
+      auth_url: 	https://labcloudftk.lnu.se:5000
+
+    tasks:
+      - name: Create ports with fixed ips
+        os_port:
+          auth:
+            auth_url: "{{ auth_url }}"
+            username: "{{ username }}"
+            password: "{{ password }}"
+            project_name: Group01_project
+          name: "{{ item.name }}_port"
+          state: present
+          network: acme_lan
+          fixed_ips:
+            - ip_address: "{{ item.private_ip }}"
+        with_items: "{{ groups['all'] }}"
+
+      - name: Create instances
+        os_server:
+          state: present
+          auth:
+            auth_url: "{{ auth_url }}"
+            username: "{{ username }}"
+            password: "{{ password }}"
+            project_name: Group01_project
+          name: "{{ item.name }}"
+          image: "{{ item.image }}"
+          flavor: "{{ item.flavor }}"
+          nics:
+            - port-name: "{{ item.name }}_port"
+          security_groups: "{{ item.security_groups }}"
+          key_name: cloud
+          auto_ip: "{{ item.public_ip }}"
+          userdata: |
+            {%- raw -%}#!/bin/bash
+            sudo apt-get install -y python
+            {% endraw %}
+        with_items: "{{ groups['all'] }}"

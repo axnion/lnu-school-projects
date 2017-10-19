@@ -1,5 +1,4 @@
-# Change these values in production!!
 db_port: 5432
-db_name: vagrant
-db_user: vagrant
-db_pass: vagrant
+db_name: ubuntu
+db_user: ubuntu
+db_pass: ubuntu
