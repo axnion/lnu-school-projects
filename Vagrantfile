@@ -115,6 +115,7 @@ Vagrant.configure("2") do |config|
     config.vm.define :client do |client|
         client.vm.box = "bento/ubuntu-16.04"
         client.vm.network :private_network, ip: "10.0.10.40"
+        client.vm.network "forwarded_port", guest: 3000, host: 3030
         client.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
         end
