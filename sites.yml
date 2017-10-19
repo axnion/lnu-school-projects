@@ -2,7 +2,7 @@
   - hosts: all
     become: yes
     roles:
-      - common
+#      - common
 
   - hosts: littleboy
     become: yes
@@ -22,7 +22,7 @@
   - hosts: fatman
     become: yes
     roles:
-      - java
+#      - java
       - fatman
 
   - hosts: service_b_db
