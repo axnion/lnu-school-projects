@@ -7,6 +7,8 @@ all:
       ansible_host: 10.0.10.24
     service_b_lb:
       ansible_host: 10.0.10.34
+    client:
+      ansible_host: 10.0.10.40
 
   children:
     gateway:
