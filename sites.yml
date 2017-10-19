@@ -8,15 +8,14 @@
     become: yes
     roles:
       - node
-      - git
       - littleboy
 
-  - hosts: db_service_a
+  - hosts: service_a_db
     become: yes
     roles:
       - mongo
 
-  - hosts: mongobackup
+  - hosts: service_a_bkup
     roles:
       - mongobackup
 
@@ -26,17 +25,12 @@
       - java
       - fatman
 
-  - hosts: db_service_b
+  - hosts: service_b_db
     become: yes
     roles:
       - postgres
 
-  - hosts: service_a_lb
-    become: yes
-    roles:
-      - lb
-
-  - hosts: service_a_lb
+  - hosts: service_a_lb:service_b_lb
     become: yes
     roles:
       - lb
