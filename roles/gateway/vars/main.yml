@@ -1,11 +1,7 @@
-gateway_path: /opt/gateway
-gateway_config_path: /opt/gateway/config
 
-serviceA: serviceA
-serviceB: serviceB
-serviceAURL: "http://{{ hostvars['service_a_lb']['ansible_host'] }}:{{ littleboy_port }}"
-serviceBURL: "http://{{ hostvars['service_b_lb']['ansible_host'] }}:{{ fatman_port }}"
-serviceARoot: "/hello"
-serviceBRoot: "/hello"
-serviceA2: "/servicea"
-serviceB2: "/serviceb"
+dev_version: 0.0.1
+prod_version: 0.0.1
+install_path: /opt
+download_path: /tmp
+serviceA: "http://{{ hostvars['service_a_lb']['ansible_host'] }}:{{ littleboy_port }}/hello"
+serviceB: "http://{{ hostvars['service_b_lb']['ansible_host'] }}:{{ fatman_port }}/hello"
