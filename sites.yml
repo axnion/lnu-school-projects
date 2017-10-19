@@ -46,3 +46,9 @@
     roles:
       - node
       - gateway
+
+  - hosts: client
+    become: yes
+    roles:
+      - node
+      - client
