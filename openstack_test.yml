@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  tasks:
+  - name: testing with debug
+    debug:
+      msg: "{{ item }}"
+    with_items: "{{ groups['all'] }}"

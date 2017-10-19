@@ -11,7 +11,7 @@ SuccessExitStatus=143
 TimeoutStopSec=10
 Restart=on-failure
 RestartSec=5
-Environment=db_ip={{ hostvars['db_service_b']['ansible_host'] }}
+Environment=db_ip={{ hostvars['service_b_db']['ansible_host'] }}
 Environment=db_port={{ db_port }}
 Environment=db_name={{ db_name }}
 Environment=db_user={{ db_user }}

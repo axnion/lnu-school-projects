@@ -3,9 +3,9 @@ gateway_config_path: /opt/gateway/config
 
 serviceA: serviceA
 serviceB: serviceB
-serviceAURL: "http://{{ hostvars['littleboy1']['ansible_host'] }}:{{ littleboy_port }}"
-serviceBURL: "http://{{ hostvars['fatman1']['ansible_host'] }}:{{ fatman_port }}"
+serviceAURL: "http://{{ hostvars['service_a_lb']['ansible_host'] }}:{{ littleboy_port }}"
+serviceBURL: "http://{{ hostvars['service_b_lb']['ansible_host'] }}:{{ fatman_port }}"
 serviceARoot: "/hello"
-serviceBRoot: "/"
+serviceBRoot: "/hello"
 serviceA2: "/servicea"
 serviceB2: "/serviceb"
