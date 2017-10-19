@@ -7,31 +7,32 @@ all:
       ansible_host: 10.0.10.24
     service_b_lb:
       ansible_host: 10.0.10.34
+    gateway:
+      ansible_host: 10.0.10.11
     client:
       ansible_host: 10.0.10.40
+    monitor:
+      ansible_host: 10.0.10.3
 
   children:
-    gateway:
-      hosts:
-        gateway1:
-          ansible_host: 10.0.10.11
-
     service_a:
+      hosts:
+        service_a_db:
+          ansible_host: 10.0.10.22
+        service_a_bkup:
+          ansible_host: 10.0.10.23
       children:
         littleboy:
           hosts:
             littleboy1:
               ansible_host: 10.0.10.21
-        service_a_db:
-          hosts:
-            db_service_a:
-              ansible_host: 10.0.10.22
-        mongobackup:
-          hosts:
-            mongobackup1:
-              ansible_host: 10.0.10.23
 
     service_b:
+      hosts:
+        service_b_db:
+          ansible_host: 10.0.10.32
+        service_b_bkup:
+          ansible_host: 10.0.10.33
       children:
         fatman:
           hosts:
