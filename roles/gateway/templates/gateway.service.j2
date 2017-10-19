@@ -2,9 +2,10 @@
 Description=Express API Gateway
 
 [Service]
-ExecStart=/usr/local/bin/node {{ gateway_path }}/server.js
+EnvironmentFile=/etc/.gatewayconf
+ExecStart=/usr/local/bin/node {{ install_path }}/gateway-{{ prod_version }}/server.js $ARG1 $ARG2
 # Required on some systems
-WorkingDirectory={{ gateway_path }}
+WorkingDirectory={{ install_path }}/gateway-{{ prod_version }}/
 Restart=always
  # Restart service after 10 seconds if node service crashes
  RestartSec=10
