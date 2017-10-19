@@ -1,6 +1,6 @@
 
-dev_version: 0.0.2
-prod_version: 0.0.2
+dev_version: 0.0.3
+prod_version: 0.0.3
 install_path: /opt
 download_path: /tmp
 serviceA: "http://{{ hostvars['service_a_lb']['ansible_host'] }}:{{ littleboy_port }}/hello"
