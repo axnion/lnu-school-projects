@@ -1,31 +1,25 @@
 ---
-  - name: Install "express-gateway"
-    npm:
-      name: express-gateway
-      path: /vagrant
-      global: true
+  - name: Download latest release of Gateway from Github
+    get_url:
+      url: "https://github.com/acme-config-management/gateway/archive/{{ prod_version }}.zip"
+      dest: "{{ download_path }}"
+      mode: 0744
 
-  - name: Copy gateway files to server
-    copy:
-      src: "{{ role_path }}/files/gateway"
-      dest: /opt
+  - name: install unzip
+    apt:
+      name: unzip
+
+  - name: Extract gateway zip to install path
+    unarchive:
+      remote_src: yes
+      src: "{{ download_path }}/gateway-{{ prod_version }}.zip"
+      dest: "{{ install_path }}"
     register: gateway_files
 
-  - name: Copy gateway config
-    template:
-      src: gateway.config.yml.j2
-      dest: "{{ gateway_config_path }}/gateway.config.yml"
-    register: gateway_config
-
-  - name: Copy system config
-    template:
-      src: system.config.yml.j2
-      dest: "{{ gateway_config_path }}/system.config.yml"
-
-  - name: Install gateway-express dependencies
-    shell: npm install --unsafe-perm
+  - name: Install gateway dependencies
+    shell: npm install
     args:
-      chdir: "{{ gateway_path }}"
+      chdir: "{{ install_path }}/gateway-{{ prod_version }}"
     when: gateway_files.changed
 
   - name: Copy service file
@@ -34,14 +28,20 @@
       dest: /etc/systemd/system/gateway.service
     register: gateway_service
 
+  - name: Copy service conf file
+    template:
+      src: .gatewayconf.j2
+      dest: /etc/.gatewayconf
+
   - name: Start and enable gateway server
     systemd:
       name: gateway
       state: started
+      daemon_reload: yes
       enabled: yes
 
   - name: Restart gateway service
     systemd:
       name: gateway
       state: restarted
-    when: gateway_config.changed
+    when: gateway_files.changed
