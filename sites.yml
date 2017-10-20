@@ -28,7 +28,7 @@
   - hosts: fatman
     become: yes
     roles:
-#      - java
+      - java
       - fatman
 
   - hosts: service_b_db
