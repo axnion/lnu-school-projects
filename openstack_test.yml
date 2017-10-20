@@ -33,7 +33,7 @@
             password: "{{ password }}"
             project_name: Group01_project
           state: present
-          name: "{{ item.name }}"
+          name: "{{ item }}"
           image: "{{ item.image }}"
           flavor: "{{ item.flavor }}"
           nics:
