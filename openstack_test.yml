@@ -22,17 +22,17 @@
           network: acme_lan
           fixed_ips:
             - ip_address: "{{ hostvars[item]['ansible_host'] }}"
-        when: item != mgmt
+        when: item != "mgmt"
         with_items: "{{ groups['all'] }}"
 
       - name: Create instances
         os_server:
-          state: present
           auth:
             auth_url: "{{ auth_url }}"
             username: "{{ username }}"
             password: "{{ password }}"
             project_name: Group01_project
+          state: present
           name: "{{ item.name }}"
           image: "{{ item.image }}"
           flavor: "{{ item.flavor }}"
@@ -45,5 +45,5 @@
             {%- raw -%}#!/bin/bash
             sudo apt-get install -y python
             {% endraw %}
-        when: item != mgmt
+        when: item != "mgmt"
         with_items: "{{ groups['all'] }}"

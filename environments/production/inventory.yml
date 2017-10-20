@@ -25,7 +25,7 @@ all:
         littleboy:
           hosts:
             littleboy1:
-              ansible_host: 10.0.10.32
+              ansible_host: 10.0.10.22
 
     service_b:
       hosts:

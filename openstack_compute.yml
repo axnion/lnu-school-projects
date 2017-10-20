@@ -7,7 +7,7 @@
         prompt: "Openstack Password"
 
     vars:
-      auth_url: 	https://labcloudftk.lnu.se:5000
+      auth_url: 	https://labcloudftk2.lnu.se:5000
       instances:
         - name: api_gateway
           flavor: cpu2-ram4096-disk20
