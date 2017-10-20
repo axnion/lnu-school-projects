@@ -42,3 +42,5 @@
     systemd:
       name: postgresql
       state: restarted
+
+  - import_tasks: backup.yml
