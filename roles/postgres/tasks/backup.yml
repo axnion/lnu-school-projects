@@ -15,8 +15,8 @@
       dest: /opt/postgresbackup/
       mode: 0777
 
-  #- name: Set cron job
-    #cron:
-      #name: postgres backup
-      #special_time: daily
-      #job: bash /opt/postgresbackup/postgresbackup.sh
+  - name: Set cron job
+    cron:
+      name: postgres backup
+      special_time: daily
+      job: bash /opt/postgresbackup/postgresbackup.sh
