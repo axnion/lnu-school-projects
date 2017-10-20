@@ -18,6 +18,9 @@
   - name: Ensure Sensu is installed
     apt: name=sensu state=present
 
+  - name: Install slack plugin
+    command: sensu-install -p slack
+
   - name: Install Redis  
     apt:
       name: redis-server
@@ -125,6 +128,18 @@
 
   - name: Ensure Sensu API service is running
     service: name=sensu-api state=started enabled=yes
+
+  - name: Copy slack_handler config
+    template:
+      dest: /etc/sensu/conf.d/slack_handler.json
+      src: slack_handler.json.j2
+    notify: restart sensu-server service
+
+  - name: Copy default_handlers config
+    template:
+      dest: /etc/sensu/conf.d/default_handlers.json
+      src: default_handlers.json.j2
+    notify: restart sensu-server service
 
   - name: Deploy Sensu client service configuration
     template:

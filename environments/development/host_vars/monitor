@@ -1,0 +1,4 @@
+slack_webhook_url: https://hooks.slack.com/services/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
+slack_emoji_icon: japanese_goblin
+slack_bot_username: acme-bot
+slack_channel: general
