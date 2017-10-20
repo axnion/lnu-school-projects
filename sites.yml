@@ -46,3 +46,8 @@
     roles:
       - node
       - client
+
+  - hosts: monitor
+    become: yes
+    roles:
+      - sensu_master
