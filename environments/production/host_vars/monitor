@@ -1,5 +1,5 @@
-flavor: cpu2-ram4096-disk-20
-image: b4a172db-17b1-4c9a-a096-e5a42b724285
+flavor: cpu2-ram4096-disk20
+image: ba7be78b-9986-4631-9242-c7d87540b50f
 public_ip: true
 security_groups: default, http
 

@@ -7,7 +7,7 @@
         prompt: "Openstack Password"
 
     vars:
-      auth_url: 	https://labcloudftk.lnu.se:5000
+      auth_url: https://labcloudftk2.lnu.se:5000
 
     tasks:
       - name: Create ports with fixed ips
@@ -17,31 +17,33 @@
             username: "{{ username }}"
             password: "{{ password }}"
             project_name: Group01_project
-          name: "{{ item.name }}_port"
+          name: "{{ item }}_port"
           state: present
           network: acme_lan
           fixed_ips:
-            - ip_address: "{{ item.private_ip }}"
+            - ip_address: "{{ hostvars[item]['ansible_host'] }}"
+        when: item != "mgmt"
         with_items: "{{ groups['all'] }}"
 
       - name: Create instances
         os_server:
-          state: present
           auth:
             auth_url: "{{ auth_url }}"
             username: "{{ username }}"
             password: "{{ password }}"
             project_name: Group01_project
-          name: "{{ item.name }}"
-          image: "{{ item.image }}"
-          flavor: "{{ item.flavor }}"
+          state: present
+          name: "{{ item }}"
+          image: "{{ hostvars[item]['image'] }}"
+          flavor: "{{ hostvars[item]['flavor'] }}"
           nics:
-            - port-name: "{{ item.name }}_port"
-          security_groups: "{{ item.security_groups }}"
+            - port-name: "{{ item }}_port"
+          security_groups: "{{ hostvars[item]['security_groups'] }}"
           key_name: cloud
-          auto_ip: "{{ item.public_ip }}"
+          auto_ip: "{{ hostvars[item]['public_ip'] }}"
           userdata: |
             {%- raw -%}#!/bin/bash
             sudo apt-get install -y python
             {% endraw %}
+        when: item != "mgmt"
         with_items: "{{ groups['all'] }}"
