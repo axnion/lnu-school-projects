@@ -1,13 +1,9 @@
 flavor: cpu2-ram4096-disk20
 image: ba7be78b-9986-4631-9242-c7d87540b50f
 public_ip: true
-<<<<<<< HEAD
 security_groups: default,http
-=======
-security_groups: default, http
 
 slack_webhook_url: https://hooks.slack.com/services/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
 slack_emoji_icon: japanese_goblin
 slack_bot_username: acme-bot
 slack_channel: general
->>>>>>> 94040abaeefdb3601c605c01ff85e6d5b73df806
