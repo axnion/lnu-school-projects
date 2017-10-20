@@ -6,12 +6,20 @@
 ---
 - hosts: localhost
   vars:
-    - auth_url: 	https://labcloudftk.lnu.se:5000
+    - auth_url: https://labcloudftk2.lnu.se:5000
+    - project: Group01_project
+    - ansible: mgmt
+    - network: acme_lan
+    - subnet: lan
+    - range: 10.0.10.0/24
+    - router: acme_router
+
   vars_prompt:
     - name: "username"
       prompt: "Openstack Username"
     - name: "password"
       prompt: "Openstack Password"
+
   tasks:
   - name: Create network
     os_network:
@@ -19,8 +27,8 @@
         auth_url: "{{ auth_url }}"
         username: "{{ username }}"
         password: "{{ password }}"
-        project_name: Group01_project
-      name: acme_lan
+        project_name: "{{ project }}"
+      name: "{{ network }}"
       state: present
       external: false
 
@@ -30,11 +38,11 @@
         auth_url: "{{ auth_url }}"
         username: "{{ username }}"
         password: "{{ password }}"
-        project_name: Group01_project
-      name: lan
+        project_name: "{{ project }}"
+      name: "{{ subnet }}"
       state: present
-      network_name: acme_lan
-      cidr: 10.0.10.0/24
+      network_name: "{{ network }}"
+      cidr: "{{ range }}"
       dns_nameservers:
         - 194.47.199.41
         - 194.47.110.97
@@ -45,12 +53,12 @@
         auth_url: "{{ auth_url }}"
         username: "{{ username }}"
         password: "{{ password }}"
-        project_name: Group01_project
-      name: acme_router
+        project_name: "{{ project }}"
+      name: "{{ router }}"
       state: present
       network: internetlan
       interfaces:
-        - lan
+        - "{{ subnet }}"
 
   - name: Create security group ssh
     os_security_group:
@@ -58,7 +66,7 @@
         auth_url: "{{ auth_url }}"
         username: "{{ username }}"
         password: "{{ password }}"
-        project_name: Group01_project
+        project_name: "{{ project }}"
       name: ssh
       state: present
       description: Security group for allowing incomming SSH connections
@@ -69,7 +77,7 @@
         auth_url: "{{ auth_url }}"
         username: "{{ username }}"
         password: "{{ password }}"
-        project_name: Group01_project
+        project_name: "{{ project }}"
       security_group: ssh
       protocol: tcp
       port_range_min: 22
@@ -82,7 +90,7 @@
         auth_url: "{{ auth_url }}"
         username: "{{ username }}"
         password: "{{ password }}"
-        project_name: Group01_project
+        project_name: "{{ project }}"
       name: http
       state: present
       description: Security group for allowing incomming HTTP connections
@@ -93,7 +101,7 @@
         auth_url: "{{ auth_url }}"
         username: "{{ username }}"
         password: "{{ password }}"
-        project_name: Group01_project
+        project_name: "{{ project }}"
       security_group: http
       protocol: tcp
       port_range_min: 80
@@ -106,12 +114,12 @@
         auth_url: "{{ auth_url }}"
         username: "{{ username }}"
         password: "{{ password }}"
-        project_name: Group01_project
-      name: "mgmt_port"
+        project_name: "{{ project }}"
+      name: "{{ ansible }}_port"
       state: present
-      network: acme_lan
+      network: "{{ network }}"
       fixed_ips:
-        - ip_address: 10.0.10.10
+        - ip_address: "{{ hostvars[ansible]['ansible_host'] }}"
 
   - name: Create management machine
     os_server:
@@ -120,15 +128,14 @@
         auth_url: "{{ auth_url }}"
         username: "{{ username }}"
         password: "{{ password }}"
-        project_name: Group01_project
-      name: mgmt
-      image: b4a172db-17b1-4c9a-a096-e5a42b724285
-      flavor: cpu2-ram4096-disk20
+        project_name: "{{ project }}"
+      name: "{{ ansible }}"
+      image: "{{ hostvars[ansible]['image'] }}"
+      flavor: "{{ hostvars[ansible]['flavor'] }}"
       nics:
-        - port-name: "mgmt_port"
-      security_groups: default,ssh
+        - port-name: "{{ ansible }}_port"
       key_name: cloud
-      auto_ip: true
+      auto_ip: "{{ hostvars[ansible]['public_ip'] }}"
       userdata: |
         {%- raw -%}#!/bin/bash
         sudo apt-get -y install software-properties-common
@@ -139,3 +146,4 @@
         sudo pip install shade
         touch /home/ubuntu/done
         {% endraw %}
+      security_groups: default,ssh

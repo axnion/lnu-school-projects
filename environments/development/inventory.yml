@@ -3,16 +3,16 @@ all:
   hosts:
     mgmt:
       ansible_host: 10.0.10.10
-    service_a_lb:
-      ansible_host: 10.0.10.24
-    service_b_lb:
-      ansible_host: 10.0.10.34
     gateway:
       ansible_host: 10.0.10.11
     client:
       ansible_host: 10.0.10.40
     monitor:
       ansible_host: 10.0.10.3
+    service_a_lb:
+      ansible_host: 10.0.10.24
+    service_b_lb:
+      ansible_host: 10.0.10.34
 
   children:
     service_a:

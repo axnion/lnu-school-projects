@@ -2,39 +2,39 @@
 all:
   hosts:
     mgmt:
-      ansible_host: 10.0.10.50
-    service_a_lb:
-      ansible_host: 10.0.10.24
-    service_b_lb:
-      ansible_host: 10.0.10.34
+      ansible_host: 10.0.10.10
     gateway:
-      ansible_host: 10.0.10.51
+      ansible_host: 10.0.10.11
     client:
-      ansible_host: 10.0.10.40
+      ansible_host: 10.0.10.12
     monitor:
-      ansible_host: 10.0.10.3
+      ansible_host: 10.0.10.13
+    service_a_lb:
+      ansible_host: 10.0.10.14
+    service_b_lb:
+      ansible_host: 10.0.10.15
 
   children:
     service_a:
       hosts:
         service_a_db:
-          ansible_host: 10.0.10.54
+          ansible_host: 10.0.10.20
         service_a_bkup:
-          ansible_host: 10.0.10.55
+          ansible_host: 10.0.10.21
       children:
         littleboy:
           hosts:
             littleboy1:
-              ansible_host: 10.0.10.58
+              ansible_host: 10.0.10.32
 
     service_b:
       hosts:
         service_b_db:
-          ansible_host: 10.0.10.56
+          ansible_host: 10.0.10.30
         service_b_bkup:
-          ansible_host: 10.0.10.57
+          ansible_host: 10.0.10.31
       children:
         fatman:
           hosts:
             fatman1:
-              ansible_host: 10.0.10.59
+              ansible_host: 10.0.10.32
