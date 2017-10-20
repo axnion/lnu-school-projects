@@ -1,0 +1,15 @@
+{
+  "handlers": {
+    "slack": {
+      "type": "pipe",
+      "command": "handler-slack.rb"
+      }
+    },
+    "slack": {
+      "webhook_url": "{{ slack_webhook_url }}",
+      "template" : "",
+      "channel": "#{{ slack_channel }}",
+      "bot_name": "{{ slack_bot_username}}",
+      "icon_emoji": ":{{ slack_emoji_icon }}:"
+    }
+}
