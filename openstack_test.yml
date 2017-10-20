@@ -34,13 +34,13 @@
             project_name: Group01_project
           state: present
           name: "{{ item }}"
-          image: "{{ item.image }}"
-          flavor: "{{ item.flavor }}"
+          image: "{{ hostvars[ansible]['image'] }}"
+          flavor: "{{ hostvars[ansible]['flavor'] }}"
           nics:
             - port-name: "{{ item }}_port"
-          security_groups: "{{ item.security_groups }}"
+          security_groups: "{{ hostvars[ansible]['security_groups'] }}"
           key_name: cloud
-          auto_ip: "{{ item.public_ip }}"
+          auto_ip: "{{ hostvars[ansible]['public_ip'] }}"
           userdata: |
             {%- raw -%}#!/bin/bash
             sudo apt-get install -y python
