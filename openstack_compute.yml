@@ -7,77 +7,7 @@
         prompt: "Openstack Password"
 
     vars:
-      auth_url: 	https://labcloudftk2.lnu.se:5000
-      instances:
-        - name: api_gateway
-          flavor: cpu2-ram4096-disk20
-          image: b4a172db-17b1-4c9a-a096-e5a42b724285
-          public_ip: false
-          security_groups: default
-          private_ip: 10.0.10.11
-
-        - name: lb_service_a
-          flavor: cpu2-ram4096-disk20
-          image: b4a172db-17b1-4c9a-a096-e5a42b724285
-          public_ip: false
-          security_groups: default
-          private_ip: 10.0.10.24
-
-        - name: lb_service_b
-          flavor: cpu2-ram4096-disk20
-          image: b4a172db-17b1-4c9a-a096-e5a42b724285
-          public_ip: false
-          security_groups: default
-          private_ip: 10.0.10.34
-
-        - name: mongodb
-          flavor: cpu2-ram4096-disk80
-          image: b4a172db-17b1-4c9a-a096-e5a42b724285
-          public_ip: false
-          security_groups: default
-          private_ip: 10.0.10.22
-
-        - name: mongodb_backup
-          flavor: cpu2-ram4096-disk80
-          image: b4a172db-17b1-4c9a-a096-e5a42b724285
-          public_ip: false
-          security_groups: default
-          private_ip: 10.0.10.23
-
-        - name: postgres
-          flavor: cpu2-ram4096-disk80
-          image: b4a172db-17b1-4c9a-a096-e5a42b724285
-          public_ip: false
-          security_groups: default
-          private_ip: 10.0.10.32
-
-        - name: postgres_backup
-          flavor: cpu2-ram4096-disk80
-          image: b4a172db-17b1-4c9a-a096-e5a42b724285
-          public_ip: false
-          security_groups: default
-          private_ip: 10.0.10.33
-
-        - name: service_a1
-          flavor: cpu2-ram4096-disk20
-          image: b4a172db-17b1-4c9a-a096-e5a42b724285
-          public_ip: false
-          security_groups: default
-          private_ip: 10.0.10.31
-
-        - name: service_b1
-          flavor: cpu2-ram4096-disk20
-          image: b4a172db-17b1-4c9a-a096-e5a42b724285
-          public_ip: false
-          security_groups: default
-          private_ip: 10.0.10.21
-
-        - name: monitor
-          flavor: cpu2-ram4096-disk20
-          image: b4a172db-17b1-4c9a-a096-e5a42b724285
-          public_ip: true
-          security_groups: default, http
-          private_ip: 10.0.10.3
+      auth_url: https://labcloudftk2.lnu.se:5000
 
     tasks:
       - name: Create ports with fixed ips
@@ -87,31 +17,33 @@
             username: "{{ username }}"
             password: "{{ password }}"
             project_name: Group01_project
-          name: "{{ item.name }}_port"
+          name: "{{ item }}_port"
           state: present
           network: acme_lan
           fixed_ips:
-            - ip_address: "{{ item.private_ip }}"
-        with_items: "{{ instances }}"
+            - ip_address: "{{ hostvars[item]['ansible_host'] }}"
+        when: item != "mgmt"
+        with_items: "{{ groups['all'] }}"
 
       - name: Create instances
         os_server:
-          state: present
           auth:
             auth_url: "{{ auth_url }}"
             username: "{{ username }}"
             password: "{{ password }}"
             project_name: Group01_project
-          name: "{{ item.name }}"
-          image: "{{ item.image }}"
-          flavor: "{{ item.flavor }}"
+          state: present
+          name: "{{ item }}"
+          image: "{{ hostvars[item]['image'] }}"
+          flavor: "{{ hostvars[item]['flavor'] }}"
           nics:
-            - port-name: "{{ item.name }}_port"
-          security_groups: "{{ item.security_groups }}"
+            - port-name: "{{ item }}_port"
+          security_groups: "{{ hostvars[item]['security_groups'] }}"
           key_name: cloud
-          auto_ip: "{{ item.public_ip }}"
+          auto_ip: "{{ hostvars[item]['public_ip'] }}"
           userdata: |
             {%- raw -%}#!/bin/bash
             sudo apt-get install -y python
             {% endraw %}
-        with_items: "{{ instances }}"
+        when: item != "mgmt"
+        with_items: "{{ groups['all'] }}"
