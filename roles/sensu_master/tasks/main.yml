@@ -39,7 +39,7 @@
 
   - service:
       name: rabbitmq-server
-      state: started
+      state: restarted
 
   - name: Ensure Sensu RabbitMQ vhost exists
     rabbitmq_vhost: name=/sensu state=present
@@ -70,7 +70,7 @@
 
   - name: Ensure the Sensu config directory is present
     file:
-      dest: etc/sensu/conf.d
+      dest: /etc/sensu/conf.d
       state: directory
 
   - name: Deploy Sensu Redis configuration

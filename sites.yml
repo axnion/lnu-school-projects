@@ -2,7 +2,13 @@
   - hosts: all
     become: yes
     roles:
-#      - common
+     - common
+
+
+  - hosts: all:!monitor
+    become: yes
+    roles:
+     - sensu_client
 
   - hosts: littleboy
     become: yes
