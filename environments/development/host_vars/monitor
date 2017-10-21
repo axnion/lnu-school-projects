@@ -2,3 +2,10 @@ slack_webhook_url: https://hooks.slack.com/services/T7MGU0JLT/B7MP7FYAH/qhbDkQiK
 slack_emoji_icon: japanese_goblin
 slack_bot_username: acme-bot
 slack_channel: general
+
+#RabbitMQ
+rabbitmq_host: "{{ hostvars['monitor']['ansible_host'] }}"
+rabbitmq_sensu_username: sensu
+rabbitmq_sensu_password: secret
+rabbitmq_sensu_vhost: /sensu
+rabbitmq_port: 5672
