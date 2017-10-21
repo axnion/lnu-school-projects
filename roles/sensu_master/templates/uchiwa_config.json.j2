@@ -1,7 +1,7 @@
 {
  "sensu": [
    {
-       "name": "~",
+       "name": "{{ uchiwa_datacenter_name }}",
        "host": "127.0.0.1",
        "port": 4567,
        "user": "admin",
@@ -10,9 +10,8 @@
    }
  ],
  "uchiwa": {
-   "user": "admin",
-   "pass": "admin",
-   "port": 3000,
-   "refresh": 5
+   "users":{{ uchiwa_users | to_nice_json }}
+   "port": {{ uchiwa_port }},
+   "refresh": {{ uchiwa_refresh }}
   }
 }
