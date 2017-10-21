@@ -1,4 +1,7 @@
 ---
+  - import_tasks: ssh_setup.yml
+    when: run_ssh_setup
+
   - name: Installing PostgreSQL
     apt:
       name: "{{ item }}"
@@ -6,6 +9,7 @@
       - postgresql
       - libpq-dev
       - python-psycopg2
+    become: yes
     register: postgresql_install
 
   - name: Add Postgres account
@@ -42,3 +46,6 @@
     systemd:
       name: postgresql
       state: restarted
+    become: yes
+
+  - import_tasks: backup.yml
