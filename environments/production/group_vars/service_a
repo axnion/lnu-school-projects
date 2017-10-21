@@ -7,10 +7,7 @@ mongodb_user_admin_password: changeme
 
 mongodb_database_name: 2dv514
 
-
-# No leading slash
-backup_dir: var/opt/littleboy/backups
-
+backup_dir: /var/opt/littleboy/backups/
 backup_ssh_key_path: /home/ubuntu/.ssh/id_rsa
 backup_ssh_user: ubuntu
 

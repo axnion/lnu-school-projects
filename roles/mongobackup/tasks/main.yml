@@ -4,3 +4,9 @@
                     key="{{ lookup('file', '/tmp/id_rsa.pub') }}"
                     state=present
     when: run_ssh_setup
+
+  - name: create backups directory
+    file:
+      path: "{{ backup_dir }}"
+      state: directory
+      owner: "{{ backup_ssh_user }}"
