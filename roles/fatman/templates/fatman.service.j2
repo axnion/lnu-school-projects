@@ -9,7 +9,7 @@ WorkingDirectory={{ install_path }}
 ExecStart=/usr/bin/java -Xmx256m -jar fat-man-{{ version }}-fat.jar
 SuccessExitStatus=143
 TimeoutStopSec=10
-Restart=on-failure
+Restart=always
 RestartSec=5
 Environment=db_ip={{ hostvars['service_b_db']['ansible_host'] }}
 Environment=db_port={{ db_port }}
