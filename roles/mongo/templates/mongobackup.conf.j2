@@ -46,7 +46,7 @@ RSYNC="1"
 RSYNC_PATH="/usr/bin/rsync"
 RSYNC_OPTS="-avzh"
 # TODO: Set up a user?
-REMOTE_USER="vagrant"
+REMOTE_USER="{{ backup_ssh_user }}"
 REMOTE_HOST="{{ hostvars['service_a_bkup']['ansible_host'] }}"
 # REMOTE_MODULE="replace-by-your-rsync-modulename"
 ## you can use just the module name
