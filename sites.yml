@@ -25,16 +25,16 @@
     roles:
       - mongobackup
 
+  - hosts: service_b_db
+    become: yes
+    roles:
+      - postgres
+
   - hosts: fatman
     become: yes
     roles:
       - java
       - fatman
-
-  - hosts: service_b_db
-    become: yes
-    roles:
-      - postgres
 
   - hosts: service_a_lb:service_b_lb
     become: yes
