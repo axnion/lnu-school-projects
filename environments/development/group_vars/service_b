@@ -4,3 +4,6 @@ db_user: vagrant
 db_pass: vagrant
 
 java_version: 9
+
+backup_ssh_key_path: /home/vagrant/.ssh/id_rsa
+backup_ssh_user: vagrant

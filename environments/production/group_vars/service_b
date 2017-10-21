@@ -4,3 +4,6 @@ db_user: ubuntu
 db_pass: ubuntu
 
 java_version: 9
+
+backup_ssh_key_path: /home/ubuntu/.ssh/id_rsa
+backup_ssh_user: ubuntu
