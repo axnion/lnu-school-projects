@@ -1,6 +1,7 @@
 ---
   - import_tasks: ssh_setup.yml
-    
+    when: run_ssh_setup
+
   - name: Installing PostgreSQL
     apt:
       name: "{{ item }}"
