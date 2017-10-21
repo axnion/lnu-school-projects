@@ -45,13 +45,13 @@
       state: restarted
 
   - name: Ensure Sensu RabbitMQ vhost exists
-    rabbitmq_vhost: name=/sensu state=present
+    rabbitmq_vhost: name={{ rabbitmq_sensu_vhost }} state=present
 
   - name: Ensure Sensu RabbitMQ user has access to the Sensu vhost
     rabbitmq_user:
-      user: sensu
-      password: secret
-      vhost: /sensu
+      user: "{{ rabbitmq_sensu_username }}"
+      password: "{{ rabbitmq_sensu_password }}"
+      vhost: "{{ rabbitmq_sensu_vhost }}"
       configure_priv: .*
       read_priv: .*
       write_priv: .*

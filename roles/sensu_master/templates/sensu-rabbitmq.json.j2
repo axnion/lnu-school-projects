@@ -1,9 +1,9 @@
 {
   "rabbitmq": {
-    "host": "127.0.0.1",
-    "port": 5672,
-    "vhost": "/sensu",
-    "user": "sensu",
-    "password": "secret"
+    "host": "{{ rabbitmq_host }}",
+    "port": {{ rabbitmq_port }},
+    "vhost": "{{ rabbitmq_sensu_vhost }}",
+    "user": "{{ rabbitmq_sensu_username }}",
+    "password": "{{ rabbitmq_sensu_password }}"
   }
 }
