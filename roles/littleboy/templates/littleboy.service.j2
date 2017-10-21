@@ -1,5 +1,6 @@
 [Unit]
 Description=Service A - Little Boy server
+Requires=network.target
 
 [Service]
 ExecStart=/usr/local/bin/node {{ install_path }}/dist/
