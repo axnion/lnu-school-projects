@@ -4,15 +4,10 @@
       path: /opt/postgresbackup
       state: directory
 
-  - name: Copy postgresbackup.conf
-    template:
-      src: postgresbackup.conf.j2
-      dest: /opt/postgresbackup/postgresbackup.conf
-
   - name: Copy postgresbackup.sh
-    copy:
-      src: postgresbackup.sh
-      dest: /opt/postgresbackup/
+    template:
+      src: postgresbackup.sh.j2
+      dest: /opt/postgresbackup/postgresbackup.sh
       mode: 0777
 
   - name: Set cron job
