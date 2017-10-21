@@ -1,11 +1,11 @@
 ---
-#- name: Update software
-#  apt:
-#    update_cache: yes
-#    upgrade: yes
+- name: Update software
+  apt:
+    update_cache: yes
+    upgrade: yes
 
 - name: Ensure hostname set
-  hostname: 
+  hostname:
     name: "{{ inventory_hostname }}"
 
 - name: Generate /etc/hosts file
