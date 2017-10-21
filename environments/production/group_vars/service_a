@@ -9,5 +9,6 @@ mongodb_database_name: 2dv514
 
 backup_dir: /var/opt/littleboy/backups
 backup_ssh_key_path: /home/ubuntu/.ssh/id_rsa
+backup_ssh_user: ubuntu
 
 mongodb_version: 3.4.9
