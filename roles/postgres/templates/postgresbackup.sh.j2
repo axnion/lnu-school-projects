@@ -1,0 +1,4 @@
+
+cd /opt/postgresbackup
+pg_dump {{ db_name }} > postgres_backup_db
+rsync -a /opt/postgresbackup/postgres_backup_db vagrant@10.0.10.33:~/
