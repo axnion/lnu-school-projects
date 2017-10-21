@@ -9,3 +9,7 @@ rabbitmq_sensu_username: sensu
 rabbitmq_sensu_password: secret
 rabbitmq_sensu_vhost: /sensu
 rabbitmq_port: 5672
+
+#Redis
+redis_host: "{{ hostvars['monitor']['ansible_host'] }}"
+redis_port: 6379
