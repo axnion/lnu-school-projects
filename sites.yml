@@ -30,6 +30,10 @@
     roles:
       - postgres
 
+  - hosts: service_b_bkup
+    roles:
+      - postgresbackup
+
   - hosts: service_a_lb:service_b_lb
     become: yes
     roles:
