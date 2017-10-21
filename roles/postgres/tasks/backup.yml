@@ -4,12 +4,17 @@
       path: /opt/postgresbackup
       state: directory
 
+  - name: Copy .pgpass file
+    template:
+      src: .pgpass.j2
+      dest: /root/.pgpass
+      mode: 0600
+
   - name: Copy postgresbackup.sh
     template:
       src: postgresbackup.sh.j2
       dest: /opt/postgresbackup/postgresbackup.sh
       mode: 0777
-
 
   - name: Set cron job
     cron:

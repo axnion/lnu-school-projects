@@ -2,6 +2,7 @@ db_port: 5432
 db_name: ubuntu
 db_user: ubuntu
 db_pass: ubuntu
+db_host: localhost
 
 java_version: 9
 
