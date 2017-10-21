@@ -1,7 +1,7 @@
 {
   "client": {
     "name": "Sensu_master",
-    "address": "10.0.10.3",
+    "address": "{{hostvars['monitor']['ansible_host']}}",
     "subscriptions":["monitor", "mgmt"]
   }
 }
