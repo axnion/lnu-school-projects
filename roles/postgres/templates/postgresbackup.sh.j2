@@ -1,4 +1,4 @@
 
 cd /opt/postgresbackup
 pg_dump {{ db_name }} > postgres_backup_db
-rsync -a /opt/postgresbackup/postgres_backup_db {{ remote_user }}@10.0.10.33:~/
+rsync -a /opt/postgresbackup/postgres_backup_db {{ remote_user }}@{{ hostvars['service_b_bkup']['ansible_host'] }}:~/
