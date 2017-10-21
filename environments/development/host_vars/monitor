@@ -11,7 +11,7 @@ rabbitmq_sensu_vhost: /sensu
 rabbitmq_port: 5672
 
 #Redis
-redis_host: "{{ hostvars['monitor']['ansible_host'] }}"
+redis_host: 127.0.0.1
 redis_port: 6379
 
 #Uchiwa
