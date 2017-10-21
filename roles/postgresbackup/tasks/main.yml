@@ -6,7 +6,7 @@
     when: run_ssh_setup
 
   - name: create backups directory
-      file:
-        path: "{{ backup_dir }}"
-        state: directory
-        owner: "{{ backup_ssh_user }}"
+    file:
+      path: "{{ backup_dir }}"
+      state: directory
+      owner: "{{ backup_ssh_user }}"
