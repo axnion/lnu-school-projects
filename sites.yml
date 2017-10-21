@@ -22,6 +22,7 @@
       - mongo
 
   - hosts: service_a_bkup
+    become: yes
     roles:
       - mongobackup
 
