@@ -1,6 +1,6 @@
 {
   "rabbitmq": {
-    "host": "10.0.10.3",
+    "host": "{{hostvars['monitor']['ansible_host']}}",
     "port": 5672,
     "vhost": "/sensu",
     "user": "sensu",
