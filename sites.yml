@@ -38,6 +38,7 @@
       - fatman
 
   - hosts: service_b_bkup
+    become: yes
     roles:
       - postgresbackup
 
