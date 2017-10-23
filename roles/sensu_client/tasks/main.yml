@@ -6,28 +6,28 @@
 
   - name: Ensure the Sensu APT repo GPG key is present
     apt_key:
-      url: http://repositories.sensuapp.org/apt/pubkey.gpg
+      url: "{{ sensu_apt_key_url }}"
       state: present
 
   - name: Ensure the Sensu Core APT repo is present
     apt_repository:
-      repo: "deb     http://repositories.sensuapp.org/apt {{ ansible_distribution_release }} main"
+      repo: "{{ sensu_apt_repo_url }}"
       state: present
       update_cache: true
 
   - name: Ensure Sensu is installed
-    apt: name=sensu state=present
+    apt: name=sensu state={{ sensu_state }}
 
   - name: Ensure the Sensu config directory is present
     file:
-      dest: /etc/sensu/conf.d
+      dest: "{{ sensu_config_path }}/conf.d"
       state: directory
       owner: sensu
       group: sensu
 
   - name: Deploy Sensu RabbitMQ configuration
     template:
-      dest: /etc/sensu/conf.d/rabbitmq.json
+      dest: "{{ sensu_config_path }}/conf.d/rabbitmq.json"
       owner: sensu
       group: sensu
       src: sensu-rabbitmq.json.j2
@@ -38,7 +38,7 @@
 
   - name: Deploy Sensu transport configuration
     template:
-      dest: /etc/sensu/conf.d/transport.json
+      dest: "{{ sensu_config_path }}/conf.d/transport.json"
       owner: sensu
       group: sensu
       src: transport.json.j2
@@ -50,7 +50,7 @@
 
   - name: Deploy Sensu client service configuration
     template:
-      dest: /etc/sensu/conf.d/client.json
+      dest: "{{ sensu_config_path }}/conf.d/client.json"
       owner: sensu
       group: sensu
       src: client.json.j2
