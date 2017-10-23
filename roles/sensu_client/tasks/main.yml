@@ -1,4 +1,7 @@
 ---
+  - name: Include monitor variables depending on environment
+    include_vars: "/vagrant/environments/{{ sensu_environment }}/host_vars/monitor"
+
   - name: Ensure that https transport is ready
     apt: 
       name: apt-transport-https 

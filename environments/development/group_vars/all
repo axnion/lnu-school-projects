@@ -1,16 +1,3 @@
 run_ssh_setup: true
 nodejs_version: 8.6.0
-
-# Sensu client
-sensu_transport: rabbitmq
-sensu_config_path: /etc/sensu
-sensu_state: present
-sensu_apt_key_url: "http://repositories.sensuapp.org/apt/pubkey.gpg"
-sensu_apt_repo_url: "deb     http://repositories.sensuapp.org/apt {{ ansible_distribution_release }} main"
-
-# RabbitMQ
-rabbitmq_host: "{{ hostvars['monitor']['ansible_host'] }}"
-rabbitmq_sensu_username: sensu
-rabbitmq_sensu_password: secret
-rabbitmq_sensu_vhost: /sensu
-rabbitmq_port: 5672
+sensu_environment: development
