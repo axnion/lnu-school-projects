@@ -23,6 +23,13 @@ uchiwa_port: 3000
 uchiwa_refresh: 5
 uchiwa_datacenter_name: Acme
 
+# Sensu
+sensu_transport: rabbitmq
+sensu_config_path: /etc/sensu
+sensu_state: present
+sensu_apt_key_url: "http://repositories.sensuapp.org/apt/pubkey.gpg"
+sensu_apt_repo_url: "deb     http://repositories.sensuapp.org/apt {{ ansible_distribution_release }} main"
+
 # Sensu API
 sensu_api_host: "{{ hostvars['monitor']['ansible_host'] }}"
 sensu_api_port: 4567

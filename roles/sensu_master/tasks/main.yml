@@ -6,17 +6,17 @@
 
   - name: Ensure the Sensu APT repo GPG key is present
     apt_key:
-      url: http://repositories.sensuapp.org/apt/pubkey.gpg
+      url: "{{ sensu_apt_key_url }}"
       state: present
 
   - name: Ensure the Sensu Core APT repo is present
     apt_repository:
-      repo: "deb     http://repositories.sensuapp.org/apt {{ ansible_distribution_release }} main"
+      repo: "{{ sensu_apt_repo_url }}"
       state: present
       update_cache: true
 
   - name: Ensure Sensu is installed
-    apt: name=sensu state=present
+    apt: name=sensu state={{sensu_state}}
 
   - name: Install slack plugin
     command: sensu-install -p slack
@@ -68,17 +68,17 @@
   - name: Deploy Uchiwa config
     template:
       src: uchiwa_config.json.j2
-      dest: /etc/sensu/uchiwa.json
+      dest: "{{ sensu_config_path }}/uchiwa.json"
     notify: restart uchiwa service
 
   - name: Ensure the Sensu config directory is present
     file:
-      dest: /etc/sensu/conf.d
+      dest: "{{ sensu_config_path }}/conf.d"
       state: directory
 
   - name: Deploy Sensu Redis configuration
     template:
-      dest: /etc/sensu/conf.d/redis.json
+      dest: "{{ sensu_config_path }}/conf.d/redis.json"
       owner: sensu
       group: sensu
       src: sensu-redis.json.j2
@@ -89,7 +89,7 @@
 
   - name: Deploy Sensu RabbitMQ configuration
     template:
-      dest: /etc/sensu/conf.d/rabbitmq.json
+      dest: "{{ sensu_config_path }}/conf.d/rabbitmq.json"
       owner: sensu
       group: sensu
       src: sensu-rabbitmq.json.j2
@@ -100,7 +100,7 @@
 
   - name: Deploy Sensu transport configuration
     template:
-      dest: /etc/sensu/conf.d/transport.json
+      dest: "{{ sensu_config_path }}/conf.d/transport.json"
       owner: sensu
       group: sensu
       src: transport.json.j2
@@ -117,7 +117,7 @@
 
   - name: Deploy Sensu server API configuration
     template:
-      dest: /etc/sensu/conf.d/api.json
+      dest: "{{ sensu_config_path }}/conf.d/api.json"
       owner: sensu
       group: sensu
       src: sensu-api.json.j2
@@ -131,19 +131,19 @@
 
   - name: Copy slack_handler config
     template:
-      dest: /etc/sensu/conf.d/slack_handler.json
+      dest: "{{ sensu_config_path }}/conf.d/slack_handler.json"
       src: slack_handler.json.j2
     notify: restart sensu-server service
 
   - name: Copy default_handlers config
     template:
-      dest: /etc/sensu/conf.d/default_handlers.json
+      dest: "{{ sensu_config_path }}/conf.d/default_handlers.json"
       src: default_handlers.json.j2
     notify: restart sensu-server service
 
   - name: Deploy Sensu client service configuration
     template:
-      dest: /etc/sensu/conf.d/client.json
+      dest: "{{ sensu_config_path }}/conf.d/client.json"
       owner: sensu
       group: sensu
       src: client.json.j2
