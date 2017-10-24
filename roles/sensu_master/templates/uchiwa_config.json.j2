@@ -2,11 +2,11 @@
  "sensu": [
    {
        "name": "{{ uchiwa_datacenter_name }}",
-       "host": "127.0.0.1",
-       "port": 4567,
-       "user": "admin",
-       "pass": "secret",
-       "timeout": 5000
+       "host": "{{ sensu_api_host }}",
+       "port": {{ sensu_api_port }},
+       "user": "{{ sensu_api_username }}",
+       "pass": "{{ sensu_api_password }}",
+       "timeout": {{ sensu_api_timeout }}
    }
  ],
  "uchiwa": {

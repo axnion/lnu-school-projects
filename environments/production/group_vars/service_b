@@ -2,5 +2,10 @@ db_port: 5432
 db_name: ubuntu
 db_user: ubuntu
 db_pass: ubuntu
+db_host: localhost
 
 java_version: 9
+
+backup_dir: /var/opt/fatman/backups/
+backup_ssh_key_path: /home/ubuntu/.ssh/id_rsa
+backup_ssh_user: ubuntu

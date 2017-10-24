@@ -1,2 +1,3 @@
 run_ssh_setup: true
 nodejs_version: 8.6.0
+sensu_environment: development
