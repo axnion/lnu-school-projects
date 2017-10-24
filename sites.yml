@@ -4,7 +4,6 @@
     roles:
      - common
 
-
   - hosts: all:!monitor
     become: yes
     roles:

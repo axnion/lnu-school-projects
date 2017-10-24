@@ -2,7 +2,7 @@
 - name: Update software
   apt:
     update_cache: yes
-    #upgrade: yes
+    upgrade: yes
 
 - name: Ensure hostname set
   hostname:
