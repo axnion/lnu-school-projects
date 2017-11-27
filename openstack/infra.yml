@@ -13,12 +13,16 @@
     - subnet: lan
     - range: 10.0.10.0/24
     - router: acme_router
+    - key_name: test
+    - internet: public
 
   vars_prompt:
     - name: "username"
       prompt: "Openstack Username"
+      private: no
     - name: "password"
       prompt: "Openstack Password"
+      private: no
 
   tasks:
   - name: Create network
@@ -56,7 +60,7 @@
         project_name: "{{ project }}"
       name: "{{ router }}"
       state: present
-      network: internetlan
+      network: "{{ internet }}"
       interfaces:
         - "{{ subnet }}"
 
@@ -134,8 +138,9 @@
       flavor: "{{ hostvars[ansible]['flavor'] }}"
       nics:
         - port-name: "{{ ansible }}_port"
-      key_name: cloud
-      auto_ip: "{{ hostvars[ansible]['public_ip'] }}"
+      key_name: "{{ key_name }}"
+      auto_ip: "{{ hostvars[ansible][
+      'public_ip'] }}"
       userdata: |
         {%- raw -%}#!/bin/bash
         sudo apt-get -y install software-properties-common
@@ -147,3 +152,41 @@
         touch /home/ubuntu/done
         {% endraw %}
       security_groups: default,ssh
+
+  - name: Create ports with fixed ips
+    os_port:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: Group01_project
+      name: "{{ item }}_port"
+      state: present
+      network: acme_lan
+      fixed_ips:
+        - ip_address: "{{ hostvars[item]['ansible_host'] }}"
+    when: item != "mgmt"
+    with_items: "{{ groups['all'] }}"
+
+  - name: Create instances
+    os_server:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: Group01_project
+      state: present
+      name: "{{ item }}"
+      image: "{{ hostvars[item]['image'] }}"
+      flavor: "{{ hostvars[item]['flavor'] }}"
+      nics:
+        - port-name: "{{ item }}_port"
+      security_groups: "{{ hostvars[item]['security_groups'] }}"
+      key_name: cloud
+      auto_ip: "{{ hostvars[item]['public_ip'] }}"
+      userdata: |
+        {%- raw -%}#!/bin/bash
+        sudo apt-get install -y python
+        {% endraw %}
+    when: item != "mgmt"
+    with_items: "{{ groups['all'] }}"
