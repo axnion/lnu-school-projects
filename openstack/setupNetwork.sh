@@ -16,7 +16,10 @@ if [[ $(openstack subnet list --name $subnetName)  ]]; then
 	echo "subnet $subnetName exists... Skipping creating subnet"
 else
 	echo "subet $subnetName does not exist... Creating subnet"
-	openstack subnet create $subnetName --network $networkName --subnet-range 192.168.1.0/24
+	openstack subnet create $subnetName --network $networkName \
+		--subnet-range 192.168.1.0/24 \
+		--dns-nameserver 194.47.199.41 \
+		--dns-nameserver 194.47.110.97 
 fi 
 
 
