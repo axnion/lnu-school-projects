@@ -1,0 +1,4 @@
+flavor: cpu1-ram512-disk5
+image: a560499c-18fc-416f-b81b-acc3b880c543
+public_ip: true
+security_groups: default,ssh
