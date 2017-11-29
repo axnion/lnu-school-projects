@@ -6,10 +6,13 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package.json /usr/src/app/
-RUN npm install
+RUN npm install --silent
+RUN npm install -g nodemon --silent 
 
 # Bundle app source
 COPY . /usr/src/app
 
 EXPOSE 8080
+
+CMD ["nodemon", "-L", "index.js"]
 

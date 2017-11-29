@@ -5,8 +5,7 @@ const router = new Router();
 router
   .route('/')
   .get((...args) => controller.find(...args))
-  //.post((...args) => controller.create(...args));
-  .post((...args) => controller.createBooking(...args));
+  .post((...args) => controller.createExamReport(...args));
 
 router
   .route('/:id')
