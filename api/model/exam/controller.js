@@ -4,15 +4,15 @@ const examFacade = require('./facade');
 class ExamController extends Controller {
 
     createExam(req, res, next) {
-        const timeTable = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "13:00", "13:30",
-            "14:00", "14:30", "15:00", "15:30", "16:00", "16:00", "17:00"];
+        const timeTable = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
+            "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00"];
         let exam = {
             course: req.body.channel_name,
             date: new Date("<" + req.body.text + ">"),
             timeSlots: []
         };
 
-        for(let i = 0; i < timeTable.length - 1; i++){
+        for(let i = 0; i < timeTable.length; i++){
             exam.timeSlots.push({
                 timeSlot: {
                     duration: 30,
@@ -49,7 +49,7 @@ function format(examDoc) {
             formated.attachments.push({
                 "fallback": "Book your exam time",
                 "title": "Book your exam time",
-                "text": "" + examDoc.timeSlots[i].timeSlot.startTime + "-" + examDoc.timeSlots[i + 1].timeSlot.endTime,
+                "text": "" + examDoc.timeSlots[i].timeSlot.startTime + "-" + examDoc.timeSlots[i].timeSlot.endTime,
                 "callback_id": "comic_1234_xyz",
                 "color": "#3AA3E3",
                 "attachment_type": "default",
