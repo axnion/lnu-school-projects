@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "nodemon index.js",
+    "start": "nodemon -L index.js",
     "debug": "nodemon --inspect=0.0.0.0:9229 index.js"
   },
   "engines": {
