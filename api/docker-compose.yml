@@ -2,7 +2,7 @@ version: '2'
 
 services:
   web:
-    command: npm run dev
+    command: npm start
     build: .
     volumes:
       - ./:/app

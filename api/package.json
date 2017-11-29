@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "test": "jest",
+    "start": "nodemon index.js",
+    "debug": "nodemon --inspect=0.0.0.0:9229 index.js"
   },
   "engines": {
     "node": ">=6"
