@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <slave>
-  <name>prod</name>
+  <name>staging</name>
   <description></description>
   <remoteFS>/home/jenkins</remoteFS>
   <numExecutors>2</numExecutors>
@@ -14,5 +14,5 @@
     <retryWaitTime>0</retryWaitTime>
     <sshHostKeyVerificationStrategy class="hudson.plugins.sshslaves.verifiers.KnownHostsFileKeyVerificationStrategy"/>
   </launcher>
-  <label>prod</label>
+  <label>staging</label>
   <nodeProperties/>
