@@ -7,7 +7,7 @@
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers>
         <hudson.triggers.SCMTrigger>
-          <spec>H/15 * * * *</spec>
+          <spec>* * * * *</spec>
           <ignorePostCommitHooks>false</ignorePostCommitHooks>
         </hudson.triggers.SCMTrigger>
       </triggers>
@@ -18,7 +18,7 @@
       <configVersion>2</configVersion>
       <userRemoteConfigs>
         <hudson.plugins.git.UserRemoteConfig>
-          <url>https://github.com/tommykronstal/2dv612-team3-project</url>
+          <url>https://github.com/2dv611/grup02-examination-ht17.git</url>
           <credentialsId>bcf9c514-b728-4e6b-961c-4c5938fd150a</credentialsId>
         </hudson.plugins.git.UserRemoteConfig>
       </userRemoteConfigs>
