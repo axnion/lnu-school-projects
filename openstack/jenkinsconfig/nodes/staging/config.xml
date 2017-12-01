@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<slave>
+  <name>staging</name>
+  <description></description>
+  <remoteFS>/home/jenkins</remoteFS>
+  <numExecutors>2</numExecutors>
+  <mode>EXCLUSIVE</mode>
+  <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
+  <launcher class="hudson.plugins.sshslaves.SSHLauncher" plugin="ssh-slaves@1.22">
+    <host>192.168.0.7</host>
+    <port>22</port>
+    <credentialsId>d6aaf3d9-7423-479d-ad1b-dfea85caf528</credentialsId>
+    <maxNumRetries>0</maxNumRetries>
+    <retryWaitTime>0</retryWaitTime>
+    <sshHostKeyVerificationStrategy class="hudson.plugins.sshslaves.verifiers.KnownHostsFileKeyVerificationStrategy"/>
+  </launcher>
+  <label>staging</label>
+  <nodeProperties/>
