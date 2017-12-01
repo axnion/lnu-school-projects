@@ -1,3 +1,7 @@
+/*
+* Example structure of pipeline.
+*/
+
 def current_stage = "start"  // TODO: If this is a good idea, update this in every stage and communicate the result in slack
 
 node('jenkins_master') {
