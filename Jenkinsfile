@@ -22,20 +22,15 @@ node('master') {
             // Build docker images in parallel
             // TODO: Use docker plugin to perform tasks related to this...
             def dockerfile="docker-compose.yml"
-            parallel firstBranch: {
-                dir('/api') {
-                   sh 'ls- la'
-                   //cleanWorkspace("${dockerfile}")
-                   //sh "docker-compose -f ${dockerfile} up"
-                }
-            }, secondBranch: {
-                dir('/api') {
-                   sh 'ls -la'
-                }
-            },
-            failFast: true
-        }
+           
+            dir('/api') {
+                sh 'ls- la'
+                //cleanWorkspace("${dockerfile}")
+                //sh "docker-compose -f ${dockerfile} up"
+            }
 
+        }
+        /*
         stage('upload image to hub') {
              parallel firstBranch: {
                 //sh 'docker push 2dv611/app1'
@@ -43,9 +38,10 @@ node('master') {
                 //sh 'docker push 2dv611/app2'
             },
             failFast: true
-        }
+        }*/
     } catch(e) {
         // Some error has occured.
+        sh "echo ${e}"
         //slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
     }
 }
