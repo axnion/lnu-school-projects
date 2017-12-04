@@ -24,9 +24,9 @@ node('master') {
             def dockerfile="docker-compose.yml"
            
             dir('./api') {
-                sh 'ls -la'
-                //cleanWorkspace("${dockerfile}")
-                //sh "docker-compose -f ${dockerfile} up"
+                //sh 'ls -la'
+                cleanWorkspace("${dockerfile}")
+                sh "docker-compose -f ${dockerfile} up"
             }
 
         }
