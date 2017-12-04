@@ -1,0 +1,10 @@
+---
+- hosts: jenkins_master
+  roles:
+    - jenkins_master
+
+- hosts: jekins_slaves
+  vars:
+    jenkins_slave_user_authorized_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfieCSF/NWEA346CWnDzzxfLmVxPhvutyJn9if1+6nB17mnxBR0RRAa5Sh9HeBateF9WC45OeSTXLac7Tbxlc/w6QzSQfO/+naEloObPDyViNYlrQ1TUYWSFF02XlqO2ysIvls8z47+LiCoybJjQDcBjs5pKUQomjNnf2mGyvqNgL+pX29js6oc0paxq41n3tVkhAEyy5IUYSagfyt7sgs5pGXqLWPMMXNAsaw/QtkMb7hvC2s3k7adbJ3AEInLTrK27Hlou4iRxXCyqVnpCUCkPNjvstWSyL0lj7clu+bAUZpfdoFLxmlTiHqrZm+b92vh2M8DOsLR2J3TL/9bCOR an222yp@student.lnu.se
+  roles:
+    - jenkins_slave
