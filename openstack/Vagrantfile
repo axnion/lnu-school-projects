@@ -24,7 +24,6 @@ Vagrant.configure("2") do |config|
           chown -R vagrant:vagrant /vagrant
           echo cd /vagrant >> .bashrc
 
-
           apt-get install -y python-pip
           pip install shade
         SHELL
