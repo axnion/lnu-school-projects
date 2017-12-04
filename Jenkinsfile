@@ -25,7 +25,7 @@ node('master') {
            
             dir('./api') {
                 cleanWorkspace("${dockerfile}")
-                sh "docker-compose -f ${dockerfile} up"
+                sh "docker-compose -f ${dockerfile} up -d"
             }
 
         }
