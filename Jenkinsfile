@@ -8,8 +8,8 @@ node('master') {
     try {
         stage('checkout code') {
             // Checks out code from version control
-            current_phase = "checking out code"
-            scm checkout
+            //current_phase = "checking out code"
+            checkout scm
         }
 
         stage('archiving files') {
