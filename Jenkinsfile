@@ -24,8 +24,9 @@ node('master') {
             def dockerfile="docker-compose.yml"
             parallel firstBranch: {
                 dir('/api') {
-                   cleanWorkspace("${dockerfile}")
-                   sh "docker-compose -f ${dockerfile} up"
+                   sh 'ls- la'
+                   //cleanWorkspace("${dockerfile}")
+                   //sh "docker-compose -f ${dockerfile} up"
                 }
             }, secondBranch: {
                 dir('/api') {
