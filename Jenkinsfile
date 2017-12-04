@@ -53,7 +53,7 @@ node('slave') {
             unstash 'api'
             sh 'ls -la'
         }
-    } catc(e) {
+    } catch(e) {
         currentBuild.result = 'FAILURE'
         sh "echo ${e}"
         slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
