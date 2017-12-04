@@ -23,7 +23,7 @@ node('master') {
             // TODO: Use docker plugin to perform tasks related to this...
             def dockerfile="docker-compose.yml"
            
-            dir('/api') {
+            dir('./api') {
                 sh 'ls- la'
                 //cleanWorkspace("${dockerfile}")
                 //sh "docker-compose -f ${dockerfile} up"
