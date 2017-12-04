@@ -42,27 +42,25 @@ node('master') {
         // Some error has occured.
         currentBuild.result = 'FAILURE'
         sh "echo ${e}"
-        //slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
+        slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
+    }
+}
+
+
+node('slave') {
+    try {
+        stage('unstash') {
+            unstash 'api'
+            sh 'ls -la'
+        }
+    } catc(e) {
+        currentBuild.result = 'FAILURE'
+        sh "echo ${e}"
+        slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
     }
 }
 
 /*
-node('unit_slave') {
-    try {
-        stage('unit tests') {
-            // Download docker image and run unit tests
-             parallel firstBranch: {
-                sh 'docker pull 2dv611/app1'
-                sh 'docker-compose -f docker-compose-unittests 2dv611/app1'
-            }, secondBranch: {
-                sh 'docker pull 2dv611/app2'
-                sh 'docker-compose -f docker-compose-unittests 2dv611/app2'
-            },
-            failFast: true
-        }
-    }
-}
-
 node('integration_slave') {
     try {
         stage('a lot of testing') {
