@@ -192,6 +192,7 @@
       auto_ip: "{{ hostvars[item]['public_ip'] }}"
       userdata: |
         {%- raw -%}#!/bin/bash
+        sudo apt-get update
         sudo apt-get install -y python
         {% endraw %}
     when: item != "mgmt"

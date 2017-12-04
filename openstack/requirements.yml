@@ -1,10 +1,7 @@
 # Jenkins Master Role
-- name: jenkins_master
-  src: https://github.com/jtyr/ansible-jenkins_master
+- name: geerlingguy.jenkins
+  src: geerlingguy.jenkins
 
-# Jenkins Slave Role
-- name: jenkins_slave
-  src: https://github.com/jtyr/ansible-jenkins_slave
-
-- name: config_encoder_filters
-  src: https://github.com/jtyr/ansible-config_encoder_filters
+# Java 
+- name: geerlingguy.java
+  src: geerlingguy.java
