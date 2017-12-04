@@ -15,7 +15,7 @@ node('master') {
         stage('archiving files') {
             // Creates a gzip file with selected files
             // These are the files we need in the next environment like docker files etc
-            //stash includes: '/api/**/*', name: 'api'
+            stash 'api'
             sh 'ls -la'
         }
 
