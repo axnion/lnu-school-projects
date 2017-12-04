@@ -5,4 +5,4 @@
       jenkins_hostname: 10.0.10.20
     roles:
       - geerlingguy.java
-      - jenkins_master
+      - geerlingguy.jenkins
