@@ -15,7 +15,7 @@ node('master') {
         stage('archiving files') {
             // Creates a gzip file with selected files
             // These are the files we need in the next environment like docker files etc
-            stash includes: 'api', name: 'api'
+            stash includes: '/api/**/*', name: 'api'
         }
 
         stage('building images') {
@@ -24,7 +24,7 @@ node('master') {
             def dockerfile="docker-compose.yml"
             parallel firstBranch: {
                 dir('/api') {
-                   cleanWorkspace(${dockerfile})
+                   cleanWorkspace("${dockerfile}")
                    sh "docker-compose -f ${dockerfile} up"
                 }
             }, secondBranch: {
