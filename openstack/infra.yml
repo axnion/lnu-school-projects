@@ -151,6 +151,11 @@
         sudo apt-get -y install python-pip
         sudo pip install shade
         touch /home/ubuntu/done
+
+        cd /opt
+        mkdir confman
+        cd /opt/confman
+        git init --bare
         {% endraw %}
       security_groups: default,ssh
 
