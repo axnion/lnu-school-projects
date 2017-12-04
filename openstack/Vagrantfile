@@ -27,21 +27,5 @@ Vagrant.configure("2") do |config|
           apt-get install -y python-pip
           pip install shade
         SHELL
-
-
-        config.vm.provision "shell", privileged: true, inline: <<-SHELL
-            PROD_URI="194.47.174.58"
-            PROD_USER="ubuntu"
-
-            # Generate SSH keys used by git
-            ssh-keygen -t rsa -f ~/.ssh/confman_id_rsa -q -N ""
-
-            # Copy private key to production server
-            # Password: <secret>
-            ssh-copy-id -i ~/.ssh/confman_id_rsa -o StrictHostKeyChecking=no $PROD_USER@$PROD_URI
-
-            # Add the production repo
-            git remote add production ssh://$PROD_USER@$PROD_URI/opt/confman
-        SHELL
     end
 end

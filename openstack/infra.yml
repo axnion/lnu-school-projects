@@ -13,7 +13,7 @@
     - subnet: lan
     - range: 10.0.10.0/24
     - router: acme_router
-    - key_name: test
+    - key_name: Openstack
     - internet: public
 
   vars_prompt:
