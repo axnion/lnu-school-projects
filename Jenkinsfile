@@ -4,7 +4,7 @@
 
 def current_stage = "start"  // TODO: If this is a good idea, update this in every stage and communicate the result in slack
 
-node('jenkins_master') {
+node() {
     try {
         stage('checkout code') {
             // Checks out code from version control
