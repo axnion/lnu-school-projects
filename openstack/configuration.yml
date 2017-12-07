@@ -3,6 +3,7 @@
     become: true
     vars:
       jenkins_hostname: 10.0.10.20
+      jenkins_http_port: 8000
     roles:
       - geerlingguy.java
       - geerlingguy.jenkins
