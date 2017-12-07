@@ -1,0 +1,4 @@
+---
+  - copy:
+    src: "{{ role_path }}/files/jobs/"
+    dest: "/var/lib/jenkins/jobs"

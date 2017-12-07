@@ -7,3 +7,5 @@
     roles:
       - geerlingguy.java
       - geerlingguy.jenkins
+    roles:
+      - jenkins_master_config
