@@ -3,3 +3,8 @@
   copy:
     src: "{{ role_path }}/files/jobs/"
     dest: "/var/lib/jenkins/jobs"
+
+- name: Copying Jenkins node files
+  copy:
+    src: "{{ role_path }}/files/nodes/"
+    dest: "/var/lib/jenkins/nodes"
