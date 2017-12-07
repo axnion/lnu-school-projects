@@ -1,4 +1,5 @@
 ---
-  - copy:
+- name: Copying Jenkins job files
+  copy:
     src: "{{ role_path }}/files/jobs/"
     dest: "/var/lib/jenkins/jobs"
