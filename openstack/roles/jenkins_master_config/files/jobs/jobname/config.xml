@@ -19,7 +19,7 @@
       <userRemoteConfigs>
         <hudson.plugins.git.UserRemoteConfig>
           <url>https://github.com/2dv611/grup02-examination-ht17.git</url>
-          <credentialsId>bcf9c514-b728-4e6b-961c-4c5938fd150a</credentialsId>
+          <credentialsId>63a12c0e-68da-4dd4-945e-27bebef028cf</credentialsId>
         </hudson.plugins.git.UserRemoteConfig>
       </userRemoteConfigs>
       <branches>
