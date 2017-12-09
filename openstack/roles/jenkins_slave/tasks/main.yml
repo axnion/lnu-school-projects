@@ -1,0 +1,6 @@
+---
+- name: Add jenkins user
+  user:
+    name: jenkins
+    groups: ubuntu
+    createhome: yes
