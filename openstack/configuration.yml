@@ -7,6 +7,9 @@
     roles:
       - geerlingguy.java
       - geerlingguy.jenkins
+
+  - hosts: jenkins_master
+    become: false
     roles:
       - jenkins_master_config
   - hosts: jenkins_slaves
