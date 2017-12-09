@@ -1,0 +1,9 @@
+---
+- name: Change owner of /var/jenkins to ubuntu
+  file:
+    path: /var/lib/jenkins
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    recurse: yes
+    mode: 0644

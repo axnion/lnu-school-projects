@@ -1,18 +1,14 @@
 ---
-  - hosts: jenkins_master
+  - hosts: jenkins:
     become: true
+    roles:
+      - jenkins_owner
+      - geerlingguy.java
+
+  - hosts: jenkins_master
     vars:
       jenkins_hostname: 10.0.10.20
       jenkins_http_port: 8000
     roles:
-      - geerlingguy.java
       - geerlingguy.jenkins
-
-  - hosts: jenkins_master
-    become: false
-    roles:
       - jenkins_master_config
-  - hosts: jenkins_slaves
-    become: true
-    roles:
-      - geerlingguy.java
