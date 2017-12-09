@@ -11,6 +11,10 @@
       jenkins_http_port: 8000
       jenkins_plugins:
         - ssh-slaves
+        - workflow-aggregator
+        - git
+        - slack
+        - junit
       jenkins_plugins_state: present
     roles:
       - geerlingguy.jenkins
