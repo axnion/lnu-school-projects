@@ -15,4 +15,5 @@
 
   - hosts: jenkins_master
     roles:
+      - jenkins_owner
       - jenkins_master_config
