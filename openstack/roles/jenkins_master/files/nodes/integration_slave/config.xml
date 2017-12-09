@@ -2,7 +2,7 @@
 <slave>
   <name>integration_slave</name>
   <description>integration server</description>
-  <remoteFS>/home/jenkins</remoteFS>
+  <remoteFS>/home/ubuntu</remoteFS>
   <numExecutors>1</numExecutors>
   <mode>NORMAL</mode>
   <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
