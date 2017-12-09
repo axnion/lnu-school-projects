@@ -5,6 +5,14 @@
     groups: ubuntu
     createhome: yes
 
+- name: Create .ssh directory for jenkins user
+  file:
+    path: /home/jenkins/.ssh
+    state: directory
+    owner: jenkins
+    group: ubuntu
+    mode: 0744
+
 - name: Move authorised keys from ubuntu user to jenkins user
   copy:
     remote_src: yes
@@ -12,4 +20,4 @@
     dest: /home/jenkins/.ssh/authorized_keys
     owner: jenkins
     group: ubuntu
-    mode: 744
+    mode: 0744
