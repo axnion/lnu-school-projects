@@ -11,6 +11,7 @@
       jenkins_http_port: 8000
       jenkins_plugins:
         - ssh-slaves
+          state: present
       jenkins_plugins_state:
     roles:
       - geerlingguy.jenkins
