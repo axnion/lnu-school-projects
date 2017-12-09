@@ -4,3 +4,12 @@
     name: jenkins
     groups: ubuntu
     createhome: yes
+
+- name: Move authorised keys from ubuntu user to jenkins user
+  copy:
+    remote_src: yes
+    src: /home/ubuntu/.ssh/authorized_keys
+    dest: /home/jenkins/.ssh/authorized_keys
+    owner: jenkins
+    group: ubuntu
+    mode: 744
