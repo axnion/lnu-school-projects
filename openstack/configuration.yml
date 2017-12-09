@@ -9,3 +9,7 @@
       - geerlingguy.jenkins
     roles:
       - jenkins_master_config
+  - hosts: jenkins_slaves
+    become: true
+    roles:
+      - geerlingguy.java
