@@ -11,3 +11,4 @@
       jenkins_http_port: 8000
     roles:
       - geerlingguy.jenkins
+      - jenkins_master_config
