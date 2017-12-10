@@ -6,9 +6,18 @@ class ExamController extends Controller {
     createExam(req, res, next) {
         const timeTable = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
             "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00"];
+        console.log("Printing text");
+        //const input = JSON.stringify(req.body.text);
+        const input = JSON.parse(req.body.text, (key, value) => {
+            console.log(key); // log the current property name, the last is "".
+            console.log(value);
+            return value;     // return the unchanged property value.
+        });
+        console.log(input);
         let exam = {
             course: req.body.channel_name,
-            date: new Date("<" + req.body.text + ">"),
+            date: new Date("<" + input.date + ">"),
+            name: input.name,
             timeSlots: []
         };
 
@@ -40,7 +49,7 @@ class ExamController extends Controller {
 function format(examDoc) {
     console.log(examDoc);
     let formated = {
-        "text": "Exam for the course: " + examDoc.course + " on " + examDoc.date ,
+        "text": examDoc.name + "for the course: " + examDoc.course + " on " + examDoc.date ,
         "attachments": []
     };
 

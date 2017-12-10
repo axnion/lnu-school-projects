@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const examSchema = new Schema({
   course: { type: String, required: true },
   date: {type: Date, required: true},
+  name: {type: String, required: true},
   timeSlots: [{
       timeSlot: {
         duration: {type: Number, required: true, default: 30},
