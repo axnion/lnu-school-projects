@@ -10,8 +10,8 @@ const examSchema = new Schema({
       timeSlot: {
         duration: {type: Number, required: true, default: 30},
         studentId: {type: String, required: true},
-        startTime: {type: String},
-        endTime: {type: String}
+        startTime: {type: Date},
+        endTime: {type: Date}
       }
   }]
 });
