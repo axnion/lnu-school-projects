@@ -4,14 +4,11 @@ const examFacade = require('./facade');
 class ExamController extends Controller {
 
     createExam(req, res, next) {
-        /*const timeTable = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
-            "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00"];*/
-
         const input = JSON.parse(req.body.text, (key, value) => {
             return value;
         });
 
-        const timeTable = buildTimeTable(input.duration, input.date);
+        const timeTable = buildTimeTable(input.duration, input.date, input.timeSlots);
 
         let exam = {
             course: req.body.channel_name,
@@ -37,8 +34,6 @@ class ExamController extends Controller {
 
     getExam(req, res, next) {
         const inputDate = new Date(Date.now());
-        console.log(inputDate);
-        console.log(req.body);
         this.facade.findOne({ 'course': req.body.channel_name, 'date': { $gte : inputDate } })
             .then(doc => res.status(201).json(format(doc)))
             .catch(err => next(err));
@@ -65,7 +60,6 @@ function format(examDoc) {
                 "fields": [
                     {
                         "title": "Slot 1: " + current.studentId,
-                        //"value": "" + current.startTime.valueOf()/1000 + "-" + current.endTime,
                         "value": "<!date^"+ current.startTime.valueOf()/1000 + "^{time} |8.00 AM> - "
                         + "<!date^"+ current.endTime.valueOf()/1000 + "^{time} |8.00 AM>",
                         "short": true
@@ -93,20 +87,29 @@ function format(examDoc) {
     return formated;
 }
 
-function buildTimeTable(duration, date) {
+function buildTimeTable(duration, date, timeSlots) {
     let table = [];
 
-    //Create date and set it to 8 am
+    //Create date and set it to 8 am CET
     date = new Date(date);
     date= addMinutes(date,420);
     let maxDate = addMinutes(date, 540);
 
-    console.log(date);
     table.push(date);
 
-    while (date < maxDate){
+    while (date < maxDate && table.length <= timeSlots){
         date = addMinutes(date, duration);
         table.push(date);
+
+        if (addMinutes(date, duration) > maxDate && table.length <= timeSlots) {
+            date.setDate(date.getDate() + 1);
+            date.setTime(date.getTime() - (510 * 60000));
+
+            maxDate.setDate(maxDate.getDate() + 1);
+            console.log("Reajusting Date!");
+            console.log(date);
+            console.log(maxDate);
+        }
     }
 
     return table;
