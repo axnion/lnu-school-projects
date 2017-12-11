@@ -15,6 +15,7 @@
         - git
         - slack
         - junit
+        - performance
       jenkins_plugins_state: present
     roles:
       - geerlingguy.jenkins
