@@ -46,12 +46,11 @@ node('master') {
     }
 }
 
-
-node('slave') {
+/*
+node('unit_slave') {
     try {
-        stage('unstash') {
-            unstash 'api'
-            sh 'ls -la'
+        stage('unit tests') {
+            // What to do here? Unit tests...
         }
     } catch(e) {
         currentBuild.result = 'FAILURE'
@@ -59,26 +58,42 @@ node('slave') {
         slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
     }
 }
+*/
 
-
-node('integration_slave') {
+/*
+node('staging_slave') {
     try {
         stage('Staging') {
+           // Staging tests?
+        }
+    } catch(e) {
+        // Some error occured, send a message
+        currentBuild.result = 'FAILURE'
+    }
+}
+*/
+
+/*
+node('integration_slave') {
+    try {
+        stage('integration tests') {
             // Get image for API (build?, docker hub?, jenkins artifact repository?)
-            // Seed DB with staging objects
+            // Seed DB with integration objects
             // jMeter (or some other tool) to perform some integration tests and loading?
             // Send a report, with slack
             // Report to jenkins
         }
     } catch(e) {
         // Some error occured, send a message
+        currentBuild.result = 'FAILURE'
     }
 }
+*/
+
+// TODO: Look for a cool plugin or send a message to slack and be able to continue?
+//input "Continue to production?" 
 
 /*
-// TODO: Look for a cool plugin or send a message to slack and be able to continue?
-input "Continue to production?" 
-
 node('production') {
 
 }
