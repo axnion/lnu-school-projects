@@ -61,10 +61,10 @@ node('unit_slave') {
 */
 
 /*
-node('staging_slave') {
+node('integration_slave') {
     try {
-        stage('Staging') {
-           // Staging tests?
+        stage('integration tests') {
+            // Does it build?
         }
     } catch(e) {
         // Some error occured, send a message
@@ -73,10 +73,11 @@ node('staging_slave') {
 }
 */
 
+
 /*
-node('integration_slave') {
+node('staging_slave') {
     try {
-        stage('integration tests') {
+        stage('Staging') {
             // Get image for API (build?, docker hub?, jenkins artifact repository?)
             // Seed DB with integration objects
             // jMeter (or some other tool) to perform some integration tests and loading?
