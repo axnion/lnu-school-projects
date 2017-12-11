@@ -1,4 +1,10 @@
 ---
+  - hosts: all
+    become: true
+    roles:
+      - franklinkim.docker
+      - franklinkim.docker-compose
+
   - hosts: jenkins
     become: true
     roles:
