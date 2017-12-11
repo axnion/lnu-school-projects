@@ -15,7 +15,7 @@ node('master') {
         stage('archiving files') {
             // Creates a gzip file with selected files
             // These are the files we need in the next environment like docker files etc
-            stash includes: 'api/*', name: 'api'
+            stash includes: 'api/**,', name: 'api'
         }
 
         stage('building images') {
@@ -60,17 +60,22 @@ node('slave') {
     }
 }
 
-/*
+
 node('integration_slave') {
     try {
-        stage('a lot of testing') {
-            sh 'echo "Puh, this is tiresome..."'
+        stage('Staging') {
+            // Get image for API (build?, docker hub?, jenkins artifact repository?)
+            // Seed DB with staging objects
+            // jMeter (or some other tool) to perform some integration tests and loading?
+            // Send a report, with slack
+            // Report to jenkins
         }
     } catch(e) {
         // Some error occured, send a message
     }
 }
 
+/*
 // TODO: Look for a cool plugin or send a message to slack and be able to continue?
 input "Continue to production?" 
 
