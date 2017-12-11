@@ -78,9 +78,10 @@ node('integration_slave') {
 node('staging_slave') {
     try {
         stage('Staging') {
+            // -> Tommy <-
             // Get image for API (build?, docker hub?, jenkins artifact repository?)
-            // Seed DB with integration objects
-            // jMeter (or some other tool) to perform some integration tests and loading?
+            // Seed DB with staging objects
+            // jMeter (or some other tool) to perform some staging loading and acceptance tests??
             // Send a report, with slack
             // Report to jenkins
         }
