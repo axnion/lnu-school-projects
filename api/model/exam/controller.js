@@ -101,7 +101,7 @@ function buildTimeTable(duration, date, timeSlots) {
         date = addMinutes(date, duration);
         table.push(date);
 
-        if (addMinutes(date, duration) > maxDate && table.length <= timeSlots) {
+        if (addMinutes(date, duration) >= maxDate && table.length <= timeSlots) {
             date.setDate(date.getDate() + 1);
             date.setTime(date.getTime() - (510 * 60000));
 
