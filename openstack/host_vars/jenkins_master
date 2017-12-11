@@ -1,4 +1,4 @@
-flavor: cpu1-ram512-disk5
+flavor: cpu2-ram8192-disk40
 image: a560499c-18fc-416f-b81b-acc3b880c543
 public_ip: true
 security_groups: default,jenkins
