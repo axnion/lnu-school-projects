@@ -3,11 +3,7 @@
 */
 
 node('master') {
-<<<<<<< HEAD
-    def image
-=======
     def api
->>>>>>> e9c711245292acc0612e0b53f4de6cead23d5d2a
 
     try {
         stage('checkout code') {
