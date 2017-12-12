@@ -56,6 +56,7 @@ node('unit_slave') {
 }
 */
 
+/*
 node('integration_slave') {
     // -> Axel <-
     // Get image from Docker Hub
@@ -76,7 +77,7 @@ node('integration_slave') {
         reportToSlack()
     }
 }
-
+*/
 
 node('staging_slave') {
     // -> Tommy <-
