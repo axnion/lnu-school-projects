@@ -77,7 +77,7 @@ node('integration_slave') {
 }
 
 
-node('master') {
+node('staging_slave') {
     // -> Tommy <-
     // Get image for API from docker hub
     // Seed DB with staging objects
