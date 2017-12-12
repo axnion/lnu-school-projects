@@ -84,7 +84,7 @@ node('master') {
             stage('Download image') {
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
-                sh "docker-compose -f '${dockerfile}' up --build"
+                sh "docker-compose -f '${dockerfile}' up --build -d"
             }
         }
     } catch(e) {
