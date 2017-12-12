@@ -89,7 +89,7 @@ node('staging_slave') {
     try {
         stage('Staging') {
             unstash 'staging'
-            stage('Download image') {
+            stage('Start API and mongo') {
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
                 sh "docker-compose -f '${dockerfile}' up --build -d"
