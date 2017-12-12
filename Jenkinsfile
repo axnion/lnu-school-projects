@@ -2,43 +2,39 @@
 * Example structure of pipeline.
 */
 
-def current_stage = "start"  // TODO: If this is a good idea, update this in every stage and communicate the result in slack
-
 node('master') {
+    def api
+
     try {
         stage('checkout code') {
             // Checks out code from version control
-            //current_phase = "checking out code"
             checkout scm
         }
 
         stage('archiving files') {
             // Creates a gzip file with selected files
             // These are the files we need in the next environment like docker files etc
-            stash includes: 'api/**,', name: 'api'
+            stash includes: 'api/docker*', name: 'dockerfiles'
         }
 
-        stage('building images') {
-            // Build docker images in parallel
-            // TODO: Use docker plugin to perform tasks related to this...
-            def dockerfile="docker-compose.yml"
-           
+        stage('Building image') {
+            
+            // Build docker image for API
             dir('./api') {
-                cleanWorkspace("${dockerfile}")
-                sh "docker-compose -f ${dockerfile} up -d"
+                 api = docker.build("tommykronstal/2dv611api")
             }
-
         }
-        /*
-        stage('upload image to hub') {
-             parallel firstBranch: {
-                //sh 'docker push 2dv611/app1'
-            }, secondBranch: {
-                //sh 'docker push 2dv611/app2'
-            },
-            failFast: true
-        }*/
+        
+        stage('Upload image to docker hub') {
+            
+            // Push image to registry
+            docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                api.push("${env.BUILD_NUMBER}")
+                api.push("latest")
+            }
+        }
     } catch(e) {
+
         // Some error has occured.
         currentBuild.result = 'FAILURE'
         sh "echo ${e}"
@@ -74,23 +70,29 @@ node('integration_slave') {
 */
 
 
-/*
 node('staging_slave') {
+    // -> Tommy <-
+    // Get image for API from docker hub
+    // Seed DB with staging objects
+    // jMeter (or some other tool) to perform some staging loading and acceptance tests??
+    // Send a report, with slack
+    // Report to jenkins
     try {
         stage('Staging') {
-            // -> Tommy <-
-            // Get image for API (build?, docker hub?, jenkins artifact repository?)
-            // Seed DB with staging objects
-            // jMeter (or some other tool) to perform some staging loading and acceptance tests??
-            // Send a report, with slack
-            // Report to jenkins
+            step('Download image') {
+                docker.image("tommykronstal/2dv611api").withRun() { api ->
+                    docker.image("tommykronstal/2dv611api").inside("--link ${api.ID}") {
+                        
+                    }
+                }
+                    
+            }
         }
     } catch(e) {
         // Some error occured, send a message
         currentBuild.result = 'FAILURE'
     }
 }
-*/
 
 // TODO: Look for a cool plugin or send a message to slack and be able to continue?
 //input "Continue to production?" 
