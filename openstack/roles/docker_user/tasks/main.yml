@@ -1,0 +1,9 @@
+---
+- name: Add users to docker group
+  user:
+    name: item
+    shell: /bin/bash
+    groups: docker
+    append: yes
+  with_items:
+    "{{ docker-users }}"
