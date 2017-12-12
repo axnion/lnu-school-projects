@@ -13,23 +13,11 @@
     owner: jenkins
     group: jenkins
 
-- name: Wait for Jenkins to start up
-  uri:
-    url: "10.0.10.20:8000"
-    status_code: 200
-    timeout: 5
-  register: jenkins_service_status
-  retries: 60
-  delay: 5
-
-- name: debug
-  debug: 
-    msg: "{{ jenkins_service_status }}"
-
 - name: Install Jenkins Plugins
   jenkins_plugin:
     name: item
     state: present
+    url: http://localhost:8000
   with_items:
     "{{ plugins }}"
 
@@ -42,5 +30,6 @@
   jenkins_plugin:
     name: item
     state: enabled
+    url: http://localhost:8000
   with_items:
     "{{ plugins }}"
