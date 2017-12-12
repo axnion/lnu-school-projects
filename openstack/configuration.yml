@@ -1,9 +1,10 @@
 ---
   - hosts: all
     become: true
+    vars:
+      docker_install_compose: true
     roles:
-      - franklinkim.docker
-      - franklinkim.docker-compose
+      - geerlingguy.docker
 
   - hosts: jenkins
     become: true

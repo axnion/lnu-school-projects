@@ -7,9 +7,5 @@
   src: geerlingguy.java
 
 # Docker
-- name: franklinkim.docker
-  src: franklinkim.docker
-
-# Docker Compose
-- name: franklinkim.docker-compose
-  src: franklinkim.docker-compose
+- name: geerlingguy.docker
+  src: geerlingguy.docker
