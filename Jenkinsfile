@@ -5,6 +5,8 @@
 def current_stage = "start"  // TODO: If this is a good idea, update this in every stage and communicate the result in slack
 
 node('master') {
+    def image
+
     try {
         stage('checkout code') {
             // Checks out code from version control
@@ -21,23 +23,27 @@ node('master') {
         stage('building images') {
             // Build docker images in parallel
             // TODO: Use docker plugin to perform tasks related to this...
-            def dockerfile="docker-compose.yml"
+            //def dockerfile="docker-compose.yml"
            
             dir('./api') {
-                cleanWorkspace("${dockerfile}")
-                sh "docker-compose -f ${dockerfile} up -d"
+                // Build Docker image
+                image = docker.build("2DV611/xam")
+                //cleanWorkspace("${dockerfile}")
+                //sh "docker-compose -f ${dockerfile} up -d"
             }
-
         }
-        /*
+
         stage('upload image to hub') {
-             parallel firstBranch: {
-                //sh 'docker push 2dv611/app1'
-            }, secondBranch: {
-                //sh 'docker push 2dv611/app2'
-            },
-            failFast: true
-        }*/
+            docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials')
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
+        //     parallel firstBranch: {
+        //        //sh 'docker push 2dv611/app1'
+        //    }, secondBranch: {
+        //        //sh 'docker push 2dv611/app2'
+        //    },
+        //    failFast: true
+        }
     } catch(e) {
         // Some error has occured.
         currentBuild.result = 'FAILURE'
