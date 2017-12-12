@@ -12,3 +12,22 @@
     dest: "/var/lib/jenkins/nodes"
     owner: jenkins
     group: jenkins
+
+- name: Install Jenkins Plugins
+  jenkins_plugin:
+    name: item
+    state: present
+  with_items:
+    "{{ plugins }}"
+
+- name: Restart Jenkins
+  systemd:
+    name: jenkins
+    state: restarted
+
+- name: Enable Jenkins Plugins
+  jenkins_plugin:
+    name: item
+    state: enabled
+  with_items:
+    "{{ plugins }}"

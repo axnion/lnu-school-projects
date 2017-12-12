@@ -15,14 +15,6 @@
     vars:
       jenkins_hostname: 10.0.10.20
       jenkins_http_port: 8000
-      jenkins_plugins:
-        - ssh-slaves
-        - workflow-aggregator
-        - git
-        - slack
-        - junit
-        - performance
-      jenkins_plugins_state: present
     roles:
       - geerlingguy.jenkins
       - jenkins_master
