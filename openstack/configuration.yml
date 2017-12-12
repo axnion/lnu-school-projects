@@ -20,6 +20,10 @@
       jenkins_plugins:
         - ssh-slave
         - git
+        - slack
+        - junit
+        - workflow-aggregator
+        - performance
     roles:
       - geerlingguy.jenkins
       - jenkins_master
