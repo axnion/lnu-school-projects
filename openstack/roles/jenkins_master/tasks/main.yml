@@ -23,6 +23,8 @@
   delay: 5
   until: >
     'status' in jenkins_service_status and jenkins_service_status['status'] == 200
+  debug:
+    msg: "{{ jenkins_service_status }}"
 
 - name: Install Jenkins Plugins
   jenkins_plugin:
