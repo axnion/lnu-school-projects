@@ -2,49 +2,44 @@
 * Example structure of pipeline.
 */
 
-def current_stage = "start"  // TODO: If this is a good idea, update this in every stage and communicate the result in slack
-
 node('master') {
+<<<<<<< HEAD
     def image
+=======
+    def api
+>>>>>>> e9c711245292acc0612e0b53f4de6cead23d5d2a
 
     try {
         stage('checkout code') {
             // Checks out code from version control
-            //current_phase = "checking out code"
             checkout scm
         }
 
         stage('archiving files') {
             // Creates a gzip file with selected files
             // These are the files we need in the next environment like docker files etc
-            stash includes: 'api/**,', name: 'api'
+            stash includes: 'api/docker*', name: 'dockerfiles'
+            stash includes: 'docker-compose-staging.yml', name: 'staging'
         }
 
-        stage('building images') {
-            // Build docker images in parallel
-            // TODO: Use docker plugin to perform tasks related to this...
-            //def dockerfile="docker-compose.yml"
-           
+        stage('Building image') {
+            
+            // Build docker image for API
             dir('./api') {
-                // Build Docker image
-                image = docker.build("2DV611/xam")
-                //cleanWorkspace("${dockerfile}")
-                //sh "docker-compose -f ${dockerfile} up -d"
+                 api = docker.build("tommykronstal/2dv611api")
             }
         }
-
-        stage('upload image to hub') {
-            docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials')
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
-        //     parallel firstBranch: {
-        //        //sh 'docker push 2dv611/app1'
-        //    }, secondBranch: {
-        //        //sh 'docker push 2dv611/app2'
-        //    },
-        //    failFast: true
+        
+        stage('Upload image to docker hub') {
+            
+            // Push image to registry
+            docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                api.push("${env.BUILD_NUMBER}")
+                api.push("latest")
+            }
         }
     } catch(e) {
+
         // Some error has occured.
         currentBuild.result = 'FAILURE'
         sh "echo ${e}"
@@ -80,23 +75,27 @@ node('integration_slave') {
 */
 
 
-/*
-node('staging_slave') {
+node('master') {
+    // -> Tommy <-
+    // Get image for API from docker hub
+    // Seed DB with staging objects
+    // jMeter (or some other tool) to perform some staging loading and acceptance tests??
+    // Send a report, with slack
+    // Report to jenkins
     try {
         stage('Staging') {
-            // -> Tommy <-
-            // Get image for API (build?, docker hub?, jenkins artifact repository?)
-            // Seed DB with staging objects
-            // jMeter (or some other tool) to perform some staging loading and acceptance tests??
-            // Send a report, with slack
-            // Report to jenkins
+            unstash 'staging'
+            stage('Download image') {
+                def dockerfile = "docker-compose-staging.yml"
+                cleanWorkspace("${dockerfile}")
+                sh "docker-compose -f '${dockerfile}' up --build -d"
+            }
         }
     } catch(e) {
         // Some error occured, send a message
         currentBuild.result = 'FAILURE'
     }
 }
-*/
 
 // TODO: Look for a cool plugin or send a message to slack and be able to continue?
 //input "Continue to production?" 
