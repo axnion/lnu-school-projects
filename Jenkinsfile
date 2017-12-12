@@ -38,7 +38,7 @@ node('master') {
         // Some error has occured.
         currentBuild.result = 'FAILURE'
         sh "echo ${e}"
-        slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
+        reportToSlack()
     }
 }
 
@@ -73,6 +73,7 @@ node('integration_slave') {
     } catch(e) {
         // Some error occured, send a message
         currentBuild.result = 'FAILURE'
+        reportToSlack()
     }
 }
 
@@ -117,4 +118,8 @@ def pullImages(imagename) {
 def cleanWorkspace(dockerfile) {
     // Can be a good idea to do some tidy up before deploying in the environment
     sh "docker-compose -f ${dockerfile} down"
+}
+
+def reportToSlack() {
+    slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
 }
