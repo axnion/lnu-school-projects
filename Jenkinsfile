@@ -82,6 +82,7 @@ node('master') {
         stage('Staging') {
             stage('Download image') {
                 unstash 'staging'
+                sh 'ls -la'
                 sh 'docker-compose -f docker-compose-staging up --build'
             }
         }
