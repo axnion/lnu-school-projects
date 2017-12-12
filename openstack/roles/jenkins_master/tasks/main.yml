@@ -14,7 +14,8 @@
     group: jenkins
 
 - name: Wait for Jenkins to start up
-  uri: "10.0.10.20:8000"
+  uri:
+    url: "10.0.10.20:8000"
     status_code: 200
     timeout: 5
   register: jenkins_service_status
