@@ -27,7 +27,6 @@ node('master') {
         }
         
         stage('Upload image to docker hub') {
-            
             // Push image to registry
             docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
                 api.push("${env.BUILD_NUMBER}")
@@ -57,8 +56,16 @@ node('unit_slave') {
 }
 */
 
-/*
 node('integration_slave') {
+    // -> Axel <-
+    // Get image from Docker Hub
+    // Start docker-compose-integration.yml
+    //      Load postman script into newman container as a volume
+    // (Optional) Populate DB
+    // Execute tests with Newman
+    //      Save report to volume
+    // Send report to Slack
+    // Report results to Jenkins
     try {
         stage('integration tests') {
             // Does it build?
@@ -68,7 +75,6 @@ node('integration_slave') {
         currentBuild.result = 'FAILURE'
     }
 }
-*/
 
 
 node('master') {
