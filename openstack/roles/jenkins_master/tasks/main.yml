@@ -27,22 +27,3 @@
   systemd:
     name: jenkins
     state: restarted
-
-- name: "Wait for Jenkins to restart"
-  uri:
-    url: "http://localhost:8000"
-    status_code: 200
-  register: result
-  until: result.status == 200
-  retries: 60
-  delay: 1
-
-- name: Enable Jenkins Plugins
-  jenkins_plugin:
-    name: item
-    state: enabled
-    url: http://localhost:8000
-    url_username: admin           # Change and add to vault
-    url_password: admin           # Ditto
-  with_items:
-    "{{ plugins }}"
