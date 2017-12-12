@@ -5,6 +5,7 @@
       docker_install_compose: true
     roles:
       - geerlingguy.docker
+      - docker_user
 
   - hosts: jenkins
     become: true
