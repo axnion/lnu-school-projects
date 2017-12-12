@@ -18,6 +18,8 @@
     name: item
     state: present
     url: http://localhost:8000
+    url_username: admin           # Change and add to vault
+    url_password: admin           # Ditto
   with_items:
     "{{ plugins }}"
 
