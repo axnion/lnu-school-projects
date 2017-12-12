@@ -80,10 +80,9 @@ node('master') {
     // Report to jenkins
     try {
         stage('Staging') {
+            unstash 'staging'
             stage('Download image') {
-                unstash 'staging'
-                sh 'ls -la'
-                sh 'docker-compose -f docker-compose-staging up --build'
+                sh 'docker-compose -f docker-compose-staging.yml up --build'
             }
         }
     } catch(e) {
