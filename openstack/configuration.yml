@@ -1,4 +1,10 @@
 ---
+  - hosts: all
+    become: true
+    roles:
+      - franklinkim.docker
+      - franklinkim.docker-compose
+
   - hosts: jenkins
     become: true
     roles:
@@ -15,6 +21,7 @@
         - git
         - slack
         - junit
+        - performance
       jenkins_plugins_state: present
     roles:
       - geerlingguy.jenkins
