@@ -6,4 +6,4 @@
     groups: docker
     append: yes
   with_items:
-    "{{ docker-users }}"
+    "{{ docker_users }}"
