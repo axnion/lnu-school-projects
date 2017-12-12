@@ -13,6 +13,16 @@
     owner: jenkins
     group: jenkins
 
+- name: Wait for Jenkins to start up
+  uri: "10.0.10.20:8000"
+    status_code: 200
+    timeout: 5
+  register: jenkins_service_status
+  retries: 60
+  delay: 5
+  until: >
+    'status' in jenkins_service_status and jenkins_service_status['status'] == 200
+
 - name: Install Jenkins Plugins
   jenkins_plugin:
     name: item
