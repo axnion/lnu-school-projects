@@ -79,13 +79,9 @@ node('staging_slave') {
     // Report to jenkins
     try {
         stage('Staging') {
-            step('Download image') {
-                docker.image("tommykronstal/2dv611api").withRun() { api ->
-                    docker.image("tommykronstal/2dv611api").inside("--link ${api.ID}") {
-                        
-                    }
-                }
-                    
+            stage('Download image') {
+                unstash 'dockerfiles'
+                sh 'docker-compose -f docker-compose-staging up --build'
             }
         }
     } catch(e) {
