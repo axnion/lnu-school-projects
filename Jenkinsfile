@@ -83,8 +83,8 @@ node('master') {
             unstash 'staging'
             stage('Download image') {
                 def dockerfile = "docker-compose-staging.yml"
-                cleanWorkspace(${dockerfile})
-                sh "docker-compose -f ${dockerfile} up --build"
+                cleanWorkspace("${dockerfile}")
+                sh "docker-compose -f '${dockerfile}' up --build"
             }
         }
     } catch(e) {
