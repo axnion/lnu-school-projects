@@ -78,7 +78,7 @@ node('integration_slave') {
             }
 
             stage('Run newman Tests') {
-                sh "newman test.json --exitCode 1"
+                sh "newman tests.json --exitCode 1"
             }
         }
     } catch(e) {
