@@ -68,14 +68,15 @@ node('integration_slave') {
     // Send report to Slack
     // Report results to Jenkins
     try {
-        stage('integration tests') {
-            unstash 'integration_test'
-            unstash 'staging'
-            stage('Start API and mongo') {
-                def dockerfile = "docker-compose-staging.yml"
-                cleanWorkspace("${dockerfile}")
-                sh "docker-compose -f '${dockerfile}' up --build -d"
-            }
+        unstash 'integration_test'
+        unstash 'staging'
+
+        stage('Integration: Start API and mongo') {
+            def dockerfile = "docker-compose-staging.yml"
+            cleanWorkspace("${dockerfile}")
+            sh "docker-compose -f '${dockerfile}' up --build -d"
+        }
+        stage('Integration: Run Newman tests') {
 
             stage('Start Newman container') {
                 sh "newman integration_test --exitCode 1"
