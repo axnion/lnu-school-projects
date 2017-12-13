@@ -16,7 +16,7 @@ node('master') {
             // These are the files we need in the next environment like docker files etc
             stash includes: 'api/docker*', name: 'dockerfiles'
             stash includes: 'docker-compose-staging.yml', name: 'staging'
-            stash includes: 'api/test/integration_tests', name: 'integration_test'
+            stash includes: 'api/test/integration_tests/tests.json', name: 'integration_test'
         }
 
         stage('Building image') {
