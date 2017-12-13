@@ -78,6 +78,7 @@ node('integration_slave') {
             }
 
             stage('Run newman Tests') {
+                sh "curl localhost:8080"
                 sh "newman run tests.json"
             }
         }
