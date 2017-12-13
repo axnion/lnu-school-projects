@@ -15,7 +15,7 @@ node('master') {
             // Creates a gzip file with selected files
             // These are the files we need in the next environment like docker files etc
             stash includes: 'api/docker*', name: 'dockerfiles'
-            stash includes: 'docker-compose-staging.yml', name: 'staging'
+            stash includes: 'docker-compose-staging.yml, api/test/staging_tests/*.yml', name: 'staging'
             stash includes: 'api/test/integration_tests/tests.json', name: 'integration_test'
         }
 
@@ -101,8 +101,15 @@ node('staging_slave') {
             unstash 'staging'
             stage('Start API and mongo') {
                 def dockerfile = "docker-compose-staging.yml"
-                cleanWorkspace("${dockerfile}")
-                sh "docker-compose -f '${dockerfile}' up --build -d"
+                dir('./api') {
+                    cleanWorkspace("${dockerfile}")
+                    sh "docker-compose -f ${dockerfile} up --build -d"
+                }
+            }
+
+            stage('Run taurus staging tests') {
+                
+                sh "docker run -i --rm -v ${WORKSPACE}/api/test/staging_tests:/bzt-configs blazemeter/taurus test.yml"
             }
         }
     } catch(e) {
