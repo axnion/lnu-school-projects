@@ -32,3 +32,9 @@
     become: yes
     roles:
       - jenkins_slave
+
+  - hosts: integration_slave
+    become: yes
+    roles:
+      - geerlingguy.nodejs
+      - newman
