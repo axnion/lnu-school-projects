@@ -72,7 +72,7 @@ node('integration_slave') {
             unstash 'integration'
             stage('Start services and test container') {
                 dir('./api') {
-                    def dockerfile = "docker-compose-staging.yml"
+                    def dockerfile = "docker-compose-integration.yml"
                     cleanWorkspace("${dockerfile}")
                     sh "docker-compose -f ${dockerfile} up --docker-compose -f docker-compose-integration.yml up --exit-code-from testrunner testrunner"
                 }
