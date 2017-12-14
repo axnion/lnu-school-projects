@@ -56,7 +56,7 @@ node('unit_slave') {
     }
 }
 */
-/*
+
 node('integration_slave') {
     // -> Axel <-
     // Get image from Docker Hub
@@ -70,15 +70,12 @@ node('integration_slave') {
     try {
         stage('Integration testing') {
             unstash 'integration'
-            stage('Start API and mongo') {
-                def dockerfile = "docker-compose-staging.yml"
-                cleanWorkspace("${dockerfile}")
-                sh "docker-compose -f '${dockerfile}' up --build -d"
-            }
-
-            stage('Run newman Tests') {
-                sh "curl localhost:8080"
-                sh "newman run tests.json"
+            stage('Start services and test container') {
+                dir('./api') {
+                    def dockerfile = "docker-compose-staging.yml"
+                    cleanWorkspace("${dockerfile}")
+                    sh "docker-compose -f ${dockerfile} up --docker-compose -f docker-compose-integration.yml up --exit-code-from testrunner testrunner"
+                }
             }
         }
     } catch(e) {
@@ -87,12 +84,10 @@ node('integration_slave') {
         reportToSlack()
     }
 }
-
+/*
 sudo docker run -v ~/Lnu/2DV611/project/api/test/integration_tests:/etc/newman --network=mynet -t postman/newman_ubuntu1404     
 run "tests.json"     
 --reporters="html,cli,xml" --reporter-html-export="newman-results.html"
-
-
 */
 node('staging_slave') {
     // -> Tommy <-
