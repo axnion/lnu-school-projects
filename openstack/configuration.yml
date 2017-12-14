@@ -1,9 +1,11 @@
 ---
   - hosts: all
     become: true
+    vars:
+      docker_install_compose: true
     roles:
-      - franklinkim.docker
-      - franklinkim.docker-compose
+      - geerlingguy.docker
+      - docker_user
 
   - hosts: jenkins
     become: true
@@ -16,13 +18,12 @@
       jenkins_hostname: 10.0.10.20
       jenkins_http_port: 8000
       jenkins_plugins:
-        - ssh-slaves
-        - workflow-aggregator
+        - ssh-slave
         - git
         - slack
         - junit
+        - workflow-aggregator
         - performance
-      jenkins_plugins_state: present
     roles:
       - geerlingguy.jenkins
       - jenkins_master
@@ -31,3 +32,9 @@
     become: yes
     roles:
       - jenkins_slave
+
+  - hosts: integration_slave
+    become: yes
+    roles:
+      - geerlingguy.nodejs
+      - newman

@@ -1,0 +1,44 @@
+{
+	"info": {
+		"name": "SlackAppIntegrationTest",
+		"_postman_id": "933a8c3b-e720-b430-1605-86cf740af9d5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Simple Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a017b047-2954-47e6-b70b-32fa64a63049",
+						"type": "text/javascript",
+						"exec": [
+							"// example using pm.response.to.have",
+							"pm.test(\"Root return welcome message\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json()",
+							"    pm.expect(jsonData.message).to.eql(\"Welcome to slackapp API!\")",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

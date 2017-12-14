@@ -1,0 +1,8 @@
+---
+plugins:
+  - ssh-slave
+  - workflow-aggregator
+  - git
+  - slack
+  - junit
+  - performance

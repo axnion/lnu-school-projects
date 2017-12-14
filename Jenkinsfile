@@ -2,47 +2,44 @@
 * Example structure of pipeline.
 */
 
-def current_stage = "start"  // TODO: If this is a good idea, update this in every stage and communicate the result in slack
-
 node('master') {
+    def api
+
     try {
         stage('checkout code') {
             // Checks out code from version control
-            //current_phase = "checking out code"
             checkout scm
         }
 
         stage('archiving files') {
             // Creates a gzip file with selected files
             // These are the files we need in the next environment like docker files etc
-            stash includes: 'api/**,', name: 'api'
+            stash includes: 'api/docker*', name: 'dockerfiles'
+            stash includes: 'docker-compose-staging.yml, api/test/staging_tests/*.yml', name: 'staging'
+            stash includes: 'api/test/integration_tests/tests.json', name: 'integration_test'
         }
 
-        stage('building images') {
-            // Build docker images in parallel
-            // TODO: Use docker plugin to perform tasks related to this...
-            def dockerfile="docker-compose.yml"
-           
+        stage('Building image') {
+            
+            // Build docker image for API
             dir('./api') {
-                cleanWorkspace("${dockerfile}")
-                sh "docker-compose -f ${dockerfile} up -d"
+                 api = docker.build("tommykronstal/2dv611api")
             }
-
         }
-        /*
-        stage('upload image to hub') {
-             parallel firstBranch: {
-                //sh 'docker push 2dv611/app1'
-            }, secondBranch: {
-                //sh 'docker push 2dv611/app2'
-            },
-            failFast: true
-        }*/
+        
+        stage('Upload image to docker hub') {
+            // Push image to registry
+            docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                api.push("${env.BUILD_NUMBER}")
+                api.push("latest")
+            }
+        }
     } catch(e) {
+
         // Some error has occured.
         currentBuild.result = 'FAILURE'
         sh "echo ${e}"
-        slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
+        reportToSlack()
     }
 }
 
@@ -60,37 +57,67 @@ node('unit_slave') {
 }
 */
 
-/*
 node('integration_slave') {
+    // -> Axel <-
+    // Get image from Docker Hub
+    // Start docker-compose-integration.yml
+    //      Load postman script into newman container as a volume
+    // (Optional) Populate DB
+    // Execute tests with Newman
+    //      Save report to volume
+    // Send report to Slack
+    // Report results to Jenkins
     try {
-        stage('integration tests') {
-            // Does it build?
+        stage('Integration testing') {
+            unstash 'integration_test'
+            unstash 'staging'
+            stage('Start API and mongo') {
+                def dockerfile = "docker-compose-staging.yml"
+                cleanWorkspace("${dockerfile}")
+                sh "docker-compose -f '${dockerfile}' up --build -d"
+            }
+
+            stage('Run newman Tests') {
+                sh "curl localhost:8080"
+                sh "newman run tests.json"
+            }
         }
     } catch(e) {
         // Some error occured, send a message
         currentBuild.result = 'FAILURE'
+        reportToSlack()
     }
 }
-*/
 
-
-/*
 node('staging_slave') {
+    // -> Tommy <-
+    // Get image for API from docker hub
+    // Seed DB with staging objects
+    // jMeter (or some other tool) to perform some staging loading and acceptance tests??
+    // Send a report, with slack
+    // Report to jenkins
     try {
         stage('Staging') {
-            // -> Tommy <-
-            // Get image for API (build?, docker hub?, jenkins artifact repository?)
-            // Seed DB with staging objects
-            // jMeter (or some other tool) to perform some staging loading and acceptance tests??
-            // Send a report, with slack
-            // Report to jenkins
+            unstash 'staging'
+            stage('Start API and mongo') {
+                def dockerfile = "docker-compose-staging.yml"
+                dir('./api') {
+                    cleanWorkspace("${dockerfile}")
+                    sh 'docker system prune -f'
+                    sh "docker-compose -f ${dockerfile} up --build -d"
+                }
+            }
+
+            stage('Run taurus staging tests') {
+                
+                sh "docker run -i --rm -v ${WORKSPACE}/api/test/staging_tests:/bzt-configs blazemeter/taurus test.yml"
+            }
         }
     } catch(e) {
         // Some error occured, send a message
         currentBuild.result = 'FAILURE'
     }
 }
-*/
 
 // TODO: Look for a cool plugin or send a message to slack and be able to continue?
 //input "Continue to production?" 
@@ -110,4 +137,8 @@ def pullImages(imagename) {
 def cleanWorkspace(dockerfile) {
     // Can be a good idea to do some tidy up before deploying in the environment
     sh "docker-compose -f ${dockerfile} down"
+}
+
+def reportToSlack() {
+    slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
 }
