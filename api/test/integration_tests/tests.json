@@ -30,9 +30,9 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "localhost:8080",
+					"raw": "0.0.0.0:8080",
 					"host": [
-						"localhost"
+						"0.0.0.0"
 					],
 					"port": "8080"
 				},

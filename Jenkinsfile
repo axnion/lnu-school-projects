@@ -88,6 +88,11 @@ node('integration_slave') {
         reportToSlack()
     }
 }
+
+docker run -v ~/Lnu/2DV611/project/api/test/integration_tests:/etc/newman -t postman/newman_ubuntu1404 \
+    run "tests.json" \
+    --reporters="html,cli" --reporter-html-export="newman-results.html"
+
 */
 node('staging_slave') {
     // -> Tommy <-
