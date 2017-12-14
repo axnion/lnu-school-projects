@@ -109,8 +109,8 @@ node('staging_slave') {
             }
 
             stage('Run taurus staging tests') {
-                
                 sh "docker run -i --rm -v ${WORKSPACE}/api/test/staging_tests:/bzt-configs blazemeter/taurus test.yml"
+                perfReport compareBuildPrevious: true, modeThroughput: true, relativeFailedThresholdNegative: 5.0, relativeFailedThresholdPositive: 5.0, relativeUnstableThresholdNegative: 5.0, relativeUnstableThresholdPositive: 5.0, sourceDataFiles: '**/staging_tests/*.xml'
             }
         }
     } catch(e) {
