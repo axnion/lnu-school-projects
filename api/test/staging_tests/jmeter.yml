@@ -8,8 +8,8 @@ scenarios:
 modules:
   jmeter:
     path: ~/.bzt/jmeter-taurus/bin/jmeter
-    download-link: https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-{version}.zip
-    version: 3.0  # minimal supported version of JMeter is 2.9
+    download-link: https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-3.3.zip
+    version: 3.3  # minimal supported version of JMeter is 2.9
     force-ctg: true   # true by default
     detect-plugins: true
     plugins:
