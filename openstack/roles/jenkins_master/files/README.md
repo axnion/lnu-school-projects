@@ -7,3 +7,4 @@ contents of this folder should be located on jenkins master node at $JENKINS_HOM
 Name credentialids to the following to make jenkins read them from its credentials store
 * slaves: slaves
 * github: github-credentials
+* docker hub: docker-hub-credentials
