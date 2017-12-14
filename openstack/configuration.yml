@@ -20,14 +20,6 @@
       - geerlingguy.jenkins
       - jenkins_master
 
-  - hosts: jenkins
-    become: true
-    vars:
-      docker_install_compose: true
-    roles:
-      - geerlingguy.docker
-      - docker_user
-
   - hosts: jenkins_slaves
     become: yes
     roles:
@@ -38,3 +30,11 @@
     roles:
       - geerlingguy.nodejs
       - newman
+
+  - hosts: jenkins
+    become: true
+    vars:
+      docker_install_compose: true
+    roles:
+      - geerlingguy.docker
+      - docker_user
