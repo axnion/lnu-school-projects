@@ -1,8 +1,11 @@
 ---
   - hosts: jenkins
     become: true
+    vars:
+      docker_install_compose: true
     roles:
       - geerlingguy.java
+      - geerlingguy.docker
 
   - hosts: jenkins_master
     become: yes
@@ -30,11 +33,3 @@
     roles:
       - geerlingguy.nodejs
       - newman
-
-  - hosts: jenkins
-    become: true
-    vars:
-      docker_install_compose: true
-    roles:
-      - geerlingguy.docker
-      - docker_user

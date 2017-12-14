@@ -2,8 +2,12 @@
 - name: Add jenkins user
   user:
     name: jenkins
-    groups: ubuntu
+    group: jenkins
+    groups: 
+      - ubuntu
+      - docker
     createhome: yes
+    append: yes
 
 - name: Create .ssh directory for jenkins user
   file:
