@@ -15,3 +15,7 @@ modules:
     plugins:
     - jpgc-json=2.2
     - jpgc-casutg
+
+reporting:
+  - module: junit-xml
+    filename: staging_results/junit_staging_dump.xml
