@@ -74,7 +74,7 @@ node('integration_slave') {
                 dir('./api') {
                     def dockerfile = "docker-compose-integration.yml"
                     cleanWorkspace("${dockerfile}")
-                    sh "docker-compose -f ${dockerfile} up --docker-compose -f docker-compose-integration.yml up --exit-code-from testrunner testrunner"
+                    sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
                 }
             }
         }
