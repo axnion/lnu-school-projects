@@ -15,7 +15,7 @@ node('master') {
             // Creates a gzip file with selected files
             // These are the files we need in the next environment like docker files etc
             stash includes: 'api/docker*', name: 'dockerfiles'
-            stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/*.yml', name: 'staging'
+            stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/**', name: 'staging'
             stash includes: 'api/test/integration_tests/tests.json', name: 'integration_test'
         }
 
@@ -109,14 +109,14 @@ node('staging_slave') {
                 dir('./api') {
                     def dockerfile = "docker-compose-staging.yml"
                     cleanWorkspace("${dockerfile}")
-                    sh "docker-compose -f ${dockerfile} up --build -d"
+                    sh "docker-compose -f ${dockerfile} up -d"
                 }
             }
 
             stage('Run taurus staging tests') {
-                sh "docker run -i --rm -v ${WORKSPACE}/api/test/staging_tests:/bzt-configs blazemeter/taurus test.yml"
+                sh "docker run -i --rm -v ${WORKSPACE}/api/test/staging_tests:/bzt-configs blazemeter/taurus jmeter.yml test.yml"
                 perfReport compareBuildPrevious: true, modeThroughput: true, relativeFailedThresholdNegative: 5.0, relativeFailedThresholdPositive: 5.0, relativeUnstableThresholdNegative: 5.0, relativeUnstableThresholdPositive: 5.0, sourceDataFiles: '**/staging_tests/taurus*'
-                //junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: '**/staging_results/junit*'
+                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: '**/staging_tests/junit*'
             }
         }
     } catch(e) {
