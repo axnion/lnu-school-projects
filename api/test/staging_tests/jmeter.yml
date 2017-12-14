@@ -15,7 +15,3 @@ modules:
     plugins:
     - jpgc-json=2.2
     - jpgc-casutg
-
-reporting:
- - module: jmeter
-   dump-xml: ./report

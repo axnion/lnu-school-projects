@@ -15,3 +15,5 @@ scenarios:
 reporting:
   - module: final-stats
     dump-xml: taurus_staging_dump.xml
+  - module: junit-xml
+    filename: junit_staging_dump.xml
