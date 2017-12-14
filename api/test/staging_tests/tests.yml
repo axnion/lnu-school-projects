@@ -11,3 +11,7 @@ scenarios:
     requests:
     - http://blazedemo.com/
     - http://blazedemo.com/vacation.html
+
+reporting:
+  - module: final-stats
+    dump-xml: taurus_staging_dump.xml
