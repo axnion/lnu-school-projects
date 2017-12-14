@@ -75,6 +75,15 @@ node('integration_slave') {
                 cleanWorkspace("${dockerfile}")
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
                 junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: './test/integration_tests/newman/**.xml'
+                
+                publishHTML (target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: 'test/integration_tests/newman',
+                    reportFiles: '**.html',
+                    reportName: "Integration test report"
+                ])
             }
         }
     } catch(e) {
