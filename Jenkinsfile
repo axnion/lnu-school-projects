@@ -104,7 +104,7 @@ node('staging_slave') {
                 dir('./api') {
                     def dockerfile = "docker-compose-staging.yml"
                     cleanWorkspace("${dockerfile}")
-                    sh "docker-compose -f ${dockerfile} up --build -d"
+                    sh "docker-compose -f ${dockerfile} up -d"
                 }
             }
 
