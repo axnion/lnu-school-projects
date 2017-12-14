@@ -100,10 +100,9 @@ node('staging_slave') {
         stage('Staging') {
             unstash 'staging'
             stage('Start API and mongo') {
-                def dockerfile = "docker-compose-staging.yml"
                 dir('./api') {
+                    def dockerfile = "docker-compose-staging.yml"
                     cleanWorkspace("${dockerfile}")
-                    sh 'docker system prune -f'
                     sh "docker-compose -f ${dockerfile} up --build -d"
                 }
             }
