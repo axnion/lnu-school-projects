@@ -70,13 +70,11 @@ node('integration_slave') {
     try {
         stage('Integration testing') {
             unstash 'integration'
-            stage('Start services and test container') {
-                dir('./api') {
-                    def dockerfile = "docker-compose-integration.yml"
-                    cleanWorkspace("${dockerfile}")
-                    sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
-                    junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: '/test/integration_tests/newman/**.xml'
-                }
+            dir('./api') {
+                def dockerfile = "docker-compose-integration.yml"
+                cleanWorkspace("${dockerfile}")
+                sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
+                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: './test/integration_tests/newman/**.xml'
             }
         }
     } catch(e) {
@@ -85,11 +83,7 @@ node('integration_slave') {
         reportToSlack()
     }
 }
-/*
-sudo docker run -v ~/Lnu/2DV611/project/api/test/integration_tests:/etc/newman --network=mynet -t postman/newman_ubuntu1404     
-run "tests.json"     
---reporters="html,cli,xml" --reporter-html-export="newman-results.html"
-*/
+
 node('staging_slave') {
     // -> Tommy <-
     // Get image for API from docker hub
