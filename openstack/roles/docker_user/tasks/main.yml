@@ -1,8 +1,12 @@
 ---
-- name: Add users to docker group
+- name: Add ubuntu user to docker group
   user:
-    name: "{{ item }}"
+    name: ubuntu
     groups: docker
     append: yes
-  with_items:
-    "{{ docker_users }}"
+
+- name: Add jenkins user to docker group
+  user:
+    name: jenkins
+    groups: docker
+    append: yes
