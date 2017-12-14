@@ -74,7 +74,7 @@ node('integration_slave') {
                 def dockerfile = "docker-compose-integration.yml"
                 cleanWorkspace("${dockerfile}")
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
-                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: './test/integration_tests/newman/**.xml'
+                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman'
                 
                 publishHTML (target: [
                     allowMissing: false,
@@ -84,6 +84,7 @@ node('integration_slave') {
                     reportFiles: '**.html',
                     reportName: "Integration test report"
                 ])
+                // TODO: clear workdir after archiving
             }
         }
     } catch(e) {
