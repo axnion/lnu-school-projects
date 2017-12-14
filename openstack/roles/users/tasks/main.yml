@@ -1,0 +1,16 @@
+---
+- name: Adding/modifying jenkins user
+  user:
+    name: jenkins
+    group: jenkins
+    groups: 
+      - ubuntu
+      - docker
+    createhome: yes
+    append: yes
+
+- name: Add ubuntu user to docker group
+  user:
+    name: jenkins
+    groups: docker
+    append: yes
