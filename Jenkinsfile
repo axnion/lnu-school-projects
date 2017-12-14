@@ -15,7 +15,7 @@ node('master') {
             // Creates a gzip file with selected files
             // These are the files we need in the next environment like docker files etc
             stash includes: 'api/docker*', name: 'dockerfiles'
-            stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/*.yml', name: 'staging'
+            stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/**', name: 'staging'
             stash includes: 'api/test/integration_tests/tests.json', name: 'integration_test'
         }
 
