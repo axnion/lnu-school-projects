@@ -21,6 +21,8 @@
         - junit
         - workflow-aggregator
         - performance
+      jenkins_admin_username: admin
+      jenkins_admin_password: 2dv611
     roles:
       - geerlingguy.jenkins
       - jenkins_master
