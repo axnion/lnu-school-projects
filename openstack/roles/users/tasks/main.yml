@@ -1,4 +1,8 @@
 ---
+- name: Add jenkins group
+  group:
+    name: jenkins
+
 - name: Adding/modifying jenkins user
   user:
     name: jenkins
