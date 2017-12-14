@@ -3,7 +3,7 @@ execution:
 
 scenarios:
   simple:
-    script: jmeter.jmx
+    script: jmx/jmeter.jmx
 
 modules:
   jmeter:
