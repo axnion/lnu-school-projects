@@ -99,6 +99,7 @@ node('staging_slave') {
     try {
         stage('Staging') {
             unstash 'staging'
+            sh 'ls -l'
             stage('Start API and mongo') {
                 dir('./api') {
                     def dockerfile = "docker-compose-staging.yml"
