@@ -15,7 +15,7 @@ node('master') {
             // Creates a gzip file with selected files
             // These are the files we need in the next environment like docker files etc
             stash includes: 'api/docker*', name: 'dockerfiles'
-            stash includes: 'docker-compose-staging.yml, api/test/staging_tests/*.yml', name: 'staging'
+            stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/*.yml', name: 'staging'
             stash includes: 'api/test/integration_tests/tests.json', name: 'integration_test'
         }
 
@@ -101,7 +101,6 @@ node('staging_slave') {
             unstash 'staging'
             stage('Start API and mongo') {
                 dir('./api') {
-                    sh 'ls -l'
                     def dockerfile = "docker-compose-staging.yml"
                     cleanWorkspace("${dockerfile}")
                     sh "docker-compose -f ${dockerfile} up --build -d"
