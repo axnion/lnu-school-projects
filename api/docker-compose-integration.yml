@@ -22,3 +22,11 @@ services:
     image: tianon/true
     volumes:
       - /data/db
+
+  testrunner:
+    image: postman/newman_ubuntu1404
+    volumes:
+      - "./test/integration_tests:/etc/newman"
+    command: run newman_tests.json --reporters="html,junit" --reporter-junit-export="integration_test_results.xml"
+    depends_on:
+      - web

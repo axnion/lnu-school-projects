@@ -16,7 +16,7 @@ node('master') {
             // These are the files we need in the next environment like docker files etc
             stash includes: 'api/docker*', name: 'dockerfiles'
             stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/**', name: 'staging'
-            stash includes: 'api/test/integration_tests/tests.json', name: 'integration_test'
+            stash includes: 'api/docker-compose-integration.yml, api/test/integration_tests/**', name: 'integration'
         }
 
         stage('Building image') {
@@ -69,8 +69,7 @@ node('integration_slave') {
     // Report results to Jenkins
     try {
         stage('Integration testing') {
-            unstash 'integration_test'
-            unstash 'staging'
+            unstash 'integration'
             stage('Start API and mongo') {
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
@@ -89,9 +88,10 @@ node('integration_slave') {
     }
 }
 
-docker run -v ~/Lnu/2DV611/project/api/test/integration_tests:/etc/newman -t postman/newman_ubuntu1404 \
-    run "tests.json" \
-    --reporters="html,cli" --reporter-html-export="newman-results.html"
+sudo docker run -v ~/Lnu/2DV611/project/api/test/integration_tests:/etc/newman --network=mynet -t postman/newman_ubuntu1404     
+run "tests.json"     
+--reporters="html,cli,xml" --reporter-html-export="newman-results.html"
+
 
 */
 node('staging_slave') {
