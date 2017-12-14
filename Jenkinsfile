@@ -56,7 +56,7 @@ node('unit_slave') {
     }
 }
 */
-
+/*
 node('integration_slave') {
     // -> Axel <-
     // Get image from Docker Hub
@@ -88,7 +88,7 @@ node('integration_slave') {
         reportToSlack()
     }
 }
-
+*/
 node('staging_slave') {
     // -> Tommy <-
     // Get image for API from docker hub
@@ -100,13 +100,13 @@ node('staging_slave') {
         stage('Staging') {
             unstash 'staging'
             sh 'ls -l'
-            //stage('Start API and mongo') {
-            //    dir('./api') {
-            //        def dockerfile = "docker-compose-staging.yml"
-            //        cleanWorkspace("${dockerfile}")
-            //        sh "docker-compose -f ${dockerfile} up --build -d"
-            //    }
-            //}
+            stage('Start API and mongo') {
+                dir('./api') {
+                    def dockerfile = "docker-compose-staging.yml"
+                    cleanWorkspace("${dockerfile}")
+                    sh "docker-compose -f ${dockerfile} up --build -d"
+                }
+            }
 
             stage('Run taurus staging tests') {
                 sh "docker run -i --rm -v ${WORKSPACE}/api/test/staging_tests:/bzt-configs blazemeter/taurus test.yml jmeter.yml"
