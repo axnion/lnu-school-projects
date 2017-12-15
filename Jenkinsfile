@@ -69,6 +69,7 @@ node('integration_slave') {
     // Report results to Jenkins
     try {
         stage('Integration testing') {
+            sh "rm -rf ${WORKDIR}/*"
             unstash 'integration'
             dir('./api') {
                 def dockerfile = "docker-compose-integration.yml"
@@ -84,8 +85,6 @@ node('integration_slave') {
                     reportFiles: '**.html',
                     reportName: "Integration test report"
                 ])
-                // TODO: clear workdir after archiving
-                sh "rm -rf ${WORKDIR}/*"
             }
         }
     } catch(e) {
