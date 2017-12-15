@@ -68,7 +68,11 @@ node('integration_slave') {
     // Send report to Slack
     // Report results to Jenkins
     try {
-        stage('Integration testing') {
+        stage('Integration: Cleanup') {
+            sh "rm -rf ${WORKDIR}/*"
+        }
+
+        stage('Deploy containers and perform tests') {
             sh "rm -rf ${WORKDIR}/*"
             unstash 'integration'
             dir('./api') {
