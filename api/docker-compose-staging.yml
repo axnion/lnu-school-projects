@@ -25,7 +25,7 @@ services:
 
   testrunner:
     image: blazemeter/taurus
-    command: jmeter.yml test.yml
+    command: test.yml
     volumes:
      - ./api/test/staging_tests:/bzt-configs
     depends_on:
