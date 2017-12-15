@@ -74,7 +74,7 @@ node('integration_slave') {
 
             stage('Cleanup') {
                 dir('./api') {
-                    sh "docker-compose -f ${dockerfile} exec testrunner /bin/sh -c '$(whoami)'"
+                    sh "docker-compose -f ${dockerfile} exec testrunner 'rm -rf /etc/newman/*'"
                 }
             }
 
