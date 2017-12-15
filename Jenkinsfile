@@ -68,28 +68,33 @@ node('integration_slave') {
     // Send report to Slack
     // Report results to Jenkins
     try {
-        stage('Integration: Cleanup') {
-            sh "rm -rf ${WORKDIR}/*"
-        }
-
-        stage('Deploy containers and perform tests') {
-            sh "rm -rf ${WORKDIR}/*"
+        stage('Integration Testing') {
+            def dockerfile = "docker-compose-integration.yml"
             unstash 'integration'
-            dir('./api') {
-                def dockerfile = "docker-compose-integration.yml"
-                cleanWorkspace("${dockerfile}")
-                sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
-                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
-                
-                publishHTML (target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: false,
-                    keepAll: true,
-                    reportDir: 'test/integration_tests/newman',
-                    reportFiles: '**.html',
-                    reportName: "Integration test report"
-                ])
+
+            stage('Cleanup') {
+                dir('./api') {
+                    sh "docker-compose -f ${dockerfile} exec testrunner /bin/sh -c '$(whoami)'"
+                }
             }
+
+            stage('Deploy and Test') {
+                dir('./api') {
+                    cleanWorkspace("${dockerfile}")
+                    sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
+                    junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
+
+                    publishHTML (target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: true,
+                        reportDir: 'test/integration_tests/newman',
+                        reportFiles: '**.html',
+                        reportName: "Integration test report"
+                    ])
+                }
+            }
+
         }
     } catch(e) {
         // Some error occured, send a message
