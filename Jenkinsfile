@@ -74,7 +74,7 @@ node('integration_slave') {
 
             stage('Cleanup') {
                 dir('./api') {
-                    sh "docker-compose -f ${dockerfile} exec testrunner 'rm -rf /etc/newman/*'"
+                    sh "docker run -v ./test/integration_tests:/etc/newman -t postman/newman_ubuntu1404 rm -rf /etc/newman/*"
                 }
             }
 
