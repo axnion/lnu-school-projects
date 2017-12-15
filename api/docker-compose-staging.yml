@@ -27,7 +27,7 @@ services:
     image: blazemeter/taurus
     command: test.yml
     volumes:
-     - ./api/test/staging_tests:/bzt-configs
+     - /test/staging_tests:/bzt-configs
     depends_on:
      - web
     links:
