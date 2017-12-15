@@ -18,4 +18,4 @@ modules:
 
 reporting:
   - module: junit-xml
-    filename: staging_results/junit_staging_dump.xml
+    filename: junit_staging_dump.xml

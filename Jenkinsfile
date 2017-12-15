@@ -56,7 +56,7 @@ node('unit_slave') {
     }
 }
 */
-
+/*
 node('integration_slave') {
     // -> Axel <-
     // Get image from Docker Hub
@@ -100,8 +100,8 @@ node('integration_slave') {
         reportToSlack()
     }
 }
-
-node('staging_slave') {
+*/
+node() {
     // -> Tommy <-
     // Get image for API from docker hub
     // Seed DB with staging objects
@@ -111,19 +111,19 @@ node('staging_slave') {
     try {
         stage('Staging') {
             unstash 'staging'
-            sh 'ls -l'
             stage('Start API and mongo') {
                 dir('./api') {
                     def dockerfile = "docker-compose-staging.yml"
                     cleanWorkspace("${dockerfile}")
-                    sh "docker-compose -f ${dockerfile} up -d"
+                    sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
+                    perfReport compareBuildPrevious: true, modeThroughput: true, relativeFailedThresholdNegative: 5.0, relativeFailedThresholdPositive: 5.0, relativeUnstableThresholdNegative: 5.0, relativeUnstableThresholdPositive: 5.0, sourceDataFiles: '**/staging_tests/taurus*'
+                    junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: '**/staging_tests/junit*'
                 }
             }
 
             stage('Run taurus staging tests') {
                 //sh "docker run -i --rm -v ${WORKSPACE}/api/test/staging_tests:/bzt-configs blazemeter/taurus jmeter.yml test.yml"
-                perfReport compareBuildPrevious: true, modeThroughput: true, relativeFailedThresholdNegative: 5.0, relativeFailedThresholdPositive: 5.0, relativeUnstableThresholdNegative: 5.0, relativeUnstableThresholdPositive: 5.0, sourceDataFiles: '**/staging_tests/taurus*'
-                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: '**/staging_tests/junit*'
+                
             }
         }
     } catch(e) {
