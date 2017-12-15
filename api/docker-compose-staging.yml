@@ -2,7 +2,7 @@ version: '2'
 
 services:
   web:
-    #command: npm start
+    command: npm start
     image: tommykronstal/2dv611api
     ports:
       - "8080:8080"

@@ -1,16 +1,16 @@
 ---
 execution:
 - concurrency: 10
-  ramp-up: 10s
-  hold-for: 30s
+  ramp-up: 5s
+  hold-for: 10s
   scenario: simple
   
 scenarios:
   simple:
     think-time: 0.75
     requests:
-    - web:8080 # todo: must be public IP because this runs inside container
+    - http://web:8080 # todo: must be public IP because this runs inside container
 
 reporting:
   - module: final-stats
-    dump-xml: staging_results/taurus_staging_dump.xml
+    dump-xml: staging/results/taurus_staging_dump.xml
