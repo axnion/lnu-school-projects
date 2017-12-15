@@ -13,4 +13,4 @@ scenarios:
 
 reporting:
   - module: final-stats
-    dump-xml: staging_results/taurus_staging_dump.xml
+    dump-xml: taurus_staging_dump.xml
