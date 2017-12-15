@@ -73,7 +73,7 @@ node('integration_slave') {
             unstash 'integration'
 
             stage('Cleanup') {
-                sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t postman/newman_ubuntu1404 rm -rf /etc/newman/*"
+                sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
             }
 
             stage('Deploy and Test') {
