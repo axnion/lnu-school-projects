@@ -30,5 +30,5 @@ services:
      - ./api/test/staging_tests:/bzt-configs
     depends_on:
      - web
-    link:
+    links:
      - web
