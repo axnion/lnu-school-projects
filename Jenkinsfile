@@ -85,6 +85,7 @@ node('integration_slave') {
                     reportName: "Integration test report"
                 ])
                 // TODO: clear workdir after archiving
+                sh "rm -rf ${WORKDIR}/*"
             }
         }
     } catch(e) {
