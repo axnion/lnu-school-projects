@@ -43,6 +43,9 @@ class ExamController extends Controller {
 
 function format(examDoc) {
     console.log(examDoc);
+    if (examDoc === null){
+        return {text: 'There does not seem to be any exams for this course :smile:'};
+    }
     let formated = {
         "text": examDoc.name + " for the course: " + examDoc.course + " on " +
         "<!date^" + examDoc.date.valueOf()/ 1000 + "^Posted {date_num}|Posted 2014-02-18 6:39:42 AM>",

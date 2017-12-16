@@ -81,8 +81,20 @@ __POST /bookexam__
 
 Body 
 ```bash
-  Duno
+  {"type":"interactive_message",
+  "actions":[{"name":"book","type":"button","value":"book"}],
+  "callback_id":"comic_1234_xyz",
+  "team":{"id":"T81M6B7RB","domain":"2dv611ht17gr2"},
+  "channel":{"id":"C86L50MDW","name":"1dv021"},
+  "user":{"id":"U80U5AVC0","name":"ab223sq"},
+  "action_ts":"1513456423.009932",
+  "message_ts":"1513456405.000072",
+  "attachment_id":"18",
+  "token":"pHrBUBELk3whs5w1Fsu6fqtJ"}
 ```
+
+The API needs channel.name and user.name these are sent in body.payload these two are
+enough for testing purposes
 
 ## developing
 
