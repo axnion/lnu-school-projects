@@ -1,17 +1,55 @@
 # slackapp
 
-[![generator-api](https://img.shields.io/badge/built%20with-generator--api-green.svg)](https://github.com/ndelvalle/generator-api)
+## Api Specification
 
+If you wish to test the slack routes send the information in req.body.text
 
+###**_Create exam_**
 
+Slack Command
+```bash
+/createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20}
+```
+__POST /exam/create__
 
+Body 
+```json
+{ "date": "2017-12-30", 
+  "name": "exam", 
+  "duration": 30, 
+  "timeSlots": 20
+}
+```
 
+###**_List exam_**
 
+Slack Command
+```bash
+/showexam
+```
 
-## dependencies
+__IMPORTANT__ the command /showexam will be expanded to get a specific exam by 
+name like the example below 
 
-[Docker](https://docs.docker.com/engine/installation/) :whale: & [docker-compose](https://docs.docker.com/compose/install/).
+```bash
+/showexam examName
+```
 
+__POST /exam/get__
+
+Body 
+```bash
+  Input is empty right now. Exept for the slack information
+```
+
+__IMPORTANT__ When calling this route req.body.channel_name needs to be set to the 
+channel name for the desired exam list.
+
+###**_Helper Routes during development_**
+
+__/exam__ GET and POST for creating and listing exams
+
+__/exam/:id__ GET, PUT, DELETE for getting, updating or deleting a exam
 ## developing
 
 run locally run using docker-compose:
