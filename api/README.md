@@ -50,6 +50,40 @@ channel name for the desired exam list.
 __/exam__ GET and POST for creating and listing exams
 
 __/exam/:id__ GET, PUT, DELETE for getting, updating or deleting a exam
+
+### Report build status
+
+Slack Command
+```bash
+No command for this
+```
+
+__IMPORTANT__ This route is for Jenkis to signal a successful build
+
+__POST /reportexam__
+
+Body 
+```bash
+  req.body.buildOk Boolean value true/false
+```
+
+### Book Exam
+
+Slack Command
+```bash
+This is triggered by pushing the bookExam button in slack
+```
+
+__IMPORTANT__ This route is trigger by user interaction need to gather more info 
+to determine the reburied input from test classes 
+
+__POST /bookexam__
+
+Body 
+```bash
+  Duno
+```
+
 ## developing
 
 run locally run using docker-compose:
