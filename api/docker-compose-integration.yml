@@ -24,11 +24,9 @@ services:
       - /data/db
 
   testrunner:
-    image: blazemeter/taurus
-    command: test.yml jmeter.yml
+    image: postman/newman_ubuntu1404
     volumes:
-     - ./test/staging_tests:/bzt-configs
+      - "./test/integration_tests:/etc/newman"
+    command: run newman_tests.json --reporters="html,junit" --reporter-junit-export="integration_test_results.xml"
     depends_on:
-     - web
-    links:
-     - web:web
+      - web

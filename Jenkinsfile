@@ -15,8 +15,8 @@ node('master') {
             // Creates a gzip file with selected files
             // These are the files we need in the next environment like docker files etc
             stash includes: 'api/docker*', name: 'dockerfiles'
-            stash includes: 'docker-compose-staging.yml, api/test/staging_tests/*.yml', name: 'staging'
-            stash includes: 'api/test/integration_tests/tests.json', name: 'integration_test'
+            stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/**', name: 'staging'
+            stash includes: 'api/docker-compose-integration.yml, api/test/integration_tests/**', name: 'integration'
         }
 
         stage('Building image') {
@@ -68,19 +68,31 @@ node('integration_slave') {
     // Send report to Slack
     // Report results to Jenkins
     try {
-        stage('Integration testing') {
-            unstash 'integration_test'
-            unstash 'staging'
-            stage('Start API and mongo') {
-                def dockerfile = "docker-compose-staging.yml"
-                cleanWorkspace("${dockerfile}")
-                sh "docker-compose -f '${dockerfile}' up --build -d"
+        stage('Integration Testing') {
+            def dockerfile = "docker-compose-integration.yml"
+            unstash 'integration'
+
+            stage('Cleanup') {
+                sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
             }
 
-            stage('Run newman Tests') {
-                sh "curl localhost:8080"
-                sh "newman run tests.json"
+            stage('Deploy and Test') {
+                dir('./api') {
+                    cleanWorkspace("${dockerfile}")
+                    sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
+                    junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
+
+                    publishHTML (target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: true,
+                        reportDir: 'test/integration_tests/newman',
+                        reportFiles: '**.html',
+                        reportName: "Integration test report"
+                    ])
+                }
             }
+
         }
     } catch(e) {
         // Some error occured, send a message
@@ -100,17 +112,18 @@ node('staging_slave') {
         stage('Staging') {
             unstash 'staging'
             stage('Start API and mongo') {
-                def dockerfile = "docker-compose-staging.yml"
                 dir('./api') {
+                    def dockerfile = "docker-compose-staging.yml"
                     cleanWorkspace("${dockerfile}")
-                    sh 'docker system prune -f'
-                    sh "docker-compose -f ${dockerfile} up --build -d"
+                    sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
+                    perfReport compareBuildPrevious: true, modeThroughput: true, relativeFailedThresholdNegative: 5.0, relativeFailedThresholdPositive: 5.0, relativeUnstableThresholdNegative: 5.0, relativeUnstableThresholdPositive: 5.0, sourceDataFiles: '**/staging_tests/taurus*'
+                    junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: '**/staging_tests/junit*'
                 }
             }
 
             stage('Run taurus staging tests') {
+                //sh "docker run -i --rm -v ${WORKSPACE}/api/test/staging_tests:/bzt-configs blazemeter/taurus jmeter.yml test.yml"
                 
-                sh "docker run -i --rm -v ${WORKSPACE}/api/test/staging_tests:/bzt-configs blazemeter/taurus test.yml"
             }
         }
     } catch(e) {

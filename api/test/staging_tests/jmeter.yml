@@ -1,0 +1,21 @@
+execution:
+- scenario: simple
+
+scenarios:
+  simple:
+    script: jmx/jmeter.jmx
+
+modules:
+  jmeter:
+    path: ~/.bzt/jmeter-taurus/bin/jmeter
+    download-link: https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-3.3.zip
+    version: 3.3  # minimal supported version of JMeter is 2.9
+    force-ctg: true   # true by default
+    detect-plugins: true
+    plugins:
+    - jpgc-json=2.2
+    - jpgc-casutg
+
+reporting:
+  - module: junit-xml
+    filename: junit_staging_dump.xml

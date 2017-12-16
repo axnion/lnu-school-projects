@@ -1,10 +1,4 @@
 ---
-- name: Add jenkins user
-  user:
-    name: jenkins
-    groups: ubuntu
-    createhome: yes
-
 - name: Create .ssh directory for jenkins user
   file:
     path: /home/jenkins/.ssh

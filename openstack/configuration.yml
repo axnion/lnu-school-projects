@@ -1,17 +1,14 @@
 ---
-  - hosts: all
+  # Installs Java and Docker
+  - hosts: jenkins
     become: true
     vars:
       docker_install_compose: true
     roles:
-      - geerlingguy.docker
-      - docker_user
-
-  - hosts: jenkins
-    become: true
-    roles:
       - geerlingguy.java
+      - geerlingguy.docker
 
+  # Installs Jenkins and configure it with plugins and Jenkins user
   - hosts: jenkins_master
     become: yes
     vars:
@@ -24,15 +21,25 @@
         - junit
         - workflow-aggregator
         - performance
+      jenkins_admin_username: admin
+      jenkins_admin_password: 2dv611
     roles:
       - geerlingguy.jenkins
       - jenkins_master
 
+  # Creates and modifies jenkins user to work with Docker
+  - hosts: jenkins
+    become: true
+    roles:
+      - users
+
+  # Prepares jenkins slaves
   - hosts: jenkins_slaves
     become: yes
     roles:
       - jenkins_slave
 
+  # Prepares integration slave with needed software
   - hosts: integration_slave
     become: yes
     roles:
