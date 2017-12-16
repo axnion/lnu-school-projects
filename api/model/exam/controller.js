@@ -17,8 +17,13 @@ class ExamController extends Controller {
             name: input.name,
             timeSlots: []
         };
-
+        console.log(timeTable);
         for(let i = 0; i < timeTable.length; i++){
+            //TODO Implement the loop to skip forward one when going over to a new day
+            // OR ask if create exam should only create one day at a time and use name + date as unique values
+            if (timeTable[i] === 'skip' || timeTable[i + 1] === 'skip'){
+                continue;
+            }
             exam.timeSlots.push({
                 timeSlot: {
                     duration: input.duration,
@@ -96,7 +101,7 @@ function buildTimeTable(duration, date, timeSlots) {
 
     //Create date and set it to 8 am CET
     date = new Date(date);
-    date= addMinutes(date,420);
+    date= addMinutes(date, 420);
     let maxDate = addMinutes(date, 540);
 
     table.push(date);
@@ -104,15 +109,17 @@ function buildTimeTable(duration, date, timeSlots) {
     while (date < maxDate && table.length <= timeSlots){
         date = addMinutes(date, duration);
         table.push(date);
+        console.log(date);
+        if (addMinutes(date, duration) > maxDate && table.length <= timeSlots) {
+            table.push('skip');
 
-        if (addMinutes(date, duration) >= maxDate && table.length <= timeSlots) {
+            date = addMinutes(date,duration);
+            table.push(date);
+
             date.setDate(date.getDate() + 1);
-            date.setTime(date.getTime() - (510 * 60000));
+            date.setTime(date.getTime() - (570 * 60000));
 
             maxDate.setDate(maxDate.getDate() + 1);
-            console.log("Reajusting Date!");
-            console.log(date);
-            console.log(maxDate);
         }
     }
 
