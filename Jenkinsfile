@@ -53,15 +53,23 @@ node('unit_slave') {
                 cleanWorkspace("${dockerfile}")
 
                 sh "docker-compose -f ${dockerfile} up --exit-code-from web web"
-                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/coverage/clover.xml'
+                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/report/test-report.html'
 
+                publishHTML (target: [
+                                        allowMissing: false,
+                                        alwaysLinkToLastBuild: false,
+                                        keepAll: true,
+                                        reportDir: 'test/unit_tests/report/',
+                                        reportFiles: 'test-report.html',
+                                        reportName: 'Unit test report'
+                                    ])
                 publishHTML (target: [
                                         allowMissing: false,
                                         alwaysLinkToLastBuild: false,
                                         keepAll: true,
                                         reportDir: 'coverage/lcov-report/',
                                         reportFiles: 'index.html',
-                                        reportName: "Unit test covarege report"
+                                        reportName: 'Test coverage'
                                     ])
             }
         }
