@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
-  "jest": { "testResultsProcessor": "./node_modules/jest-html-reporter" },
+  "jest": { "testResultsProcessor": "./node_modules/jest-html-reporter",
+            "coverageDirectory": "./test/unit_tests/coverage"},
   "jest-html-reporter": {
     "pageTitle": "Slack API unit tests report",
     "outputPath": "test/unit_tests/report/test-report.html",

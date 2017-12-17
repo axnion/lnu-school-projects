@@ -5,4 +5,3 @@
 .log
 **/staging_results
 api/node_modules
-api/coverage

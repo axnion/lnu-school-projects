@@ -31,6 +31,8 @@ build/Release
 node_modules
 jspm_packages
 
+test/unit_tests/coverage/
+test/unit_tests/report/
 # Optional npm cache directory
 .npm
 
