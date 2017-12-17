@@ -17,6 +17,7 @@ node('master') {
             stash includes: 'api/docker*', name: 'dockerfiles'
             stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/**', name: 'staging'
             stash includes: 'api/docker-compose-integration.yml, api/test/integration_tests/**', name: 'integration'
+            stash includes: 'api/docker-compose-integration.yml, api/test/unit_tests/**', name: 'unit'
         }
 
         stage('Building image') {
@@ -43,11 +44,22 @@ node('master') {
     }
 }
 
-/*
 node('unit_slave') {
     try {
         stage('unit tests') {
-            // What to do here? Unit tests...
+            unstash 'unit'
+            dir('./api') {
+                sh "docker-compose -f docker-compose-unit.yml up --build"
+
+                publishHTML (target: [
+                                        allowMissing: false,
+                                        alwaysLinkToLastBuild: false,
+                                        keepAll: true,
+                                        reportDir: 'coverage/lcov-report/',
+                                        reportFiles: 'index.html',
+                                        reportName: "Unit test covarege report"
+                                    ])
+            }
         }
     } catch(e) {
         currentBuild.result = 'FAILURE'
@@ -55,7 +67,6 @@ node('unit_slave') {
         slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
     }
 }
-*/
 
 node('integration_slave') {
     // -> Axel <-
