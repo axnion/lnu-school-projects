@@ -49,7 +49,10 @@ node('unit_slave') {
         stage('unit tests') {
             unstash 'unit'
             dir('./api') {
-                sh "docker-compose -f docker-compose-unit.yml up --exit-code-from web web"
+                def dockerfile = "docker-compose-unit.yml"
+                cleanWorkspace("${dockerfile}")
+
+                sh "docker-compose -f ${dockerfile} up --exit-code-from web web"
                 junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/coverage/clover.xml'
 
                 publishHTML (target: [
