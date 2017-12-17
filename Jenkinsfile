@@ -53,7 +53,7 @@ node('unit_slave') {
                 cleanWorkspace("${dockerfile}")
 
                 sh "docker-compose -f ${dockerfile} up --exit-code-from web web"
-                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/coverage/clover.xml'
+                //junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/coverage/clover.xml'
 
                 publishHTML (target: [
                                         allowMissing: false,
