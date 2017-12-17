@@ -17,7 +17,7 @@ node('master') {
             stash includes: 'api/docker*', name: 'dockerfiles'
             stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/**', name: 'staging'
             stash includes: 'api/docker-compose-integration.yml, api/test/integration_tests/**', name: 'integration'
-            stash includes: 'api/docker-compose-unit.yml, api/test/unit_tests/**', api/coverage/**, name: 'unit'
+            stash includes: 'api/docker-compose-unit.yml, api/test/unit_tests/**', name: 'unit'
         }
 
         stage('Building image') {
