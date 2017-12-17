@@ -17,7 +17,7 @@ node('master') {
             stash includes: 'api/docker*', name: 'dockerfiles'
             stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/**', name: 'staging'
             stash includes: 'api/docker-compose-integration.yml, api/test/integration_tests/**', name: 'integration'
-            stash includes: 'api/docker-compose-unit.yml, api/test/unit_tests/**', name: 'unit'
+            stash includes: 'api/docker-compose-unit.yml, api/test/unit_tests/**', api/coverage/**, name: 'unit'
         }
 
         stage('Building image') {
@@ -50,6 +50,7 @@ node('unit_slave') {
             unstash 'unit'
             dir('./api') {
                 sh "docker-compose -f docker-compose-unit.yml up --exit-code-from web web"
+                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/coverage/clover.xml'
 
                 publishHTML (target: [
                                         allowMissing: false,
