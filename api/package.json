@@ -3,8 +3,14 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
+  "jest": { "testResultsProcessor": "./node_modules/jest-html-reporter" },
+  "jest-html-reporter": {
+    "pageTitle": "Slack API unit tests report",
+    "outputPath": "test/unit_tests/report/test-report.html",
+    "includeFailureMsg": false
+  },
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest --coverage --no-cache",
     "start": "nodemon -L index.js",
     "debug": "nodemon --inspect=0.0.0.0:9229 index.js"
   },
@@ -29,6 +35,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
     "jest": "^21.2.1",
+    "jest-html-reporter": "^0.5.7",
     "nock": "^9.1.4",
     "nodemon": "^1.11.0",
     "sinon": "^4.1.3",
