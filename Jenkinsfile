@@ -49,7 +49,7 @@ node('unit_slave') {
         stage('unit tests') {
             unstash 'unit'
             dir('./api') {
-                sh "docker-compose -f docker-compose-unit.yml up --build"
+                sh "docker-compose -f docker-compose-unit.yml up"
 
                 publishHTML (target: [
                                         allowMissing: false,
