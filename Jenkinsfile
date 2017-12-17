@@ -49,6 +49,7 @@ node('unit_slave') {
         stage('unit tests') {
             unstash 'unit'
             dir('./api') {
+                sh "ls -a"
                 sh "docker-compose -f docker-compose-unit.yml up --build"
 
                 publishHTML (target: [
