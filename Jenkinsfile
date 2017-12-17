@@ -51,7 +51,7 @@ node('unit_slave') {
             dir('./api') {
                 def dockerfile = "docker-compose-unit.yml"
                 cleanWorkspace("${dockerfile}")
-
+                sh "ls -a"
                 sh "docker-compose -f ${dockerfile} up --exit-code-from web web"
                 junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/report/test-report.html'
 
@@ -67,7 +67,7 @@ node('unit_slave') {
                                         allowMissing: false,
                                         alwaysLinkToLastBuild: false,
                                         keepAll: true,
-                                        reportDir: 'coverage/lcov-report/',
+                                        reportDir: 'test/unit_tests/coverage/lcov-report/',
                                         reportFiles: 'index.html',
                                         reportName: 'Test coverage'
                                     ])
