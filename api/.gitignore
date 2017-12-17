@@ -29,7 +29,10 @@ node_modules
 jspm_packages
 
 test/unit_tests/coverage/*
+!test/unit_tests/coverage/.gitkeep
+
 test/unit_tests/report/*
+!test/unit_tests/report/.gitkeep
 # Optional npm cache directory
 .npm
 
