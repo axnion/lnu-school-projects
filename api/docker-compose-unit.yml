@@ -7,21 +7,7 @@ services:
     build: .
     volumes:
       - ./:/app
+      #- ./test/unit_tests/report :/test/unit_tests/report
+      #- ./test/unit_tests/coverage :/test/unit_tests/coverage
     ports:
       - "8080:8080"
-    links:
-      - mongo
-    environment:
-      - MONGO_DB_URI=mongodb://mongo:27017/slackapp
-
-  mongo:
-    image: mongo
-    ports:
-      - "27017:27017"
-    volumes_from:
-      - mongodata
-
-  mongodata:
-    image: tianon/true
-    volumes:
-      - /data/db
