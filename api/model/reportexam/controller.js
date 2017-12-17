@@ -6,6 +6,7 @@ class ReportExamController extends Controller {
     console.log(req.body);
     console.log(req.params);
 
+    // unnecessary if - only for testing purposes
     if (req.body.buildOk) {
       console.log('It is ok');
     }
@@ -14,7 +15,9 @@ class ReportExamController extends Controller {
       .createExamReport(req.body)
       .then(resp => {
         console.log(resp);
-        return res.status(201).json({ message: 'okdidoki' });
+        return res.status(201).json({
+          message: 'okdidoki'
+        });
       })
       .catch(err => next(err));
 
