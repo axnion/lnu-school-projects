@@ -31,7 +31,7 @@ node('master') {
         stage('Upload image to docker hub') {
             // Push image to registry
             docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                api.push("${env.BUILD_NUMBER}")
+                //api.push("${env.BUILD_NUMBER}")
                 api.push("latest")
             }
         }
