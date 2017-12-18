@@ -1,9 +1,32 @@
 execution:
-- scenario: simple
+- concurracy: 10
+  ramp-up: 10s
+  hold-for: 20s
+  scenario: getExam
+- concurracy: 10
+  ramp-up: 10s
+  hold-for: 20s
+  scenario: bookExam
 
 scenarios:
-  simple:
-    script: jmx/jmeter.jmx
+  getExam:
+    requests:
+     - url: http://web:8080/exam
+       method: GET
+       label: getExam
+  bookExam:
+    requests:
+     - url: http://web:8080/exam/create
+       method: POST
+       label: bookExam
+       headers:
+         Content-Type: application/json
+       body:
+         text: {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20}
+       assert:
+        - contains:
+          - .+b.+
+  
 
 modules:
   jmeter:
