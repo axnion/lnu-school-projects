@@ -53,7 +53,7 @@ scenarios:
        headers:
         Content-Type: application/x-www-form-urlencoded
        body:
-         payload: '{"channnel": {"name": "1dv021"}, "user": {"name": "tk222hq"}}'
+         payload: '{"channel": {"name": "1dv021"}, "user": {"name": "tk222hq"}}'
 
 
 modules:
