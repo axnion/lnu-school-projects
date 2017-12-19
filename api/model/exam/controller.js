@@ -5,9 +5,12 @@ class ExamController extends Controller {
 
     /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20}
     createExam(req, res, next) {
+        console.log(req.headers);
+        console.log(req.body);
         const input = JSON.parse(req.body.text, (key, value) => {
             return value;
         });
+        console.log(req.body);
 
         const timeTable = buildTimeTable(input.duration, input.date, input.timeSlots);
 
