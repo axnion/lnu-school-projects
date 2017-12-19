@@ -7,6 +7,10 @@ execution:
   ramp-up: 10s
   hold-for: 20s
   scenario: createExam
+- concurracy: 10
+  ramp-up: 10s
+  hold-for: 20s
+  scenario: listExam
 
 scenarios:
   getExam:
@@ -27,7 +31,17 @@ scenarios:
        assert:
         - contains:
           - .+course.+
-          - .+name.+  
+          - .+name.+
+  listExam:
+    requests:
+     - url: http://web:8080/exam/get
+       method: POST
+       label: listExam
+       headers:
+        Content-Type: application/x-www-form-urlencoded
+       body:
+         channel_name: "1dv021"
+
 
 modules:
   jmeter:
