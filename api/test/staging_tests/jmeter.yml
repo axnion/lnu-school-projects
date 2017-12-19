@@ -6,7 +6,7 @@ execution:
 - concurracy: 10
   ramp-up: 10s
   hold-for: 20s
-  scenario: bookExam
+  scenario: createExam
 
 scenarios:
   getExam:
@@ -14,19 +14,20 @@ scenarios:
      - url: http://web:8080/exam
        method: GET
        label: getExam
-  bookExam:
+  createExam:
     requests:
      - url: http://web:8080/exam/create
        method: POST
-       label: bookExam
+       label: createExam
        headers:
-         Content-Type: application/json
+         Content-Type: application/x-www-form-urlencoded
        body:
-         text: {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20}
+         text: '{"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20}'
+         channel_name: "1dv021"
        assert:
         - contains:
-          - .+b.+
-  
+          - .+course.+
+          - .+name.+  
 
 modules:
   jmeter:
