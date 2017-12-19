@@ -11,6 +11,10 @@ execution:
   ramp-up: 10s
   hold-for: 20s
   scenario: listExam
+- concurracy: 10
+  ramp-up: 10s
+  hold-for: 20s
+  scenario: bookExam
 
 scenarios:
   getExam:
@@ -41,6 +45,15 @@ scenarios:
         Content-Type: application/x-www-form-urlencoded
        body:
          channel_name: "1dv021"
+  bookExam:
+    requests:
+     - url: http://web:8080/bookexam
+       method: POST
+       label: bookExam
+       headers:
+        Content-Type: application/x-www-form-urlencoded
+       body:
+         payload: '{"channnel": {"name": "1dv021"}, "user": {"name": "tk222hq"}}'
 
 
 modules:
