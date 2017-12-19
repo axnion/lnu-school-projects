@@ -6,7 +6,7 @@ const ReportExamFacade = require('../reportexam/facade');
 class SlackController extends Controller {
   createBooking(req, res, next) {
     console.log(req.body.payload); // don't delete yet
-
+    console.log(req.body);
     const response = JSON.parse(req.body.payload);
     const studentId = response.user.name;
     const course = response.channel.name;
@@ -15,7 +15,9 @@ class SlackController extends Controller {
     ReportExamFacade.findOne({ studentId, course /* plus exam */ })
       .then(resp => {
         console.log(resp);
-
+        if (!resp){
+          return res.status(200).json({text: 'Coudnt find an exam so its fine'})
+        }
         if (resp.buildOk) {
           // build was ok, make reservation
           return res.status(200).json(format(resp));
