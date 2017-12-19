@@ -10,6 +10,8 @@ router.route('/create').post((...args) => controller.createExam(...args));
 
 router.route('/get').post((...args) => controller.getExam(...args));
 
+router.route('/build').post((...args) => controller.buildExam(...args));
+
 router.route('/:id')
   .put((...args) => controller.update(...args))
   .get((...args) => controller.findById(...args))

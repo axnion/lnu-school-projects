@@ -1,5 +1,6 @@
 const Controller = require('../../lib/controller');
 const examFacade = require('./facade');
+const request = require('request');
 
 class ExamController extends Controller {
 
@@ -46,6 +47,28 @@ class ExamController extends Controller {
         this.facade.findOne({ 'course': req.body.channel_name, 'date': { $gte : inputDate } })
             .then(doc => res.status(201).json(format(doc)))
             .catch(err => next(err));
+    }
+
+    buildExam(req, res, next) {
+        const input = req.body.repository;
+        //console.log(req.body);
+        let info = {
+            repoName: input.name,
+            cloneUrl: input.clone_url,
+            fullName: input.full_name
+        };
+
+        request.post(
+            'http://194.47.174.52:8000/job/buildRandomRepo/build?token=superSecretToken',
+            { json: info },
+            function (error, response, body) {
+                //console.log(response);
+                if (!error && response.statusCode == 200) {
+                    console.log(body)
+                }
+            }
+        );
+        return res.status(200);
     }
 }
 
