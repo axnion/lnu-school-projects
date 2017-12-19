@@ -57,12 +57,13 @@ class ExamController extends Controller {
             cloneUrl: input.clone_url,
             fullName: input.full_name
         };
+        console.log(info);
 
         request.post(
-            'http://194.47.174.52:8000/job/buildRandomRepo/build?token=superSecretToken',
+            'http://194.47.174.52:8000/job/buildRandomRepo/build?token=superSecretToken&cloneUrl=' + info.cloneUrl,
             { json: info },
             function (error, response, body) {
-                //console.log(response);
+                console.log(response);
                 if (!error && response.statusCode == 200) {
                     console.log(body)
                 }
