@@ -6,9 +6,13 @@ node {
     
     // Clone student repo
     dir('student') {
-       stage('Checkout student code') {
-            echo "Checking out code from ${giturl}"
-            git credentialsId: 'github-credentials', url: "${giturl}"
+        stage('Checkout student code') {
+            try {
+                echo "Checking out code from ${giturl}"
+                git credentialsId: 'github-credentials', url: "${giturl}"
+            } catch(e) {
+                // Could not clone student repo, must do something. Report to API or Slack?
+            }
         }
         
         stage('Npm install') {
@@ -34,6 +38,7 @@ node {
                 // Report exam true
                 //sh 'curl -d "buildOk=true" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://10.0.10.99:8080/reportexam'
             } catch(e) {
+                currentBuild.result = 'FAILURE'
                 sh "echo 'your tests failed, i will notify your master'"
                 // Report exam false
                 //sh 'curl -d "buildOk=false" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://10.0.10.99:8080/reportexam'
