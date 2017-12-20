@@ -32,7 +32,7 @@ node {
             try {
                 sh 'npm test'
                 // Report exam true
-                sh 'curl -d "buildOk=true" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://10.0.10.99:8080/reportexam'
+                //sh 'curl -d "buildOk=true" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://10.0.10.99:8080/reportexam'
             } catch(e) {
                 sh "echo 'your tests failed, i will notify your master'"
                 // Report exam false
