@@ -60,7 +60,7 @@ class ExamController extends Controller {
         console.log(info);
 
         request.post(
-            'http://194.47.174.52:8000/job/buildRandomRepo/build?token=superSecretToken&cloneUrl=' + info.cloneUrl,
+            'http://194.47.174.52:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&cloneUrl=' + info.cloneUrl,
             { json: info },
             function (error, response, body) {
                 console.log(response);
