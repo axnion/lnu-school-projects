@@ -8,7 +8,7 @@ node {
     dir('student') {
        stage('Checkout student code') {
             echo "Checking out code from ${giturl}"
-            git credentialsId: 'f41d9426-72b4-4da7-a343-4c0e2deceefa', url: "${giturl}"
+            git credentialsId: 'github-credentials', url: "${giturl}"
         }
         
         stage('Npm install') {
@@ -20,7 +20,7 @@ node {
     dir('./facultytests') {
         stage('Checkout faculty tests') {
             echo "Checking out tests from faculty"
-            //git credentialsId: 'f41d9426-72b4-4da7-a343-4c0e2deceefa', url: "${giturl}"
+            //git credentialsId: 'github-credentials', url: "${testsurl}"
         }
     }
         
