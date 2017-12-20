@@ -2,6 +2,10 @@
 // TODO: Correct use of curl
 // TODO: More variables
 
+// param giturl: url to student repo on github
+// param testsurl: url to additional tests from faculty
+// param studentid: API must provide a studenid (to match this build with a student, to be able to report back to API)
+
 node {
     
     // Clone student repo
@@ -35,12 +39,12 @@ node {
         dir('./student') {
             try {
                 sh 'npm test'
-                // Report exam true
+                // Report exam true. Do we include studentid here?
                 //sh 'curl -d "buildOk=true" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://10.0.10.99:8080/reportexam'
             } catch(e) {
                 currentBuild.result = 'FAILURE'
                 sh "echo 'your tests failed, i will notify your master'"
-                // Report exam false
+                // Report exam false. Do we include studentid here?
                 //sh 'curl -d "buildOk=false" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://10.0.10.99:8080/reportexam'
             }
         }
