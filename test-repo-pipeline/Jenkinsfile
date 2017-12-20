@@ -1,18 +1,20 @@
-// Something to get us started, perhaps dockerize to separate namespaces
+// Something to get us started
 // TODO: Correct use of curl
 // TODO: More variables
 
 // param giturl: url to student repo on github
-// param testsurl: url to additional tests from faculty
-// param studentid: API must provide a studenid (to match this build with a student, to be able to report back to API)
+// param testsurl: Url to github repo that contains additional tests from course and a dockerfile to build and test the student repo
+// param studentid: API must provide a studentid/githubuser (to match this build with a student, to be able to report back to API)
+
+def testsurl = "https://github.com/tommykronstal/getadockerfile"
 
 node {
     
       // Clone tests from faculty
-    dir('./facultytests') {
-        stage('Checkout faculty tests') {
-            echo "Checking out tests from faculty"
-            git credentialsId: 'github-credentials', url: "https://github.com/tommykronstal/getadockerfile"
+    dir('./coursetests') {
+        stage('Checkout course tests') {
+            echo "Checking out tests from course"
+            git credentialsId: 'github-credentials', url: "${testsurl}"
         }
     }
 
@@ -30,8 +32,8 @@ node {
     }
         
     // Copy all tests.js-files to student repo
-    sh 'cp ./facultytests/*.tests.js ./student/test/'
-    sh 'cp ./facultytests/Dockerfile ./student'
+    sh 'cp ./coursetests/*.tests.js ./student/test/'
+    sh 'cp ./coursetests/Dockerfile ./student'
         
     stage('Running tests') {
         dir('./student') {
