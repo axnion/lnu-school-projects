@@ -8,6 +8,15 @@
 
 node {
     
+      // Clone tests from faculty
+    dir('./facultytests') {
+        stage('Checkout faculty tests') {
+            echo "Checking out tests from faculty"
+            git credentialsId: 'github-credentials', url: "https://github.com/tommykronstal/getadockerfile"
+        }
+    }
+
+
     // Clone student repo
     dir('student') {
         stage('Checkout student code') {
@@ -18,27 +27,17 @@ node {
                 // Could not clone student repo, must do something. Report to API or Slack?
             }
         }
-        
-        stage('Npm install') {
-            sh 'npm install'
-        }
-    }
-
-    // Clone tests from faculty
-    dir('./facultytests') {
-        stage('Checkout faculty tests') {
-            echo "Checking out tests from faculty"
-            //git credentialsId: 'github-credentials', url: "${testsurl}"
-        }
     }
         
     // Copy all tests.js-files to student repo
-    //sh 'cp ./facultytests/*.tests.js ./student/test/'
+    sh 'cp ./facultytests/*.tests.js ./student/test/'
+    sh 'cp ./facultytests/Dockerfile ./student'
         
     stage('Running tests') {
         dir('./student') {
             try {
-                sh 'npm test'
+                sh 'docker build -t tommykronstal/studentapp .'
+                sh 'docker run tommykronstal/studentapp'
                 // Report exam true. Do we include studentid here?
                 //sh 'curl -d "buildOk=true" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://10.0.10.99:8080/reportexam'
             } catch(e) {
