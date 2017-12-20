@@ -1,0 +1,43 @@
+// Something to get us started, perhaps dockerize to separate namespaces
+// TODO: Correct use of curl
+// TODO: More variables
+
+node {
+    
+    // Clone student repo
+    dir('student') {
+       stage('Checkout student code') {
+            echo "Checking out code from ${giturl}"
+            git credentialsId: 'f41d9426-72b4-4da7-a343-4c0e2deceefa', url: "${giturl}"
+        }
+        
+        stage('Npm install') {
+            sh 'npm install'
+        }
+    }
+
+    // Clone tests from faculty
+    dir('./facultytests') {
+        stage('Checkout faculty tests') {
+            echo "Checking out tests from faculty"
+            //git credentialsId: 'f41d9426-72b4-4da7-a343-4c0e2deceefa', url: "${giturl}"
+        }
+    }
+        
+    // Copy all tests.js-files to student repo
+    //sh 'cp ./facultytests/*.tests.js ./student/test/'
+        
+    stage('Running tests') {
+        dir('./student') {
+            try {
+                sh 'npm test'
+                // Report exam true
+                sh 'curl -d "buildOk=true" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://10.0.10.99:8080/reportexam'
+            } catch(e) {
+                sh "echo 'your tests failed, i will notify your master'"
+                // Report exam false
+                //sh 'curl -d "buildOk=false" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://10.0.10.99:8080/reportexam'
+            }
+        }
+    }
+}
