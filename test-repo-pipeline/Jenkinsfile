@@ -21,7 +21,7 @@ node {
 
 
     // Clone student repo
-    dir('student') {
+    dir('./student') {
         stage('Checkout student code') {
             try {
                 echo "Checking out code from ${giturl}"
