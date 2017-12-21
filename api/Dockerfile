@@ -8,6 +8,7 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 RUN npm install --silent
 RUN npm install -g nodemon --silent 
+RUN npm install -g pm2 --silent 
 
 # Bundle app source
 COPY . /usr/src/app
