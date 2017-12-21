@@ -1,6 +1,9 @@
 const Controller = require('../../lib/controller');
 const examFacade = require('./facade');
 const request = require('request');
+let examName;
+let courseName;
+let studentId;
 
 class ExamController extends Controller {
 
@@ -51,7 +54,6 @@ class ExamController extends Controller {
 
     buildExam(req, res, next) {
         const input = req.body.repository;
-        //console.log(req.body);
         let info = {
             repoName: input.name,
             cloneUrl: input.clone_url,
@@ -59,18 +61,40 @@ class ExamController extends Controller {
         };
         console.log(info);
 
+        /*this.facade.findOne({ 'course': courseName, 'name': examName, 'date': { $gte : inputDate } })
+            .then(doc => res.status(201).json(format(doc)))
+            .catch(err => next(err));*/
+
+        extractCourseInfo(info.fullName);
+        //TODO Get the course and Exam based of the github url
         request.post(
-            'http://194.47.174.52:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&cloneUrl=' + info.cloneUrl,
+            'http://194.47.174.52:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl='
+            + info.cloneUrl + "&studentId=" + studentId + "&course=" + courseName + "&exam=" + examName,
             { json: info },
             function (error, response, body) {
-                console.log(response);
+                console.log(error);
                 if (!error && response.statusCode == 200) {
                     console.log(body)
                 }
             }
         );
+        console.log("returned to github");
         return res.status(200);
     }
+}
+
+function extractCourseInfo(githubUrl) {
+    var temp = githubUrl.split("/");
+    console.log(temp);
+    courseName = temp[0];
+    temp = temp[1].split("-",2);
+    examName = temp[1];
+    studentId = temp[0];
+
+    console.log(githubUrl);
+    console.log(courseName);
+    console.log(examName);
+    console.log(studentId);
 }
 
 function format(examDoc) {
