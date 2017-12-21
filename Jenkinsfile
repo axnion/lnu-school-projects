@@ -18,6 +18,7 @@ node('master') {
             stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/**', name: 'staging'
             stash includes: 'api/docker-compose-integration.yml, api/test/integration_tests/**', name: 'integration'
             stash includes: 'api/docker-compose-unit.yml, api/test/unit_tests/**', name: 'unit'
+            stash includes: 'api/docker-compose-production.yml', name: 'production'
         }
 
         stage('Building image') {
@@ -150,6 +151,25 @@ node('staging_slave') {
         currentBuild.result = 'FAILURE'
     }
 }
+
+node('production') {
+    try {
+        stage('Production') {
+            ustansh 'production'
+            stage('Production') {
+                dir('./api') {
+                    def composefile = "docker-compose-production.yml"
+                    cleanWorkspace("${composefile}")
+                    sh 'docker pull tommykronstal/2dv611api'
+                    sh "docker-compose -f ${composefile} up"
+                }
+            }
+        }
+    } catch(e) {
+        currentBuild.result = 'FAILURE'
+    }
+}
+
 
 // TODO: Look for a cool plugin or send a message to slack and be able to continue?
 //input "Continue to production?" 
