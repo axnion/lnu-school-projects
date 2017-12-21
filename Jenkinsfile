@@ -155,7 +155,7 @@ node('staging_slave') {
 node('production') {
     try {
         stage('Production') {
-            ustansh 'production'
+            unstash 'production'
             stage('Production') {
                 dir('./api') {
                     def composefile = "docker-compose-production.yml"
