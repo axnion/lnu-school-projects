@@ -10,7 +10,7 @@
 
 node {
     
-      // Clone tests from faculty
+      // Clone tests from course management
     dir('./coursetests') {
         stage('Checkout course tests') {
             echo "Checking out tests from course"
@@ -38,6 +38,7 @@ node {
     stage('Running tests') {
         dir('./student') {
             try {
+                // Build step could be in another stage - but if the student can't keep up correct structure etc, they should fail :)
                 sh "docker build -t '${studentid}'/studentapp ."
                 sh "docker run '${studentid}'/studentapp"
                 // Report exam true. Do we include studentid here?
