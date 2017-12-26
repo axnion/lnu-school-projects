@@ -40,13 +40,17 @@ node {
                 sh "docker build -t '${studentid}'/studentapp ."
                 sh "docker run '${studentid}'/studentapp"
                 // Report exam true. Do we include studentid here?
-                sh "curl -d buildOk=true&studentId=${studentid}&course=${course}&exam=${exam} -H 'Content-Type: application/x-www-form-urlencoded' -X POST http://localhost:8080/reportexam'" // ${env.REPORT_URL}
+                reportexam(true)
             } catch(e) {
                 currentBuild.result = 'FAILURE'
                 sh "echo 'your tests failed, i will notify your master'"
                 // Report exam false. Or do we let buildok be false as default, and do nothing?
-                sh "curl -d buildOk=false&studentId=${studentid}&course=${course}&exam=${exam} -H 'Content-Type: application/x-www-form-urlencoded' -X POST http://localhost:8080/reportexam'" // ${env.REPORT_URL}
+                reportexam(false)
             }
         }
     }
+}
+
+def reportexam(status) {
+    sh "curl -d buildOk=${status}&studentId=${studentid}&course=${course}&exam=${exam} -H 'Content-Type: application/x-www-form-urlencoded' -X POST http://localhost:8080/reportexam'" // ${env.REPORT_URL}
 }
