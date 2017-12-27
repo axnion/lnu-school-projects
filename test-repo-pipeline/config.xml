@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.16">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>giturl</name>
+          <description>Student repo to be tested</description>
+          <defaultValue>https://github.com/2dv611/grupp02-testning-ht17</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>testsurl</name>
+          <description>Repo with tests from course management</description>
+          <defaultValue>https://github.com/tommykronstal/getadockerfile</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>studentid</name>
+          <description>LNU studentid</description>
+          <defaultValue>tk222hq</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>course</name>
+          <description>Course id</description>
+          <defaultValue>1dv021</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>exam</name>
+          <description>Exam name</description>
+          <defaultValue>exam</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.42">
+    <script>// TODO: How de we handle different urls to report exam in different environments
+
+// param giturl: url to student repo on github
+// param testsurl: Url to github repo that contains additional tests from course and a dockerfile to build and test the student repo
+// param studentid: API must provide a studentid/githubuser (to match this build with a student, to be able to report back to API)
+// param course: course name
+// param exam: exam name
+
+node {
+    
+      // Clone tests from course management
+    dir(&apos;./coursetests&apos;) {
+        stage(&apos;Checkout course tests&apos;) {
+            echo &quot;Checking out tests from course&quot;
+            git credentialsId: &apos;github-credentials&apos;, url: &quot;${testsurl}&quot;
+        }
+    }
+
+
+    // Clone student repo
+    dir(&apos;./student&apos;) {
+        stage(&apos;Checkout student code&apos;) {
+            try {
+                echo &quot;Checking out code from ${giturl}&quot;
+                git credentialsId: &apos;github-credentials&apos;, url: &quot;${giturl}&quot;
+            } catch(e) {
+                // Could not clone student repo, must do something. Report to API or Slack?
+            }
+        }
+    }
+        
+    // Copy all tests.js-files to student repo
+    sh &apos;cp ./coursetests/*.tests.js ./student/test/&apos;
+    sh &apos;cp ./coursetests/Dockerfile ./student&apos;
+        
+    stage(&apos;Running tests&apos;) {
+        dir(&apos;./student&apos;) {
+            try {
+                // Build step could be in another stage - but if the student can&apos;t keep up correct structure etc, they should fail :)
+                sh &quot;docker build -t &apos;${studentid}&apos;/studentapp .&quot;
+                sh &quot;docker run &apos;${studentid}&apos;/studentapp&quot;
+                // Report exam true. Do we include studentid here?
+                reportexam(true)
+            } catch(e) {
+                currentBuild.result = &apos;FAILURE&apos;
+                sh &quot;echo &apos;your tests failed, i will notify your master&apos;&quot;
+                // Report exam false. Or do we let buildok be false as default, and do nothing?
+                reportexam(false)
+            }
+        }
+    }
+}
+
+def reportexam(status) {
+    sh &quot;curl -d buildOk=${status}&amp;studentId=${studentid}&amp;course=${course}&amp;exam=${exam} -H &apos;Content-Type: application/x-www-form-urlencoded&apos; -X POST http://localhost:8080/reportexam&apos;&quot; // ${env.REPORT_URL}
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <authToken>secretToken</authToken>
+  <disabled>false</disabled>
