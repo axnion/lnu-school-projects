@@ -1,10 +1,10 @@
-// TODO: How de we handle different urls to report exam in different environments
 
 // param giturl: url to student repo on github
 // param testsurl: Url to github repo that contains additional tests from course and a dockerfile to build and test the student repo
 // param studentid: API must provide a studentid/githubuser (to match this build with a student, to be able to report back to API)
 // param course: course name
 // param exam: exam name
+// param apiurl: url to api (different for staging/production)
 
 node {
     
@@ -52,5 +52,5 @@ node {
 }
 
 def reportexam(status) {
-    sh "curl -d buildOk=${status}&studentId=${studentid}&course=${course}&exam=${exam} -H 'Content-Type: application/x-www-form-urlencoded' -X POST http://localhost:8080/reportexam'" // ${env.REPORT_URL}
+    sh "curl -d buildOk=${status}&studentId=${studentid}&course=${course}&exam=${exam} -H 'Content-Type: application/x-www-form-urlencoded' -X POST ${apiurl}'"
 }
