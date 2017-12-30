@@ -9,12 +9,9 @@ class ExamController extends Controller {
 
     /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20}
     createExam(req, res, next) {
-        console.log(req.headers);
-        console.log(req.body);
         const input = JSON.parse(req.body.text, (key, value) => {
             return value;
         });
-        console.log(req.body);
 
         const timeTable = buildTimeTable(input.duration, input.date, input.timeSlots);
 
@@ -24,10 +21,7 @@ class ExamController extends Controller {
             name: input.name,
             timeSlots: []
         };
-        console.log(timeTable);
         for(let i = 0; i < timeTable.length; i++){
-            //TODO Implement the loop to skip forward one when going over to a new day
-            // OR ask if create exam should only create one day at a time and use name + date as unique values
             if (timeTable[i] === 'skip' || timeTable[i + 1] === 'skip'){
                 continue;
             }
@@ -61,10 +55,6 @@ class ExamController extends Controller {
         };
         console.log(info);
 
-        /*this.facade.findOne({ 'course': courseName, 'name': examName, 'date': { $gte : inputDate } })
-            .then(doc => res.status(201).json(format(doc)))
-            .catch(err => next(err));*/
-
         extractCourseInfo(info.fullName);
         //TODO Get the course and Exam based of the github url
         request.post(
@@ -72,20 +62,17 @@ class ExamController extends Controller {
             + info.cloneUrl + "&studentId=" + studentId + "&course=" + courseName + "&exam=" + examName,
             { json: info },
             function (error, response, body) {
-                console.log(error);
                 if (!error && response.statusCode == 200) {
                     console.log(body)
                 }
             }
         );
-        console.log("returned to github");
         return res.status(200);
     }
 }
 
 function extractCourseInfo(githubUrl) {
-    var temp = githubUrl.split("/");
-    console.log(temp);
+    let temp = githubUrl.split("/");
     courseName = temp[0];
     temp = temp[1].split("-",2);
     examName = temp[1];
@@ -98,7 +85,6 @@ function extractCourseInfo(githubUrl) {
 }
 
 function format(examDoc) {
-    console.log(examDoc);
     if (examDoc === null){
         return {text: 'There does not seem to be any exams for this course :smile:'};
     }
@@ -160,7 +146,6 @@ function buildTimeTable(duration, date, timeSlots) {
     while (date < maxDate && table.length <= timeSlots){
         date = addMinutes(date, duration);
         table.push(date);
-        console.log(date);
         if (addMinutes(date, duration) > maxDate && table.length <= timeSlots) {
             table.push('skip');
 

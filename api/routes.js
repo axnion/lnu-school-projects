@@ -13,5 +13,5 @@ router.route('/').get((req, res) => {
 router.use('/exam', exam);
 router.use('/bookexam', bookExam);
 router.use('/reportexam', reportExam);
-router.user('/user', user);
+router.use('/user', user);
 module.exports = router;

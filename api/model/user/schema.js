@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const reportExamSchema = new Schema({
-    lnuUser: { type: String, required: true },
-    githubUser: { type: String, required: true },
-    slackUser: { type: String, required: true }
+const userSchema = new Schema({
+    lnu: { type: String, required: true, unique: true },
+    github: { type: String, required: true, unique: true },
+    slackUser: { type: String, required: true, unique: true }
 });
 
-module.exports = mongoose.model('ReportExam', reportExamSchema);
+module.exports = mongoose.model('User', userSchema);
