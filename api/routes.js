@@ -2,14 +2,16 @@ const Router = require('express').Router;
 const router = new Router();
 
 const exam = require('./model/exam/router');
-const bookexam = require('./model/bookexam/router');
+const bookExam = require('./model/bookexam/router');
 const reportExam = require('./model/reportexam/router');
+const user = require('./model/user/router');
 
 router.route('/').get((req, res) => {
   res.json({ message: 'Welcome to slackapp API!' });
 });
 
 router.use('/exam', exam);
-router.use('/bookexam', bookexam);
+router.use('/bookexam', bookExam);
 router.use('/reportexam', reportExam);
+router.user('/user', user);
 module.exports = router;
