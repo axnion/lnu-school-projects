@@ -42,7 +42,7 @@ class ExamController extends Controller {
     getExam(req, res, next) {
         const inputDate = new Date(Date.now());
         this.facade.findOne({ 'course': req.body.channel_name, 'date': { $gte : inputDate } })
-            .then(doc => res.status(201).json(format(doc)))
+            .then(doc => res.status(200).json(format(doc)))
             .catch(err => next(err));
     }
 
@@ -56,7 +56,7 @@ class ExamController extends Controller {
         console.log(info);
 
         extractCourseInfo(info.fullName);
-        //TODO Get the course and Exam based of the github url
+        //TODO Get the course and Exam based of the github url FIX this with the register thing
         request.post(
             'http://194.47.174.52:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl='
             + info.cloneUrl + "&studentId=" + studentId + "&course=" + courseName + "&exam=" + examName,
@@ -72,16 +72,12 @@ class ExamController extends Controller {
 }
 
 function extractCourseInfo(githubUrl) {
+    //TODO Dont use all of these
     let temp = githubUrl.split("/");
     courseName = temp[0];
     temp = temp[1].split("-",2);
     examName = temp[1];
     studentId = temp[0];
-
-    console.log(githubUrl);
-    console.log(courseName);
-    console.log(examName);
-    console.log(studentId);
 }
 
 function format(examDoc) {
@@ -94,40 +90,42 @@ function format(examDoc) {
         "attachments": []
     };
 
+    //TODO Implement a real Multi slot setup or get rid of it
     for(let i = 0; i < examDoc.timeSlots.length - 1; i++){
         let current = examDoc.timeSlots[i].timeSlot;
-        if (current.studentId === "Available") {
-            formated.attachments.push({
-                "fallback": "Book your exam time",
-                "title": "Book your exam time",
-                "callback_id": "comic_1234_xyz",
-                "color": "#3AA3E3",
-                "attachment_type": "default",
-                "fields": [
-                    {
-                        "title": "Slot 1: " + current.studentId,
-                        "value": "<!date^"+ current.startTime.valueOf()/1000 + "^{time} |8.00 AM> - "
-                        + "<!date^"+ current.endTime.valueOf()/1000 + "^{time} |8.00 AM>",
-                        "short": true
-                    },
-                    {
-                        "title": "Slot 2: " + current.studentId,
-                        "value": "<!date^"+ current.startTime.valueOf()/1000 + "^{time} |8.00 AM> - "
-                        + "<!date^"+ current.endTime.valueOf()/1000 + "^{time} |8.00 AM>",
-                        "short": true
-                    }
+        let startTime = current.startTime.valueOf()/1000;
+        let endTime = current.endTime.valueOf()/1000;
+        formated.attachments.push({
+            "fallback": "Book your exam time",
+            "title": "Book your exam time",
+            "callback_id": "comic_1234_xyz",
+            "color": "#3AA3E3",
+            "attachment_type": "default",
+            "fields": [
+                {
+                    "title": "Slot 1: " + current.studentId,
+                    "value": "<!date^"+ startTime + "^{time} |8.00 AM> - "
+                    + "<!date^"+ endTime + "^{time} |8.00 AM>",
+                    "short": true
+                },
+                {
+                    "title": "Slot 2: " + current.studentId,
+                    "value": "<!date^"+ startTime + "^{time} |8.00 AM> - "
+                    + "<!date^"+ endTime + "^{time} |8.00 AM>",
+                    "short": true
+                }
 
-                ],
-                "actions": [
-                    {
-                        "name": "book",
-                        "text": "Sex, Drugs & Rock&Roll",
-                        "type": "button",
-                        "value": "book"
-                    }
-                ]
-            });
-        }
+            ],
+            "actions": [
+                {
+                    "name": "book",
+                    "text": "Sex, Drugs & Rock&Roll",
+                    "type": "button",
+                    "value": examDoc.name + "*" + i
+                }
+            ]
+        });
+
     }
 
     return formated;

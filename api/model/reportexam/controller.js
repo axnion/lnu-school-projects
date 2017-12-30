@@ -12,14 +12,12 @@ class ReportExamController extends Controller {
     reportExamFacade
       .createExamReport(req.body)
       .then(resp => {
-        console.log(resp);
+        console.log("Printing out the report exam in reportExamController",resp);
         return res.status(201).json({
           message: 'okdidoki'
         });
       })
       .catch(err => next(err));
-
-    //return res.status(200).json({ message: 'Ok' });
   }
 }
 
