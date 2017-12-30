@@ -3,6 +3,10 @@
   group:
     name: jenkins
 
+- name: Add ubuntu group
+  group:
+    name: ubuntu
+
 - name: Adding/modifying jenkins user
   user:
     name: jenkins

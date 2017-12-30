@@ -10,7 +10,7 @@
 - name: Move authorised keys from ubuntu user to jenkins user
   copy:
     remote_src: yes
-    src: /home/ubuntu/.ssh/authorized_keys
+    src: /home/vagrant/.ssh/authorized_keys # CHANGE BACK TO UBUNTU INSTEAD OF VAGRANT!
     dest: /home/jenkins/.ssh/authorized_keys
     owner: jenkins
     group: ubuntu

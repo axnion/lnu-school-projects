@@ -1,0 +1,22 @@
+---
+- hosts: mgmt
+  tasks:
+    - name: Move openstack private key to .ssh dir
+      copy:
+        src: /vagrant/secrets/openstack
+        dest: /home/vagrant/.ssh/openstack
+        decrypt: yes
+        mode: 0600
+    - name: Move openstack.pub private key to .ssh dir
+      copy:
+        src: /vagrant/secrets/openstack.pub
+        dest: /home/vagrant/.ssh/openstack.pub
+        decrypt: yes
+        mode: 0777
+
+- hosts: all
+  tasks:
+    - name: distribute public key
+      authorized_key: user=vagrant
+                      key="{{ lookup('file', '/home/vagrant/.ssh/openstack.pub') }}"
+                      state=present
