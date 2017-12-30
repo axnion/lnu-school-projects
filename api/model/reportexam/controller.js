@@ -3,8 +3,6 @@ const reportExamFacade = require('./facade');
 
 class ReportExamController extends Controller {
   createExamReport(req, res, next) {
-    console.log(req.body);
-    console.log(req.params);
 
     // unnecessary if - only for testing purposes
     if (req.body.buildOk) {
