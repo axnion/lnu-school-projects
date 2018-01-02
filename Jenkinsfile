@@ -164,7 +164,7 @@ node('staging_slave') {
 
 node('production') {
     try {
-        
+        stage('Production') {
             unstash 'production'
             dir('./api') {
                 def composefile = "docker-compose-production.yml"
@@ -172,7 +172,7 @@ node('production') {
                 sh 'docker pull tommykronstal/2dv611api'
                 sh "docker-compose -f ${composefile} up -d --build"
             }
-
+        }
     } catch(e) {
         currentBuild.result = 'FAILURE'
     }
