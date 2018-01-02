@@ -15,10 +15,10 @@ execution:
   ramp-up: 10s
   hold-for: 20s
   scenario: listExam
-- concurracy: 1
-  ramp-up: 10s
-  hold-for: 20s
-  scenario: bookExam
+#- concurracy: 1
+#  ramp-up: 10s
+#  hold-for: 20s
+#  scenario: bookExam
 
 
 scenarios:
