@@ -16,7 +16,7 @@ class SlackController extends Controller {
 
     try{
         let report = await ReportExamFacade.findOne({ studentId, course, exam});
-
+        console.log(report);
         if (!report){
             return res.status(404).json({text: "We couldn't find any build history on your examination"})
         }
