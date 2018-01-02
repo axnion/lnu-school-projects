@@ -97,9 +97,9 @@ node('integration_slave') {
             def dockerfile = "docker-compose-integration.yml"
             unstash 'integration'
 
-            stage('Cleanup') {
-                sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
-            }
+            // stage('Cleanup') {
+            //    sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
+            // }
 
             stage('Deploy and Test') {
                 dir('./api') {
