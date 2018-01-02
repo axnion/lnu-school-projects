@@ -166,7 +166,7 @@ node('staging_slave') {
 
 node('production') {
     try {
-        stage('Production') {
+        
             unstash 'production'
             stage('Production') {
                 dir('./api') {
@@ -176,7 +176,7 @@ node('production') {
                     sh "docker-compose -f ${composefile} up -d --build"
                 }
             }
-        }
+
     } catch(e) {
         currentBuild.result = 'FAILURE'
     }
