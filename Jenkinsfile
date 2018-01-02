@@ -154,7 +154,7 @@ node('staging_slave') {
         }
     } catch(e) {
         // Some error occured, send a message
-        currentBuild.result = 'FAILURE'
+        //currentBuild.result = 'FAILURE'
     }
 }
 
