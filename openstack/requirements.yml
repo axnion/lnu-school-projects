@@ -9,7 +9,3 @@
 # Docker
 - name: geerlingguy.docker
   src: geerlingguy.docker
-
-# Node
-- name: geerlingguy.nodejs
-  src: geerlingguy.nodejs

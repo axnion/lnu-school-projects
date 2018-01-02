@@ -1,5 +1,0 @@
----
-- name: "Installing Newman from NPM"
-  npm:
-    name: newman
-    global: yes
