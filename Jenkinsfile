@@ -44,6 +44,7 @@ node('master') {
         reportToSlack()
     }
 }
+// LOL
 
 node('unit_slave') {
     try {
