@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for model/exam/controller.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">model/exam</a> controller.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">6.52% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>3/46</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">6.52% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>3/46</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const Controller = require('../../lib/controller');
+const examFacade = require('./facade');
+&nbsp;
+class ExamController extends Controller {
+&nbsp;
+    /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20}
+<span class="fstat-no" title="function not covered" >    cr</span>eateExam(req, res, next) {
+        const input = <span class="cstat-no" title="statement not covered" >JSON.parse(req.body.text, <span class="fstat-no" title="function not covered" >(k</span>ey, value) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            return value;</span>
+        });
+&nbsp;
+        const timeTable = <span class="cstat-no" title="statement not covered" >buildTimeTable(input.duration, input.date, input.timeSlots);</span>
+&nbsp;
+        let exam = <span class="cstat-no" title="statement not covered" >{</span>
+            course: req.body.channel_name,
+            date: new Date("&lt;" + input.date + "&gt;"),
+            name: input.name,
+            timeSlots: []
+        };
+<span class="cstat-no" title="statement not covered" >        console.log(timeTable);</span>
+<span class="cstat-no" title="statement not covered" >        for(let i = 0; i &lt; timeTable.length; i++){</span>
+            //TODO Implement the loop to skip forward one when going over to a new day
+            // OR ask if create exam should only create one day at a time and use name + date as unique values
+<span class="cstat-no" title="statement not covered" >            if (timeTable[i] === 'skip' || timeTable[i + 1] === 'skip'){</span>
+<span class="cstat-no" title="statement not covered" >                continue;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            exam.timeSlots.push({</span>
+                timeSlot: {
+                    duration: input.duration,
+                    studentId: "Available",
+                    startTime: timeTable[i],
+                    endTime: timeTable[i + 1]
+            }});
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        this.facade.create(exam)</span>
+            .then(<span class="fstat-no" title="function not covered" >do</span>c =&gt; <span class="cstat-no" title="statement not covered" >res.status(201).json(format(doc)))</span>
+            .catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    ge</span>tExam(req, res, next) {
+        const inputDate = <span class="cstat-no" title="statement not covered" >new Date(Date.now());</span>
+<span class="cstat-no" title="statement not covered" >        this.facade.findOne({ 'course': req.body.channel_name, 'date': { $gte : inputDate } })</span>
+            .then(<span class="fstat-no" title="function not covered" >do</span>c =&gt; <span class="cstat-no" title="statement not covered" >res.status(201).json(format(doc)))</span>
+            .catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
+    }
+}
+&nbsp;
+function <span class="fstat-no" title="function not covered" >format(</span>examDoc) {
+<span class="cstat-no" title="statement not covered" >    console.log(examDoc);</span>
+<span class="cstat-no" title="statement not covered" >    if (examDoc === null){</span>
+<span class="cstat-no" title="statement not covered" >        return {text: 'There does not seem to be any exams for this course :smile:'};</span>
+    }
+    let formated = <span class="cstat-no" title="statement not covered" >{</span>
+        "text": examDoc.name + " for the course: " + examDoc.course + " on " +
+        "&lt;!date^" + examDoc.date.valueOf()/ 1000 + "^Posted {date_num}|Posted 2014-02-18 6:39:42 AM&gt;",
+        "attachments": []
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    for(let i = 0; i &lt; examDoc.timeSlots.length - 1; i++){</span>
+        let current = <span class="cstat-no" title="statement not covered" >examDoc.timeSlots[i].timeSlot;</span>
+<span class="cstat-no" title="statement not covered" >        if (current.studentId === "Available") {</span>
+<span class="cstat-no" title="statement not covered" >            formated.attachments.push({</span>
+                "fallback": "Book your exam time",
+                "title": "Book your exam time",
+                "callback_id": "comic_1234_xyz",
+                "color": "#3AA3E3",
+                "attachment_type": "default",
+                "fields": [
+                    {
+                        "title": "Slot 1: " + current.studentId,
+                        "value": "&lt;!date^"+ current.startTime.valueOf()/1000 + "^{time} |8.00 AM&gt; - "
+                        + "&lt;!date^"+ current.endTime.valueOf()/1000 + "^{time} |8.00 AM&gt;",
+                        "short": true
+                    },
+                    {
+                        "title": "Slot 2: " + current.studentId,
+                        "value": "&lt;!date^"+ current.startTime.valueOf()/1000 + "^{time} |8.00 AM&gt; - "
+                        + "&lt;!date^"+ current.endTime.valueOf()/1000 + "^{time} |8.00 AM&gt;",
+                        "short": true
+                    }
+&nbsp;
+                ],
+                "actions": [
+                    {
+                        "name": "book",
+                        "text": "Sex, Drugs &amp; Rock&amp;Roll",
+                        "type": "button",
+                        "value": "book"
+                    }
+                ]
+            });
+        }
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return formated;</span>
+}
+&nbsp;
+function <span class="fstat-no" title="function not covered" >buildTimeTable(</span>duration, date, timeSlots) {
+    let table = <span class="cstat-no" title="statement not covered" >[];</span>
+&nbsp;
+    //Create date and set it to 8 am CET
+<span class="cstat-no" title="statement not covered" >    date = new Date(date);</span>
+<span class="cstat-no" title="statement not covered" >    date= addMinutes(date, 420);</span>
+    let maxDate = <span class="cstat-no" title="statement not covered" >addMinutes(date, 540);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    table.push(date);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    while (date &lt; maxDate &amp;&amp; table.length &lt;= timeSlots){</span>
+<span class="cstat-no" title="statement not covered" >        date = addMinutes(date, duration);</span>
+<span class="cstat-no" title="statement not covered" >        table.push(date);</span>
+<span class="cstat-no" title="statement not covered" >        console.log(date);</span>
+<span class="cstat-no" title="statement not covered" >        if (addMinutes(date, duration) &gt; maxDate &amp;&amp; table.length &lt;= timeSlots) {</span>
+<span class="cstat-no" title="statement not covered" >            table.push('skip');</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            date = addMinutes(date,duration);</span>
+<span class="cstat-no" title="statement not covered" >            table.push(date);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            date.setDate(date.getDate() + 1);</span>
+<span class="cstat-no" title="statement not covered" >            date.setTime(date.getTime() - (570 * 60000));</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            maxDate.setDate(maxDate.getDate() + 1);</span>
+        }
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return table;</span>
+}
+&nbsp;
+function <span class="fstat-no" title="function not covered" >addMinutes(</span>date, minutes) {
+<span class="cstat-no" title="statement not covered" >    return new Date(date.getTime() + minutes*60000);</span>
+}
+&nbsp;
+module.exports = new ExamController(examFacade);
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Dec 17 2017 03:49:19 GMT+0100 (CET)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
