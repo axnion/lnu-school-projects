@@ -72,8 +72,8 @@ node('unit_slave') {
                                         reportDir: 'test/unit_tests/coverage/lcov-report/',
                                         reportFiles: 'index.html',
                                         reportName: 'Test coverage'
-                                    ])
-            }*/
+                                    ])*/
+            }
         }
     } catch(e) {
         currentBuild.result = 'FAILURE'
