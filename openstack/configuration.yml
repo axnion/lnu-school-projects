@@ -21,6 +21,7 @@
         - junit
         - workflow-aggregator
         - performance
+        - htmlpublisher
       jenkins_admin_username: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           65386538393263643736626661663732366563386634613137383438633333656631363433386265
