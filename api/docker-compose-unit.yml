@@ -2,12 +2,12 @@ version: '2'
 
 services:
   web:
-    command: npm test
     image: tommykronstal/2dv611api
     #build: .
     volumes:
       - ./:/app
       #- ./test/unit_tests/report :/test/unit_tests/report
       #- ./test/unit_tests/coverage :/test/unit_tests/coverage
-    ports:
-      - "8080:8080"
+    #ports:
+     # - "8080:8080"
+    command: npm test

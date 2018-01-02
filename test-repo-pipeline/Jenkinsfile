@@ -1,4 +1,3 @@
-
 // param giturl: url to student repo on github
 // param testsurl: Url to github repo that contains additional tests from course and a dockerfile to build and test the student repo
 // param studentid: API must provide a studentid/githubuser (to match this build with a student, to be able to report back to API)
@@ -44,7 +43,7 @@ node {
             } catch(e) {
                 currentBuild.result = 'FAILURE'
                 sh "echo 'your tests failed, i will notify your master'"
-                // Report exam false. Or do we let buildok be false as default, and do nothing?
+                // Report exam false.
                 reportexam(false)
             }
         }
@@ -52,5 +51,5 @@ node {
 }
 
 def reportexam(status) {
-    sh "curl -d buildOk=${status}&studentId=${studentid}&course=${course}&exam=${exam} -H 'Content-Type: application/x-www-form-urlencoded' -X POST ${apiurl}"
+    sh "curl -d 'buildOk=${status}&studentId=${studentid}&course=${course}&exam=${exam}' -H 'Content-Type: application/x-www-form-urlencoded' -X POST '${apiurl}'"
 }

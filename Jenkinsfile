@@ -97,9 +97,9 @@ node('integration_slave') {
             def dockerfile = "docker-compose-integration.yml"
             unstash 'integration'
 
-            stage('Cleanup') {
-                sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
-            }
+            // stage('Cleanup') {
+            //    sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
+            // }
 
             stage('Deploy and Test') {
                 dir('./api') {
@@ -125,6 +125,13 @@ node('integration_slave') {
         reportToSlack()
     }
 }
+
+// Manual Gate!
+stage('Unstable Build') {
+    input('Publish as unstable and deploy to staging?')
+}
+
+// Push image to unstable branch
 
 node('staging_slave') {
     // -> Tommy <-
@@ -152,6 +159,10 @@ node('staging_slave') {
         currentBuild.result = 'FAILURE'
     }
 }
+
+// Manual Gate
+
+// Push image to stable branch
 
 node('production') {
     try {
