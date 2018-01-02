@@ -58,8 +58,9 @@ class ExamController extends Controller {
         extractCourseInfo(info.fullName);
         //TODO Get the course and Exam based of the github url FIX this with the register thing
         request.post(
-            'http://194.47.174.52:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl='
-            + info.cloneUrl + "&studentId=" + studentId + "&course=" + courseName + "&exam=" + examName,
+            'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl='
+            + info.cloneUrl + "&studentId=" + studentId + "&course=" + courseName + "&exam=" + examName + "&apiurl=" +
+            "url/exam/build",
             { json: info },
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
