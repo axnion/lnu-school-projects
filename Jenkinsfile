@@ -126,6 +126,13 @@ node('integration_slave') {
     }
 }
 
+// Manual Gate!
+stage('Unstable Build') {
+    input('Publish as unstable and deploy to staging?')
+}
+
+// Push image to unstable branch
+
 node('staging_slave') {
     // -> Tommy <-
     // Get image for API from docker hub
@@ -152,6 +159,10 @@ node('staging_slave') {
         currentBuild.result = 'FAILURE'
     }
 }
+
+// Manual Gate
+
+// Push image to stable branch
 
 node('production') {
     try {

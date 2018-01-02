@@ -30,7 +30,7 @@ scenarios:
        headers:
          Content-Type: application/x-www-form-urlencoded
        body:
-         text: '{"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20}'
+         text: '{"date": "2018-12-30", "name": "exam", "duration": 30, "timeSlots": 20}'
          channel_name: "1dv021"
        assert:
         - contains:
@@ -53,7 +53,7 @@ scenarios:
        headers:
         Content-Type: application/x-www-form-urlencoded
        body:
-         payload: '{"channel": {"name": "1dv021"}, "user": {"name": "tk222hq"}}'
+         payload: '{"channel": {"name": "1dv021"}, "user": {"name": "tk222hq"}, "actions":[{value: exam*1}]}'
 
 
 modules:
