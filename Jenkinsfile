@@ -143,15 +143,13 @@ node('staging_slave') {
     try {
         stage('Staging') {
             unstash 'staging'
-            stage('Staging') {
-                dir('./api') {
-                    def dockerfile = "docker-compose-staging.yml"
-                    cleanWorkspace("${dockerfile}")
-                    sh 'docker pull tommykronstal/2dv611api'
-                    sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
-                    perfReport compareBuildPrevious: true, modeThroughput: true, relativeFailedThresholdNegative: 5.0, relativeFailedThresholdPositive: 5.0, relativeUnstableThresholdNegative: 5.0, relativeUnstableThresholdPositive: 5.0, sourceDataFiles: '**/staging_tests/taurus*'
-                    junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: '**/staging_tests/junit*'
-                }
+            dir('./api') {
+                def dockerfile = "docker-compose-staging.yml"
+                cleanWorkspace("${dockerfile}")
+                sh 'docker pull tommykronstal/2dv611api'
+                sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
+                perfReport compareBuildPrevious: true, modeThroughput: true, relativeFailedThresholdNegative: 5.0, relativeFailedThresholdPositive: 5.0, relativeUnstableThresholdNegative: 5.0, relativeUnstableThresholdPositive: 5.0, sourceDataFiles: '**/staging_tests/taurus*'
+                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: '**/staging_tests/junit*'
             }
         }
     } catch(e) {
@@ -168,13 +166,11 @@ node('production') {
     try {
         stage('Production') {
             unstash 'production'
-            stage('Production') {
-                dir('./api') {
-                    def composefile = "docker-compose-production.yml"
-                    cleanWorkspace("${composefile}")
-                    sh 'docker pull tommykronstal/2dv611api'
-                    sh "docker-compose -f ${composefile} up -d --build"
-                }
+            dir('./api') {
+                def composefile = "docker-compose-production.yml"
+                cleanWorkspace("${composefile}")
+                sh 'docker pull tommykronstal/2dv611api'
+                sh "docker-compose -f ${composefile} up -d --build"
             }
         }
     } catch(e) {
