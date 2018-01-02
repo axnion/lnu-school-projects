@@ -34,7 +34,7 @@
         <hudson.model.StringParameterDefinition>
           <name>apiurl</name>
           <description>Url to api for sending curl requests in staging or production env</description>
-          <defaultValue>http://localhost:8080</defaultValue>
+          <defaultValue>http://5eb495dc.ngrok.io/reportexam</defaultValue>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
