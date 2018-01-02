@@ -15,6 +15,10 @@ execution:
   ramp-up: 10s
   hold-for: 20s
   scenario: bookExam
+- concurracy: 10
+  ramp-up: 10s
+  hold-for: 20s
+  scenario: reportExam
 
 scenarios:
   getExam:
@@ -48,7 +52,7 @@ scenarios:
   reportExam:
     requests:
      - url: http://web:8080/reportexam
-      method: POST
+       method: POST
       label: reportExam
       headers:
        Content-Type: application/x-www-form-urlencoded
