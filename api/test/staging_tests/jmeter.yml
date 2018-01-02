@@ -1,24 +1,25 @@
 execution:
-- concurracy: 10
+- concurracy: 1
   ramp-up: 10s
   hold-for: 20s
   scenario: getExam
-- concurracy: 10
+- concurracy: 1
   ramp-up: 10s
   hold-for: 20s
   scenario: createExam
-- concurracy: 10
-  ramp-up: 10s
-  hold-for: 20s
-  scenario: listExam
-- concurracy: 10
-  ramp-up: 10s
-  hold-for: 20s
-  scenario: bookExam
-- concurracy: 10
+- concurracy: 1
   ramp-up: 10s
   hold-for: 20s
   scenario: reportExam
+- concurracy: 1
+  ramp-up: 10s
+  hold-for: 20s
+  scenario: listExam
+- concurracy: 1
+  ramp-up: 10s
+  hold-for: 20s
+  scenario: bookExam
+
 
 scenarios:
   getExam:
