@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.16">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>giturl</name>
+          <description>Student repo to be tested</description>
+          <defaultValue>https://github.com/2dv611/grupp02-testning-ht17</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>testsurl</name>
+          <description>Repo with tests from course management</description>
+          <defaultValue>https://github.com/tommykronstal/getadockerfile</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>studentid</name>
+          <description>LNU studentid</description>
+          <defaultValue>tk222hq</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>course</name>
+          <description>Course id</description>
+          <defaultValue>1dv021</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>exam</name>
+          <description>Exam name</description>
+          <defaultValue>exam</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>apiurl</name>
+          <description>Url to api for sending curl requests in staging or production env</description>
+          <defaultValue>http://localhost:8080</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.42">
+    <script>
+// param giturl: url to student repo on github
+// param testsurl: Url to github repo that contains additional tests from course and a dockerfile to build and test the student repo
+// param studentid: API must provide a studentid/githubuser (to match this build with a student, to be able to report back to API)
+// param course: course name
+// param exam: exam name
+// param apiurl: url to api (different for staging/production)
+
+node {
+    
+      // Clone tests from course management
+    dir('./coursetests') {
+        stage('Checkout course tests') {
+            echo "Checking out tests from course"
+            git credentialsId: 'github-credentials', url: "${testsurl}"
+        }
+    }
+
+
+    // Clone student repo
+    dir('./student') {
+        stage('Checkout student code') {
+            try {
+                echo "Checking out code from ${giturl}"
+                git credentialsId: 'github-credentials', url: "${giturl}"
+            } catch(e) {
+                // Could not clone student repo, must do something. Report to API or Slack?
+            }
+        }
+    }
+        
+    // Copy all tests.js-files to student repo
+    sh 'cp ./coursetests/*.tests.js ./student/test/'
+    sh 'cp ./coursetests/Dockerfile ./student'
+        
+    stage('Running tests') {
+        dir('./student') {
+            try {
+                // Build step could be in another stage - but if the student can't keep up correct structure etc, they should fail :)
+                sh "docker build -t '${studentid}'/studentapp ."
+                sh "docker run '${studentid}'/studentapp"
+                // Report exam true. Do we include studentid here?
+                reportexam(true)
+            } catch(e) {
+                currentBuild.result = 'FAILURE'
+                sh "echo 'your tests failed, i will notify your master'"
+                // Report exam false.
+                reportexam(false)
+            }
+        }
+    }
+}
+
+def reportexam(status) {
+    sh "curl -d 'buildOk=${status}&studentId=${studentid}&course=${course}&exam=${exam}' -H 'Content-Type: application/x-www-form-urlencoded' -X POST '${apiurl}'"
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <authToken>secretToken</authToken>
+  <disabled>false</disabled>
+</flow-definition>
