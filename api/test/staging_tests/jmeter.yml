@@ -45,6 +45,14 @@ scenarios:
         Content-Type: application/x-www-form-urlencoded
        body:
          channel_name: "1dv021"
+  reportExam:
+    requests:
+     - url: http://web:8080/reportexam
+      method: POST
+      label: reportExam
+      headers:
+       Content-Type: application/x-www-form-urlencoded
+      body: 'buildOk=true&studentId=tk22hq&course=1dv021&exam=exam'
   bookExam:
     requests:
      - url: http://web:8080/bookexam
