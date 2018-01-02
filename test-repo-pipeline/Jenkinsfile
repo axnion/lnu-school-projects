@@ -52,5 +52,5 @@ node {
 }
 
 def reportexam(status) {
-    sh "curl -d buildOk=${status}&studentId=${studentid}&course=${course}&exam=${exam} -H 'Content-Type: application/x-www-form-urlencoded' -X POST ${apiurl}'"
+    sh "curl -d buildOk=${status}&studentId=${studentid}&course=${course}&exam=${exam} -H 'Content-Type: application/x-www-form-urlencoded' -X POST ${apiurl}"
 }
