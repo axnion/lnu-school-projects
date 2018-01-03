@@ -62,13 +62,13 @@ node('unit_slave') {
                 cleanWorkspace("${dockerfile}")
                 pullImages("tommykronstal/2dv611api")
                 sh "docker-compose -f ${dockerfile} up --exit-code-from web web"
-                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/test-report.html'
+                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/report/test-report.html'
 
                 publishHTML (target: [
                                         allowMissing: false,
                                         alwaysLinkToLastBuild: false,
                                         keepAll: true,
-                                        reportDir: 'test/unit_tests',
+                                        reportDir: 'test/unit_tests/report',
                                         reportFiles: 'test-report.html',
                                         reportName: 'Unit test report'
                                     ])
