@@ -206,5 +206,5 @@ def reportToSlack() {
 
 def errorHandler(error) {
     currentBuild.result = 'FAILURE'
-    sh "echo ${e}"
+    sh "echo ${error}"
 }
