@@ -99,25 +99,9 @@ node('integration_slave') {
             def dockerfile = "docker-compose-integration.yml"
             unstash 'integration'
 
-            /*
-            stage('Cleanup') {
-               sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
-            }
-            */
-
             dir('./api') {
                 cleanWorkspace("${dockerfile}")
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
-                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
-
-                publishHTML (target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: false,
-                    keepAll: true,
-                    reportDir: 'test/integration_tests/newman',
-                    reportFiles: '**.html',
-                    reportName: "Integration test report"
-                ])
             }
         }
     } catch(e) {
@@ -126,6 +110,17 @@ node('integration_slave') {
         //reportToSlack()
         currentBuild.result = 'FAILURE'
         slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
+    } finally() {
+        junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
+
+        publishHTML (target: [
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: 'test/integration_tests/newman',
+            reportFiles: '**.html',
+            reportName: "Integration test report"
+        ])
     }
 }
 
