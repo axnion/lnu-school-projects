@@ -60,6 +60,7 @@ node('unit_slave') {
             dir('./api') {
                 def dockerfile = "docker-compose-unit.yml"
                 cleanWorkspace("${dockerfile}")
+                pullImages("tommykronstal/2dv611api")
                 sh "docker-compose -f ${dockerfile} up --exit-code-from web web"
                 junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/test-report.html'
 
