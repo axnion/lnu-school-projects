@@ -115,7 +115,7 @@ node('integration_slave') {
             publishHTML (target: [
                 allowMissing: false,
                 alwaysLinkToLastBuild: false,
-                keepAll: true,
+                keepAll: false,
                 reportDir: 'test/integration_tests/newman',
                 reportFiles: '**.html',
                 reportName: "Integration test report"
