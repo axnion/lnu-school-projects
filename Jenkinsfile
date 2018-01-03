@@ -96,6 +96,7 @@ node('unit_slave') {
 node('integration_slave') {
     try {
         stage('Integration Testing') {
+            sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
             def dockerfile = "docker-compose-integration.yml"
             unstash 'integration'
 
