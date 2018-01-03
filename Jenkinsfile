@@ -103,21 +103,19 @@ node('integration_slave') {
             //    sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
             // }
 
-            stage('Deploy and Test') {
-                dir('./api') {
-                    cleanWorkspace("${dockerfile}")
-                    sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
-                    junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
+            dir('./api') {
+                cleanWorkspace("${dockerfile}")
+                sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
+                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
 
-                    publishHTML (target: [
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: false,
-                        keepAll: true,
-                        reportDir: 'test/integration_tests/newman',
-                        reportFiles: '**.html',
-                        reportName: "Integration test report"
-                    ])
-                }
+                publishHTML (target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: 'test/integration_tests/newman',
+                    reportFiles: '**.html',
+                    reportName: "Integration test report"
+                ])
             }
 
         }
