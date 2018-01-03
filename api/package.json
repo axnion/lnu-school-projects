@@ -7,7 +7,7 @@
             "coverageDirectory": "./test/unit_tests/coverage"},
   "jest-html-reporter": {
     "pageTitle": "Slack API unit tests report",
-    "outputPath": "test/unit_tests/report/test-report.html",
+    "outputPath": "/app/test/unit_tests/test-report.html",
     "includeFailureMsg": false
   },
   "scripts": {
