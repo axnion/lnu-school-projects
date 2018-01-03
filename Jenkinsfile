@@ -61,13 +61,13 @@ node('unit_slave') {
                 def dockerfile = "docker-compose-unit.yml"
                 cleanWorkspace("${dockerfile}")
                 sh "docker-compose -f ${dockerfile} up --exit-code-from web web"
-                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/report/test-report.html'
+                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/test-report.html'
 
                 publishHTML (target: [
                                         allowMissing: false,
                                         alwaysLinkToLastBuild: false,
                                         keepAll: true,
-                                        reportDir: 'test/unit_tests/report/',
+                                        reportDir: 'test/unit_tests/',
                                         reportFiles: 'test-report.html',
                                         reportName: 'Unit test report'
                                     ])
