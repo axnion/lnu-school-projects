@@ -106,9 +106,8 @@ node('integration_slave') {
             }
         }
     } catch(e) {
-        // Some error occured, send a message
-        currentBuild.result = 'FAILURE'
         reportToSlack("running integration tests")
+        currentBuild.result = 'FAILURE'
     } finally {
         dir('./api') {
             junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
