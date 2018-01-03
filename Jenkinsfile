@@ -109,7 +109,7 @@ node('integration_slave') {
     } catch(e) {
         failureSlack("running integration tests")
         currentBuild.result = 'FAILURE'
-        throw new Error("Shit broke")
+        error "Shit on fire fam"
     } finally {
         dir('./api') {
             junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
