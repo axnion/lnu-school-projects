@@ -15,11 +15,7 @@ class ExamController extends Controller {
       return value;
     });
 
-    const timeTable = buildTimeTable(
-      input.duration,
-      input.date,
-      input.timeSlots
-    );
+    const timeTable = buildTimeTable(input.duration, input.date, input.timeSlots);
 
     let exam = {
       course: req.body.channel_name,
@@ -31,6 +27,7 @@ class ExamController extends Controller {
 
     /// om ny dag händer
     for (let i = 0; i < timeTable.length; i++) {
+      console.log(timeTable);
       if (timeTable[i] === 'skip' || timeTable[i + 1] === 'skip') {
         continue;
       }
@@ -45,7 +42,6 @@ class ExamController extends Controller {
             }
           });
         }
-
       }
     }
 
@@ -75,20 +71,11 @@ class ExamController extends Controller {
     extractCourseInfo(info.fullName);
     //TODO Get the course and Exam based of the github url FIX this with the register thing
     request.post(
-      'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' +
-      info.cloneUrl +
-      '&studentId=' +
-      studentId +
-      '&course=' +
-      courseName +
-      '&exam=' +
-      examName +
-      '&apiurl=' +
-      URL +
-      '/exam/build',
+      'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
+        + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '/exam/build',
       { json: info },
       function (error, response, body) {
-        if (!error && response.statusCode == 200) {
+        if (!error && response.statusCode === 200) {
           console.log(body);
         }
 
@@ -115,22 +102,13 @@ function format(examDoc) {
     };
   }
   let formated = {
-    text:
-      examDoc.name +
-      ' for the course: ' +
-      examDoc.course +
-      ' on ' +
-      '<!date^' +
-      examDoc.date.valueOf() / 1000 +
-      '^Posted {date_num}|Posted 2014-02-18 6:39:42 AM>',
+    text: examDoc.name + ' for the course: ' + examDoc.course + ' on <!date^' +
+      examDoc.date.valueOf() / 1000 + '^Posted {date_num}|Posted 2014-02-18 6:39:42 AM>',
     attachments: []
   };
 
-  //TODO Implement a real Multi slot setup or get rid of it
   for (let i = 0; i < examDoc.timeSlots.length - 1; i++) {
-    //console.log(i);
     let current = examDoc.timeSlots[i].timeSlot;
-    //console.log(examDoc.timeSlots);
     let startTime = current.startTime.valueOf() / 1000;
     let endTime = current.endTime.valueOf() / 1000;
     formated.attachments.push({
@@ -142,7 +120,6 @@ function format(examDoc) {
       actions: [
       ]
     });
-    //console.log(formated.attachments);
     for (let j = 0; j < examDoc.examiners; j++) {
       let l = i + j;
       formated.attachments[formated.attachments.length - 1].actions.push({
@@ -150,7 +127,7 @@ function format(examDoc) {
         text: `Slot ${j + 1}: ${examDoc.timeSlots[l].timeSlot.studentId}`,
         type: 'button',
         value: examDoc.name + '*' + l
-      })
+      });
 
       if (j === examDoc.examiners - 1)
         i += j;
@@ -158,24 +135,6 @@ function format(examDoc) {
 
   }
 
-  /* {
-    name: 'book',
-    text: 'Slot 1: ' + current.studentId,
-    type: 'button',
-    value: examDoc.name + '*' + i
-  },
-  {
-    name: 'book',
-    text: 'Slot 2: ' + current.studentId,
-    type: 'button',
-    value: examDoc.name + '*' + i
-  },
-  {
-    name: 'book',
-    text: 'Slot 3: ' + current.studentId,
-    type: 'button',
-    value: examDoc.name + '*' + i
-  } */
   return formated;
 }
 
