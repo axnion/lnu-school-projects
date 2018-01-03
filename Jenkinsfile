@@ -68,7 +68,7 @@ node('unit_slave') {
                                         allowMissing: false,
                                         alwaysLinkToLastBuild: false,
                                         keepAll: true,
-                                        reportDir: 'test/unit_tests/',
+                                        reportDir: 'test/unit_tests',
                                         reportFiles: 'test-report.html',
                                         reportName: 'Unit test report'
                                     ])
