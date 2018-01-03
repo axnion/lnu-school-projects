@@ -57,14 +57,12 @@ node('unit_slave') {
     try {
         stage('unit tests') {
             unstash 'unit'
-            //dir('./api') {
+            dir('./api') {
                 def dockerfile = "docker-compose-unit.yml"
                 cleanWorkspace("${dockerfile}")
-                sh "ls -a"
                 sh "docker-compose -f ${dockerfile} up --exit-code-from web web"
                 junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/report/test-report.html'
 
-                sh 'ls -l test'
                 publishHTML (target: [
                                         allowMissing: false,
                                         alwaysLinkToLastBuild: false,
@@ -73,15 +71,15 @@ node('unit_slave') {
                                         reportFiles: 'test-report.html',
                                         reportName: 'Unit test report'
                                     ])
-                publishHTML (target: [
+                /*publishHTML (target: [
                                         allowMissing: false,
                                         alwaysLinkToLastBuild: false,
                                         keepAll: true,
                                         reportDir: 'coverage/lcov-report/',
                                         reportFiles: 'index.html',
                                         reportName: 'Test coverage'
-                                    ])
-            //}
+                                    ])*/
+            }
         }
     } catch(e) {
         currentBuild.result = 'FAILURE'
