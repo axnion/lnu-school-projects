@@ -5,7 +5,7 @@ const ExamFacade = require('../exam/facade');
 
 class SlackController extends Controller {
   async createBooking(req, res, next) {
-    console.log(req.body.payload); // don't delete yet
+    console.log("Payload: ",req.body.payload); // don't delete yet
     const response = JSON.parse(req.body.payload);
     const studentId = response.user.name;
     const course = response.channel.name;
@@ -15,9 +15,7 @@ class SlackController extends Controller {
 
     try {
       let report = await ReportExamFacade.findOne({ studentId, course, exam });
-      //let report = {};
-      //report.buildOk = true;
-      console.log(report);
+      console.log("Logging report in book exam: ", report);
       if (!report) {
         return res.status(200).json({
           text: 'We couldn\'t find any build history on your examination. Please create a release of your application on GitHub before trying to book the exam.'
@@ -26,7 +24,7 @@ class SlackController extends Controller {
 
       if (report.buildOk) {
         let examDoc = await ExamFacade.findOne({ course: course, name: exam });
-
+        console.log("Logging exam in book exam: ", examDoc);
         if (!examDoc) {
           return res.status(200).json({ text: "We couldn't find the specified exam" });
         }
