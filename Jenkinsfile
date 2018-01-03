@@ -96,8 +96,6 @@ node('unit_slave') {
 * Jenkins Integration Slave
 */
 node('integration_slave') {
-    def success = true
-
     try {
         stage('Integration Testing') {
             def dockerfile = "docker-compose-integration.yml"
@@ -109,9 +107,9 @@ node('integration_slave') {
             }
         }
     } catch(e) {
-        //reportToSlack("running integration tests")
-        //currentBuild.result = 'FAILURE'
-        success = false
+        reportToSlack("running integration tests")
+        currentBuild.result = 'FAILURE'
+        throw new Error("Shit broke")
     } finally {
         dir('./api') {
             junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
@@ -124,11 +122,6 @@ node('integration_slave') {
                 reportFiles: '**.html',
                 reportName: "Integration test report"
             ])
-        }
-
-        if (!success) {
-            failureSlack("running integration tests")
-            currentBuild.result = 'FAILURE'
         }
     }
 }
