@@ -125,6 +125,7 @@ node('integration_slave') {
 }
 
 stage('Approve Unstable Build') {
+    manualStepSlack('staging')
     input('Publish unstable build and deploy to staging?')
 }
 
@@ -159,6 +160,7 @@ node('staging_slave') {
 }
 
 stage('Approve Stable Build') {
+    manualStepSlack('production')
     input('Publish stable build and deploy to production?')
 }
 
@@ -197,6 +199,16 @@ def cleanWorkspace(dockerfile) {
     sh "docker-compose -f ${dockerfile} down"
 }
 
+/*
+* Send message to Slack to inform users of a failure in the pipeline
+*/
 def failureSlack(currentStage) {
     slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "Build #${env.BUILD_NUMBER} encountered an error when ${currentStage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
+}
+
+/*
+* Send message to Slack to inform users of a manual step waiting for approval in the pipeline
+*/
+def manualStepSlack(nextStage) {
+    slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'good', message: "Build #${env.BUILD_NUMBER} is waiting for manual approvement to move to ${nextStage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
 }
