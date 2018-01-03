@@ -1,6 +1,5 @@
 const Controller = require('../../lib/controller');
 const slackFacade = require('./facade');
-const reportExamController = require('../reportexam/controller');
 const ReportExamFacade = require('../reportexam/facade');
 const ExamFacade = require('../exam/facade');
 
@@ -25,30 +24,24 @@ class SlackController extends Controller {
         });
       }
 
-
-
       if (report.buildOk) {
         let examDoc = await ExamFacade.findOne({ course: course, name: exam });
 
         if (!examDoc) {
-          return res
-            .status(200)
-            .json({ text: "We couldn't find the specified exam" });
+          return res.status(200).json({ text: "We couldn't find the specified exam" });
         }
 
-        // TODO: check if timeslot already filled 
-        // TODO: Tilldela rätt timeslot om det finns flera samtidigt
-        examDoc.timeSlots[timeSlotNumber].timeSlot.studentId = studentId;
-        console.log(examDoc.timeSlots[timeSlotNumber]);
-        await examDoc.save();
-        console.log(examDoc.timeSlots[timeSlotNumber]);
+        let current = examDoc.timeSlots[timeSlotNumber].timeSlot;
+        if (current.studentId !== 'Available'){
+            current.studentId = studentId;
+            await examDoc.save();
+        }else {
+            res.status(200).json({text: 'I am sorry but that slot is already taken. Pick another.'});
+        }
 
-        return res.status(200).json(format(report));
+        return res.status(200).json(format(current));
       } else {
-        // build failed, return appropriate message
-        res.status(200).json({
-          text: 'Build failed'
-        });
+        res.status(200).json({text: 'The current build of the examination did not pass the given tests please fix these and try again'});
       }
     } catch (e) {
       console.log(e);
@@ -57,14 +50,11 @@ class SlackController extends Controller {
   }
 }
 
-// TODO: implement even more  meaningful response
-function format(examDoc) {
-  const formated = {
-    text: 'This is a meaningful response',
+function format(current) {
+  return {
+    text: `You have successfully booked a examination! With the studentId: ${current.studentId} in the time slot: <!date^${current.startTime}^{time} | 8.00 AM> - <!date^${current.endTime}^{time} |8.00 AM>`,
     attachments: []
   };
-
-  return formated;
 }
 
 module.exports = new SlackController(slackFacade);

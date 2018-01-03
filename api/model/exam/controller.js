@@ -92,6 +92,7 @@ function extractCourseInfo(githubUrl) {
   courseName = temp[0];
   temp = temp[1].split('-', 2);
   examName = temp[1];
+  //TODO Get Student ID from Register
   studentId = temp[0];
 }
 
@@ -102,8 +103,7 @@ function format(examDoc) {
     };
   }
   let formated = {
-    text: examDoc.name + ' for the course: ' + examDoc.course + ' on <!date^' +
-      examDoc.date.valueOf() / 1000 + '^Posted {date_num}|Posted 2014-02-18 6:39:42 AM>',
+    text: `${examDoc.name} for the course: ${examDoc.course} on <!date^${examDoc.date.valueOf() / 1000}^Posted {date_num}|Posted 2014-02-18 6:39:42 AM>`,
     attachments: []
   };
 
@@ -112,8 +112,8 @@ function format(examDoc) {
     let startTime = current.startTime.valueOf() / 1000;
     let endTime = current.endTime.valueOf() / 1000;
     formated.attachments.push({
-      fallback: '<!date^' + startTime + '^{time} | 8.00 AM> - <!date^' + endTime + '^{time} |8.00 AM>',
-      title: '<!date^' + startTime + '^{time} | 8.00 AM> - <!date^' + endTime + '^{time} |8.00 AM>',
+      fallback: `<!date^${startTime}^{time} | 8.00 AM> - <!date^${endTime}^{time} |8.00 AM>`,
+      title: `<!date^${startTime}^{time} | 8.00 AM> - <!date^${endTime}^{time} |8.00 AM>`,
       callback_id: 'comic_1234_xyz',
       color: '#3AA3E3',
       attachment_type: 'default',
