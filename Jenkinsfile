@@ -2,6 +2,7 @@
 * Pipeline for 2DV611 project.
 */
 
+
 /*
 * Jenkins Master
 */
@@ -59,23 +60,25 @@ node('unit_slave') {
             dir('./api') {
                 def dockerfile = "docker-compose-unit.yml"
                 cleanWorkspace("${dockerfile}")
-                sh "ls -a"
+                pullImages("tommykronstal/2dv611api")
                 sh "docker-compose -f ${dockerfile} up --exit-code-from web web"
-                /*junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/report/test-report.html'
+                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/report/test-report.html'
+
+                sh 'ls -l test/unit_tests/report'
 
                 publishHTML (target: [
                                         allowMissing: false,
                                         alwaysLinkToLastBuild: false,
                                         keepAll: true,
-                                        reportDir: 'test/unit_tests/report/',
+                                        reportDir: 'test/unit_tests/report',
                                         reportFiles: 'test-report.html',
                                         reportName: 'Unit test report'
                                     ])
-                publishHTML (target: [
+                /*publishHTML (target: [
                                         allowMissing: false,
                                         alwaysLinkToLastBuild: false,
                                         keepAll: true,
-                                        reportDir: 'test/unit_tests/coverage/lcov-report/',
+                                        reportDir: 'coverage/lcov-report/',
                                         reportFiles: 'index.html',
                                         reportName: 'Test coverage'
                                     ])*/
@@ -96,6 +99,7 @@ node('unit_slave') {
 node('integration_slave') {
     try {
         stage('Integration Testing') {
+            sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
             def dockerfile = "docker-compose-integration.yml"
             unstash 'integration'
 
@@ -105,26 +109,27 @@ node('integration_slave') {
             }
         }
     } catch(e) {
-        // Some error occured, send a message
-        //currentBuild.result = 'FAILURE'
-        //reportToSlack()
+        failureSlack("running integration tests")
         currentBuild.result = 'FAILURE'
-        slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "Build #${env.BUILD_NUMBER} encountered an error on ${env.NODE_NAME} - ${env.BUILD_URL}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
+        error "There where failures in the integration tests"
     } finally {
-        junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
+        dir('./api') {
+            junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
 
-        publishHTML (target: [
-            allowMissing: false,
-            alwaysLinkToLastBuild: false,
-            keepAll: true,
-            reportDir: 'test/integration_tests/newman',
-            reportFiles: '**.html',
-            reportName: "Integration test report"
-        ])
+            publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: false,
+                reportDir: 'test/integration_tests/newman',
+                reportFiles: '**.html',
+                reportName: "Integration test report"
+            ])
+        }
     }
 }
 
 stage('Approve Unstable Build') {
+    manualStepSlack('staging')
     input('Publish unstable build and deploy to staging?')
 }
 
@@ -159,6 +164,7 @@ node('staging_slave') {
 }
 
 stage('Approve Stable Build') {
+    manualStepSlack('production')
     input('Publish stable build and deploy to production?')
 }
 
@@ -195,4 +201,18 @@ def pullImages(imagename) {
 */
 def cleanWorkspace(dockerfile) {
     sh "docker-compose -f ${dockerfile} down"
+}
+
+/*
+* Send message to Slack to inform users of a failure in the pipeline
+*/
+def failureSlack(currentStage) {
+    slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "Build #${env.BUILD_NUMBER} encountered an error when ${currentStage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
+}
+
+/*
+* Send message to Slack to inform users of a manual step waiting for approval in the pipeline
+*/
+def manualStepSlack(nextStage) {
+    slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'good', message: "Build #${env.BUILD_NUMBER} is waiting for manual approvement to move to ${nextStage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
 }
