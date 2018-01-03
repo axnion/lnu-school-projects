@@ -7,8 +7,10 @@ let studentId;
 const URL = process.env.URL;
 
 class ExamController extends Controller {
-  /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20}
+  /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
   createExam(req, res, next) {
+
+    // TODO: Fixa default values
     const input = JSON.parse(req.body.text, (key, value) => {
       return value;
     });
@@ -23,20 +25,28 @@ class ExamController extends Controller {
       course: req.body.channel_name,
       date: new Date('<' + input.date + '>'),
       name: input.name,
+      examiners: input.examiners,
       timeSlots: []
     };
+
+    /// om ny dag händer
     for (let i = 0; i < timeTable.length; i++) {
       if (timeTable[i] === 'skip' || timeTable[i + 1] === 'skip') {
         continue;
       }
-      exam.timeSlots.push({
-        timeSlot: {
-          duration: input.duration,
-          studentId: 'Available',
-          startTime: timeTable[i],
-          endTime: timeTable[i + 1]
+      for (let j = 0; j < input.examiners; j++) {
+        if (i + 1 < timeTable.length) {
+          exam.timeSlots.push({
+            timeSlot: {
+              duration: input.duration,
+              studentId: 'Available',
+              startTime: timeTable[i],
+              endTime: timeTable[i + 1]
+            }
+          });
         }
-      });
+
+      }
     }
 
     this.facade
@@ -118,7 +128,9 @@ function format(examDoc) {
 
   //TODO Implement a real Multi slot setup or get rid of it
   for (let i = 0; i < examDoc.timeSlots.length - 1; i++) {
+    //console.log(i);
     let current = examDoc.timeSlots[i].timeSlot;
+    //console.log(examDoc.timeSlots);
     let startTime = current.startTime.valueOf() / 1000;
     let endTime = current.endTime.valueOf() / 1000;
     formated.attachments.push({
@@ -127,64 +139,43 @@ function format(examDoc) {
       callback_id: 'comic_1234_xyz',
       color: '#3AA3E3',
       attachment_type: 'default',
-      fields: [
-        /* {
-          title: 'Slot 1: ' + current.studentId,
-          value:
-            '<!date^' +
-            startTime +
-            '^{time} |8.00 AM> - ' +
-            '<!date^' +
-            endTime +
-            '^{time} |8.00 AM>',
-          short: true
-        },
-        {
-          title: 'Slot 2: ' + current.studentId,
-          value:
-            '<!date^' +
-            startTime +
-            '^{time} |8.00 AM> - ' +
-            '<!date^' +
-            endTime +
-            '^{time} |8.00 AM>',
-          short: true
-        },
-        {
-          title: 'Slot 3: ' + current.studentId,
-          value:
-            '<!date^' +
-            startTime +
-            '^{time} |8.00 AM> - ' +
-            '<!date^' +
-            endTime +
-            '^{time} |8.00 AM>',
-          short: true
-        } */
-      ],
       actions: [
-        {
-          name: 'book',
-          text: 'Slot 1: ' + current.studentId,
-          type: 'button',
-          value: examDoc.name + '*' + i
-        },
-        {
-          name: 'book',
-          text: 'Slot 2: ' + current.studentId,
-          type: 'button',
-          value: examDoc.name + '*' + i
-        },
-        {
-          name: 'book',
-          text: 'Slot 3: ' + current.studentId,
-          type: 'button',
-          value: examDoc.name + '*' + i
-        }
       ]
     });
+    //console.log(formated.attachments);
+    for (let j = 0; j < examDoc.examiners; j++) {
+      let l = i + j;
+      formated.attachments[formated.attachments.length - 1].actions.push({
+        name: 'book',
+        text: `Slot ${j + 1}: ${examDoc.timeSlots[l].timeSlot.studentId}`,
+        type: 'button',
+        value: examDoc.name + '*' + l
+      })
+
+      if (j === examDoc.examiners - 1)
+        i += j;
+    }
+
   }
 
+  /* {
+    name: 'book',
+    text: 'Slot 1: ' + current.studentId,
+    type: 'button',
+    value: examDoc.name + '*' + i
+  },
+  {
+    name: 'book',
+    text: 'Slot 2: ' + current.studentId,
+    type: 'button',
+    value: examDoc.name + '*' + i
+  },
+  {
+    name: 'book',
+    text: 'Slot 3: ' + current.studentId,
+    type: 'button',
+    value: examDoc.name + '*' + i
+  } */
   return formated;
 }
 
