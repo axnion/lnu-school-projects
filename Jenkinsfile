@@ -107,7 +107,7 @@ node('integration_slave') {
             }
         }
     } catch(e) {
-        reportToSlack("running integration tests")
+        failureSlack("running integration tests")
         currentBuild.result = 'FAILURE'
         throw new Error("Shit broke")
     } finally {
