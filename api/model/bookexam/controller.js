@@ -14,9 +14,9 @@ class SlackController extends Controller {
     const timeSlotNumber = temp[1];
 
     try {
-      // let report = await ReportExamFacade.findOne({ studentId, course, exam });
-      let report = {};
-      report.buildOk = true;
+      let report = await ReportExamFacade.findOne({ studentId, course, exam });
+      //let report = {};
+      //report.buildOk = true;
       console.log(report);
       if (!report) {
         return res.status(200).json({

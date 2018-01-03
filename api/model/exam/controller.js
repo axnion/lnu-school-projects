@@ -77,7 +77,6 @@ class ExamController extends Controller {
         if (!error && response.statusCode === 200) {
           console.log(body);
         }
-
         // TODO: skicka feedback till slack
       }
     );
