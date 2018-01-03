@@ -94,38 +94,36 @@ node('unit_slave') {
 * Jenkins Integration Slave
 */
 node('integration_slave') {
-        stage('Integration Testing') {
-            def dockerfile = "docker-compose-integration.yml"
-            unstash 'integration'
+    stage('Integration Testing') {
+        def dockerfile = "docker-compose-integration.yml"
+        unstash 'integration'
 
-            /*
-            stage('Cleanup') {
-               sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
-            }
-            */
+        /*
+        stage('Cleanup') {
+           sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
+        }
+        */
 
-            dir('./api') {
-                cleanWorkspace("${dockerfile}")
-                sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
-                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
+        dir('./api') {
+            cleanWorkspace("${dockerfile}")
+            sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
+            junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
 
-                publishHTML (target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: false,
-                    keepAll: true,
-                    reportDir: 'test/integration_tests/newman',
-                    reportFiles: '**.html',
-                    reportName: "Integration test report"
-                ])
-            }
-
+            publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'test/integration_tests/newman',
+                reportFiles: '**.html',
+                reportName: "Integration test report"
+            ])
         }
     } catch(e) {
         // Some error occured, send a message
         //currentBuild.result = 'FAILURE'
         //reportToSlack()
         currentBuild.result = 'FAILURE'
-        //slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
+        slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
     }
 }
 
