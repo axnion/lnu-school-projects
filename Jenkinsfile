@@ -2,6 +2,9 @@
 * Pipeline for 2DV611 project.
 */
 
+/*
+* Jenkins Master
+*/
 node('master') {
     def api
 
@@ -46,6 +49,9 @@ node('master') {
     }
 }
 
+/*
+* Jenkins Unit Slave
+*/
 node('unit_slave') {
     try {
         stage('unit tests') {
@@ -76,7 +82,7 @@ node('unit_slave') {
             }
         }
     } catch(e) {
-        errorHandler(e)
+        currentBuild.result = 'FAILURE'
        /* currentBuild.result = 'FAILURE'
         sh "echo ${e}"
         slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
@@ -84,24 +90,19 @@ node('unit_slave') {
     }
 }
 
+/*
+* Jenkins Integration Slave
+*/
 node('integration_slave') {
-    // -> Axel <-
-    // Get image from Docker Hub
-    // Start docker-compose-integration.yml
-    //      Load postman script into newman container as a volume
-    // (Optional) Populate DB
-    // Execute tests with Newman
-    //      Save report to volume
-    // Send report to Slack
-    // Report results to Jenkins
-    try {
         stage('Integration Testing') {
             def dockerfile = "docker-compose-integration.yml"
             unstash 'integration'
 
-            // stage('Cleanup') {
-            //    sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
-            // }
+            /*
+            stage('Cleanup') {
+               sh "docker run -v ${WORKSPACE}/api/test/integration_tests:/etc/newman -t busybox rm -rf /etc/newman/*"
+            }
+            */
 
             dir('./api') {
                 cleanWorkspace("${dockerfile}")
@@ -123,7 +124,8 @@ node('integration_slave') {
         // Some error occured, send a message
         //currentBuild.result = 'FAILURE'
         //reportToSlack()
-        errorHandler(e)
+        currentBuild.result = 'FAILURE'
+        slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
     }
 }
 
@@ -131,8 +133,11 @@ stage('Approve Unstable Build') {
     input('Publish unstable build and deploy to staging?')
 }
 
-// Push image to unstable branch
+// TODO: Push image to unstable branch
 
+/*
+* Jenkins Staging Slave
+*/
 node('staging_slave') {
     // -> Tommy <-
     // Get image for API from docker hub
@@ -162,7 +167,11 @@ stage('Approve Stable Build') {
     input('Publish stable build and deploy to production?')
 }
 
-// Push image to stable branch
+// TODO: Push image to stable branch
+
+/*
+* Jenkins Production Slave
+*/
 node('production') {
     try {
         stage('Production') {
@@ -179,32 +188,16 @@ node('production') {
     }
 }
 
-
-// TODO: Look for a cool plugin or send a message to slack and be able to continue?
-//input "Continue to production?" 
-
 /*
-node('production') {
-
-}
+* Pull down Docker image from Dockerhub
 */
-
-
 def pullImages(imagename) {
-    // DRY FTW!
     sh "docker pull ${imagename}"
 }
 
+/*
+* Remove any existing running containers
+*/
 def cleanWorkspace(dockerfile) {
-    // Can be a good idea to do some tidy up before deploying in the environment
     sh "docker-compose -f ${dockerfile} down"
-}
-
-def reportToSlack() {
-    slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
-}
-
-def errorHandler(error) {
-    currentBuild.result = 'FAILURE'
-    sh "echo ${error}"
 }
