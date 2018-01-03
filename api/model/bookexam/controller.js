@@ -15,7 +15,6 @@ class SlackController extends Controller {
 
     try {
       let report = await ReportExamFacade.findOne({ studentId, course, exam });
-      console.log("Logging report in book exam: ", report);
       if (!report) {
         return res.status(200).json({
           text: 'We couldn\'t find any build history on your examination. Please create a release of your application on GitHub before trying to book the exam.'
@@ -24,17 +23,17 @@ class SlackController extends Controller {
 
       if (report.buildOk) {
         let examDoc = await ExamFacade.findOne({ course: course, name: exam });
-        console.log("Logging exam in book exam: ", examDoc);
         if (!examDoc) {
           return res.status(200).json({ text: "We couldn't find the specified exam" });
         }
 
         let current = examDoc.timeSlots[timeSlotNumber].timeSlot;
-        if (current.studentId !== 'Available'){
+        if (current.studentId === 'Available'){
+            // TODO: Use lnu user name ?
             current.studentId = studentId;
             await examDoc.save();
         }else {
-            res.status(200).json({text: 'I am sorry but that slot is already taken. Pick another.'});
+            return res.status(200).json({text: 'I am sorry but that slot is already taken. Pick another.'});
         }
 
         return res.status(200).json(format(current));
@@ -51,7 +50,6 @@ class SlackController extends Controller {
 function format(current) {
   return {
     text: `You have successfully booked a examination! With the studentId: ${current.studentId} in the time slot: <!date^${current.startTime}^{time} | 8.00 AM> - <!date^${current.endTime}^{time} |8.00 AM>`,
-    attachments: []
   };
 }
 
