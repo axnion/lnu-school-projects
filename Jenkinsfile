@@ -64,6 +64,8 @@ node('unit_slave') {
                 sh "docker-compose -f ${dockerfile} up --exit-code-from web web"
                 junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/report/test-report.html'
 
+                sh 'ls -l test/unit_tests/report'
+
                 publishHTML (target: [
                                         allowMissing: false,
                                         alwaysLinkToLastBuild: false,
