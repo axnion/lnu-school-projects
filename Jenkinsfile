@@ -127,7 +127,7 @@ node('integration_slave') {
         }
 
         if (!success) {
-            reportToSlack("running integration tests")
+            failureSlack("running integration tests")
             currentBuild.result = 'FAILURE'
         }
     }
@@ -206,6 +206,6 @@ def cleanWorkspace(dockerfile) {
     sh "docker-compose -f ${dockerfile} down"
 }
 
-def reportFailure(currentStage) {
+def failureSlack(currentStage) {
     slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "Build #${env.BUILD_NUMBER} encountered an error when ${currentStage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
 }
