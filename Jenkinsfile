@@ -125,9 +125,8 @@ node('integration_slave') {
     }
 }
 
-// Manual Gate!
-stage('Unstable Build') {
-    input('Publish as unstable and deploy to staging?')
+stage('Approve Unstable Build') {
+    input('Publish unstable build and deploy to staging?')
 }
 
 // Push image to unstable branch
@@ -157,10 +156,11 @@ node('staging_slave') {
     }
 }
 
-// Manual Gate
+stage('Approve Stable Build') {
+    input('Publish stable build and deploy to production?')
+}
 
 // Push image to stable branch
-
 node('production') {
     try {
         stage('Production') {
