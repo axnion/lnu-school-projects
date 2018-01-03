@@ -19,7 +19,7 @@
 							"pm.test(\"Root return welcome message\", function () {",
 							"    pm.response.to.have.status(200);",
 							"    var jsonData = pm.response.json()",
-							"    pm.expect(jsonData.message).to.eql(\"Welcome to slackapp API!\")",
+							"    pm.expect(jsonData.message).to.eql(\"Welcome to x slackapp API!\")",
 							"});"
 						]
 					}
