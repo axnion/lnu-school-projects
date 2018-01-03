@@ -1,19 +1,22 @@
 /*
-* Example structure of pipeline.
+* Pipeline for 2DV611 project.
 */
 
 node('master') {
     def api
 
     try {
+        /*
+        * Check out code from version control
+        */
         stage('checkout code') {
-            // Checks out code from version control
             checkout scm
         }
 
+        /*
+        * Archive Docker and Docker-Compose files to use on slave machines
+        */
         stage('archiving files') {
-            // Creates a gzip file with selected files
-            // These are the files we need in the next environment like docker files etc
             stash includes: 'api/docker*', name: 'dockerfiles'
             stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/**', name: 'staging'
             stash includes: 'api/docker-compose-integration.yml, api/test/integration_tests/**', name: 'integration'
@@ -21,27 +24,25 @@ node('master') {
             stash includes: 'api/docker-compose-production.yml', name: 'production'
         }
 
+        /*
+        * Build Docker image from dockerfile
+        */
         stage('Building image') {
-            
-            // Build docker image for API
             dir('./api') {
                  api = docker.build("tommykronstal/2dv611api")
             }
         }
         
+        /*
+        * Push Docker image to Dockerhub
+        */
         stage('Upload image to docker hub') {
-            // Push image to registry
             docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                //api.push("${env.BUILD_NUMBER}")
                 api.push("latest")
             }
         }
     } catch(e) {
-
-        // Some error has occured.
-        currentBuild.result = 'FAILURE'
-        sh "echo ${e}"
-        reportToSlack()
+        errorHandler(e)
     }
 }
 
@@ -75,9 +76,11 @@ node('unit_slave') {
             }
         }
     } catch(e) {
-        currentBuild.result = 'FAILURE'
+        errorHandler(e)
+       /* currentBuild.result = 'FAILURE'
         sh "echo ${e}"
         slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
+        */ 
     }
 }
 
@@ -120,8 +123,9 @@ node('integration_slave') {
         }
     } catch(e) {
         // Some error occured, send a message
-        currentBuild.result = 'FAILURE'
-        reportToSlack()
+        //currentBuild.result = 'FAILURE'
+        //reportToSlack()
+        errorHandler(e)
     }
 }
 
@@ -200,4 +204,9 @@ def cleanWorkspace(dockerfile) {
 
 def reportToSlack() {
     slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
+}
+
+def errorHandler(error) {
+    currentBuild.result = 'FAILURE'
+    sh "echo ${e}"
 }
