@@ -95,6 +95,8 @@ node('unit_slave') {
 * Jenkins Integration Slave
 */
 node('integration_slave') {
+    def success = true
+
     try {
         stage('Integration Testing') {
             def dockerfile = "docker-compose-integration.yml"
@@ -106,8 +108,9 @@ node('integration_slave') {
             }
         }
     } catch(e) {
-        reportToSlack("running integration tests")
-        currentBuild.result = 'FAILURE'
+        //reportToSlack("running integration tests")
+        //currentBuild.result = 'FAILURE'
+        success = false
     } finally {
         dir('./api') {
             junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
@@ -120,6 +123,11 @@ node('integration_slave') {
                 reportFiles: '**.html',
                 reportName: "Integration test report"
             ])
+        }
+
+        if (!success) {
+            reportToSlack("running integration tests")
+            currentBuild.result = 'FAILURE'
         }
     }
 }
@@ -197,6 +205,6 @@ def cleanWorkspace(dockerfile) {
     sh "docker-compose -f ${dockerfile} down"
 }
 
-def reportToSlack(currentStage) {
+def reportFailure(currentStage) {
     slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "Build #${env.BUILD_NUMBER} encountered an error when ${currentStage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
 }
