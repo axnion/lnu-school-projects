@@ -10,7 +10,6 @@ class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
   createExam(req, res, next) {
 
-    // TODO: Fixa default values
     const input = JSON.parse(req.body.text, (key, value) => {
       return value;
     });
@@ -27,7 +26,6 @@ class ExamController extends Controller {
 
     /// om ny dag händer
     for (let i = 0; i < timeTable.length; i++) {
-      console.log(timeTable);
       if (timeTable[i] === 'skip' || timeTable[i + 1] === 'skip') {
         continue;
       }
@@ -64,7 +62,8 @@ class ExamController extends Controller {
     let info = {
       repoName: input.name,
       cloneUrl: input.clone_url,
-      fullName: input.full_name
+      fullName: input.full_name,
+      githubId: req.body.sender.login
     };
     console.log(info);
 
@@ -72,7 +71,7 @@ class ExamController extends Controller {
     //TODO Get the course and Exam based of the github url FIX this with the register thing
     request.post(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
-        + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '/exam/build',
+        + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '/reportexam',
       { json: info },
       function (error, response, body) {
         if (!error && response.statusCode === 200) {
