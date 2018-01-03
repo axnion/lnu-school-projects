@@ -110,16 +110,18 @@ node('integration_slave') {
         currentBuild.result = 'FAILURE'
         reportToSlack("running integration tests")
     } finally {
-        junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
+        dir('./api') {
+            junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
 
-        publishHTML (target: [
-            allowMissing: false,
-            alwaysLinkToLastBuild: false,
-            keepAll: true,
-            reportDir: 'test/integration_tests/newman',
-            reportFiles: '**.html',
-            reportName: "Integration test report"
-        ])
+            publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'test/integration_tests/newman',
+                reportFiles: '**.html',
+                reportName: "Integration test report"
+            ])
+        }
     }
 }
 
