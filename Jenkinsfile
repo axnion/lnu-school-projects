@@ -57,7 +57,7 @@ node('unit_slave') {
     try {
         stage('unit tests') {
             unstash 'unit'
-            dir('./api') {
+            //dir('./api') {
                 def dockerfile = "docker-compose-unit.yml"
                 cleanWorkspace("${dockerfile}")
                 sh "ls -a"
@@ -81,7 +81,7 @@ node('unit_slave') {
                                         reportFiles: 'index.html',
                                         reportName: 'Test coverage'
                                     ])
-            }
+            //}
         }
     } catch(e) {
         currentBuild.result = 'FAILURE'
