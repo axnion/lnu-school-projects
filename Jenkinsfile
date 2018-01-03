@@ -2,6 +2,8 @@
 * Pipeline for 2DV611 project.
 */
 
+def current_stage = "";
+
 /*
 * Jenkins Master
 */
@@ -108,8 +110,8 @@ node('integration_slave') {
         // Some error occured, send a message
         //currentBuild.result = 'FAILURE'
         //reportToSlack()
+        reportToSlack
         currentBuild.result = 'FAILURE'
-        slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "Build #${env.BUILD_NUMBER} encountered an error on ${env.NODE_NAME} - ${env.BUILD_URL}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
     } finally {
         junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
 
@@ -195,4 +197,8 @@ def pullImages(imagename) {
 */
 def cleanWorkspace(dockerfile) {
     sh "docker-compose -f ${dockerfile} down"
+}
+
+def reportToSlack() {
+    slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "Build #${env.BUILD_NUMBER} encountered an error when ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
 }
