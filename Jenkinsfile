@@ -110,7 +110,7 @@ node('integration_slave') {
         //reportToSlack()
         currentBuild.result = 'FAILURE'
         slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
-    } finally() {
+    } finally {
         junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
 
         publishHTML (target: [
