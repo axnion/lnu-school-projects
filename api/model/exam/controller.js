@@ -3,7 +3,7 @@ const examFacade = require('./facade');
 const userFacade = require('../user/facade');
 const request = require('request');
 const URL = process.env.URL;
-let testsUrl = "https://github.com/tommykronstal/getadockerfile";
+let testsUrl;
 
 class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
@@ -58,16 +58,17 @@ class ExamController extends Controller {
       .catch(err => next(err));
   }
 
+  /**
+   * Returns the time of an exam booking if it exists, or informs the user that there is no booking if none has been made
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   getMyExam(req, res, next) {
     const { user_name, channel_name } = req.body;
 
-    // ref till findOne
-    // { results: { $elemMatch: { $gte: 80, $lt: 85 } } }
     examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user_name } } }).then(doc => {
-      console.log(doc.timeSlots);
-
       const responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at ${doc.timeSlots[0].timeSlot.startTime}` : 'No exam time was booked';
-
       return res.status(200).json({ text: responseText });
     })
       .catch(err => next(err));
@@ -91,7 +92,7 @@ class ExamController extends Controller {
       .then(doc => {
         testsUrl = doc.testsUrl;
       }).catch(e => {
-        // Did not find any testsurl
+        // Did not find matching course or exam
       });
 
     userFacade.findOne({github: info.githubId}).then(doc => {
@@ -100,7 +101,7 @@ class ExamController extends Controller {
 
     request.get(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
-        + '&studentId=' + info.studentId + '&course=' + info.courseName + '&exam=' + info.examName + '&apiurl=' + URL + '&testsurl=' + testsUrl + '/reportexam',
+      + '&studentId=' + studentId + '&testsurl=' + testsUrl + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '/reportexam',
       function (error, response, body) {
         if (!error && response.statusCode === 200) {
           console.log(body);
