@@ -13,7 +13,7 @@ services:
     command: nodemon -L index.js
     environment:
       - MONGO_DB_URI=mongodb://mongo:27017/slackapp
-      - URL=http://788be7b5.ngrok.io
+      - URL=http://d45ea788.ngrok.io
 
   mongo:
     image: mongo

@@ -2,6 +2,7 @@ const Controller = require('../../lib/controller');
 const examFacade = require('./facade');
 const userFacade = require('../user/facade');
 const request = require('request');
+const rp = require('request-promise');
 const URL = process.env.URL;
 let testsUrl;
 
@@ -85,34 +86,48 @@ class ExamController extends Controller {
     };
     console.log(info);
 
-    let exam = await examFacade.findOne({course: info.courseName, name: info.examName});
+    let exam = await examFacade.findOne({ course: info.courseName, name: info.examName });
 
-    if(!exam){
-        reportToSlack("ab223sq", "shitsOnFireYo")
+    if (!exam) {
+      return res.status(404).json("Couldn't find the exam specified");
+      //reportToSlack("ab223sq", "shitsOnFireYo")
     }
 
     testsUrl = exam.testsUrl;
 
-    const user = await userFacade.findOne({github: info.githubId});
+    const user = await userFacade.findOne({ github: info.githubId });
     info.studentId = user.lnu;
 
     await request.get(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
       + '&studentId=' + info.studentId + '&testsurl=' + testsUrl + '&course=' + info.courseName + '&exam=' + info.examName + '&apiurl=' + URL + '/reportexam',
-      function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-          console.log(body);
+      async function (error, response, body) {
+        if (response.statusCode === 201) {
+          await reportToSlack(`%23${info.courseName}`, `%40${user.slackUser}`, "Jenkins is happily eating your code. A build result should be available shortly");
+        } else {
+          await reportToSlack(`%23${info.courseName}`, `%40${user.slackUser}`, "Something went wrong while attempting to trigger building with Jenkins");
         }
-        // TODO: skicka feedback till slack
-        reportToSlack(user.slackUser,"Build Success");
       }
     );
     return res.status(200);
   }
 }
 
-function reportToSlack(slackUser, message) {
-    request.get(`https://slack.com/api/chat.postMessage?token=xoxp-273720381861-272957369408-294957226822-bb7917d088c058e70600b89f9d0617e8&channel=%40${slackUser}&text=${message}&pretty=1`);
+
+async function reportToSlack(channelName, slackUser, message) {
+  const options = {
+    method: 'GET',
+    uri: `https://slack.com/api/chat.postMessage?token=xoxp-273720381861-272957369408-294957226822-bb7917d088c058e70600b89f9d0617e8&channel=${slackUser}&text=${message}&pretty=1`,
+  };
+
+  return rp(options).then(resp => {
+    const res = JSON.parse(resp);
+    if (!res.ok) {
+      reportToSlack(channelName, channelName, `Oh nooooo! Something went wrong while sending a message to ${slackUser} about their Jenkins build.`);
+    }
+    return res;
+  })
+    .catch(err => err);
 }
 
 function format(examDoc) {
