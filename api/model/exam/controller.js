@@ -69,6 +69,9 @@ class ExamController extends Controller {
     };
     console.log(info);
 
+    extractCourseInfo(info.fullName);
+    //TODO Get the course and Exam based of the github url FIX this with the register thing
+
     // Get testsurl from DB here?
     examFacade
       .findOne({course: courseName, name: examName})
@@ -78,8 +81,6 @@ class ExamController extends Controller {
         // Did not find any testsurl
       });
 
-    extractCourseInfo(info.fullName);
-    //TODO Get the course and Exam based of the github url FIX this with the register thing
     request.post(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
         + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '&testsurl=' + testsUrl + '/reportexam',
