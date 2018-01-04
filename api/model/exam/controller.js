@@ -88,14 +88,16 @@ class ExamController extends Controller {
     let exam = await examFacade.findOne({course: info.courseName, name: info.examName})
 
     //TODO Error message to Slack admin
-    if(!exam){
-        //Report to slack admin
-    }
 
     testsUrl = exam.testsUrl;
 
     const user = await userFacade.findOne({github: info.githubId});
     info.studentId = user.lnu;
+
+    if(!exam){
+        //Report to slack admin
+        reportToSlack()
+    }
 
     await request.get(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
@@ -109,6 +111,10 @@ class ExamController extends Controller {
     );
     return res.status(200);
   }
+}
+
+function reportToSlack() {
+    request.get(`https://slack.com/api/chat.postMessage?token=xoxp-273720381861-272957369408-294957226822-bb7917d088c058e70600b89f9d0617e8&channel=%40${user.slackUser}&text=${}&pretty=1`);
 }
 
 function format(examDoc) {
