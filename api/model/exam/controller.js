@@ -5,6 +5,7 @@ let examName;
 let courseName;
 let studentId;
 const URL = process.env.URL;
+let testsUrl = "https://github.com/tommykronstal/getadockerfile"
 
 class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
@@ -71,7 +72,7 @@ class ExamController extends Controller {
     //TODO Get the course and Exam based of the github url FIX this with the register thing
     request.post(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
-        + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '/reportexam',
+        + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '&testsurl=' + testsUrl + '/reportexam',
       { json: info },
       function (error, response, body) {
         if (!error && response.statusCode === 200) {
