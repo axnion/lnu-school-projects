@@ -72,9 +72,11 @@ class ExamController extends Controller {
     // Get testsurl from DB here?
     examFacade
       .find({course: courseName, name: examName})
-      .then((doc => {
+      .then(doc => {
         testsUrl = doc.testsUrl;
-      }));
+      }).catch(e => {
+        // Did not find any testsurl
+      });
 
     extractCourseInfo(info.fullName);
     //TODO Get the course and Exam based of the github url FIX this with the register thing
