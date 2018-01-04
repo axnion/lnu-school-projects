@@ -70,7 +70,7 @@ class ExamController extends Controller {
     console.log(info);
 
     // Get testsurl from DB here?
-    this.facade
+    examFacade
       .find({course: courseName})
       .then((doc => {
         testsUrl = doc.testsUrl;
