@@ -154,6 +154,7 @@ node('staging_slave') {
                 cleanWorkspace("${dockerfile}")
                 sh 'docker pull tommykronstal/2dv611api'
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
+                cleanWorkspace("${dockerfile}")
                 
                 // Set up production like env for exploratory testing
                 def composefile = "docker-compose-production.yml"
