@@ -7,6 +7,7 @@ const examSchema = new Schema({
   date: { type: Date, required: true },
   name: { type: String, required: true },
   examiners: { type: Number, default: 1 },
+  testsUrl: { type: String, default: "https://github.com/tommykronstal/getadockerfile"},
   timeSlots: [{
     timeSlot: {
       duration: { type: Number, required: true, default: 30 },

@@ -22,6 +22,7 @@ class ExamController extends Controller {
       date: new Date('<' + input.date + '>'),
       name: input.name,
       examiners: input.examiners,
+      testsUrl: input.testsurl,
       timeSlots: []
     };
 
@@ -67,6 +68,13 @@ class ExamController extends Controller {
       githubId: req.body.sender.login
     };
     console.log(info);
+
+    // Get testsurl from DB here?
+    this.facade
+      .find({course: courseName})
+      .then((doc => {
+        testsUrl = doc.testsUrl;
+      }));
 
     extractCourseInfo(info.fullName);
     //TODO Get the course and Exam based of the github url FIX this with the register thing
