@@ -58,16 +58,17 @@ class ExamController extends Controller {
       .catch(err => next(err));
   }
 
+  /**
+   * Returns the time of an exam booking if it exists, or informs the user that there is no booking if none has been made
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   getMyExam(req, res, next) {
     const { user_name, channel_name } = req.body;
 
-    // ref till findOne
-    // { results: { $elemMatch: { $gte: 80, $lt: 85 } } }
     examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user_name } } }).then(doc => {
-      console.log(doc.timeSlots);
-
       const responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at ${doc.timeSlots[0].timeSlot.startTime}` : 'No exam time was booked';
-
       return res.status(200).json({ text: responseText });
     })
       .catch(err => next(err));
@@ -87,11 +88,7 @@ class ExamController extends Controller {
     //TODO Get the course and Exam based of the github url FIX this with the register thing
     request.post(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
-<<<<<<< HEAD
-      + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '/reportexam',
-=======
-        + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '&testsurl=' + testsUrl + '/reportexam',
->>>>>>> 7ebcc6806975d7bb544623632c77f6f2a22ecf8f
+      + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '&testsurl=' + testsUrl + '/reportexam',
       { json: info },
       function (error, response, body) {
         if (!error && response.statusCode === 200) {
