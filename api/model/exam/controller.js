@@ -95,8 +95,7 @@ class ExamController extends Controller {
     info.studentId = user.lnu;
 
     if(!exam){
-        //Report to slack admin
-        reportToSlack()
+        reportToSlack(user.slackUser, "shitsOnFireYo")
     }
 
     await request.get(
@@ -113,8 +112,8 @@ class ExamController extends Controller {
   }
 }
 
-function reportToSlack() {
-    request.get(`https://slack.com/api/chat.postMessage?token=xoxp-273720381861-272957369408-294957226822-bb7917d088c058e70600b89f9d0617e8&channel=%40${user.slackUser}&text=${}&pretty=1`);
+function reportToSlack(slackUser, message) {
+    request.get(`https://slack.com/api/chat.postMessage?token=xoxp-273720381861-272957369408-294957226822-bb7917d088c058e70600b89f9d0617e8&channel=%40${slackUser}&text=${message}&pretty=1`);
 }
 
 function format(examDoc) {
