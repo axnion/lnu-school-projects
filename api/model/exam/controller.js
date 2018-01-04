@@ -85,18 +85,16 @@ class ExamController extends Controller {
     };
     console.log(info);
 
-    let exam = await examFacade.findOne({course: info.courseName, name: info.examName})
+    let exam = await examFacade.findOne({course: info.courseName, name: info.examName});
 
-    //TODO Error message to Slack admin
+    if(!exam){
+        reportToSlack("ab223sq", "shitsOnFireYo")
+    }
 
     testsUrl = exam.testsUrl;
 
     const user = await userFacade.findOne({github: info.githubId});
     info.studentId = user.lnu;
-
-    if(!exam){
-        reportToSlack(user.slackUser, "shitsOnFireYo")
-    }
 
     await request.get(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
@@ -106,6 +104,7 @@ class ExamController extends Controller {
           console.log(body);
         }
         // TODO: skicka feedback till slack
+        reportToSlack(user.slackUser,"Build Success");
       }
     );
     return res.status(200);
