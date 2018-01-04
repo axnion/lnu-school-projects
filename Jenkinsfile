@@ -22,7 +22,7 @@ node('master') {
         */
         stage('archiving files') {
             stash includes: 'api/docker*', name: 'dockerfiles'
-            stash includes: 'api/docker-compose-staging.yml, api/test/staging_tests/**', name: 'staging'
+            stash includes: 'api/docker-compose-staging.yml, api/docker-compose-production.yml, api/test/staging_tests/**', name: 'staging'
             stash includes: 'api/docker-compose-integration.yml, api/test/integration_tests/**', name: 'integration'
             stash includes: 'api/docker-compose-unit.yml, api/test/unit_tests/**', name: 'unit'
             stash includes: 'api/docker-compose-production.yml', name: 'production'
@@ -149,17 +149,25 @@ node('staging_slave') {
         stage('Staging') {
             unstash 'staging'
             dir('./api') {
+                // Do performance tests
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
                 sh 'docker pull tommykronstal/2dv611api'
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
-                perfReport compareBuildPrevious: true, modeThroughput: true, relativeFailedThresholdNegative: 5.0, relativeFailedThresholdPositive: 5.0, relativeUnstableThresholdNegative: 5.0, relativeUnstableThresholdPositive: 5.0, sourceDataFiles: '**/staging_tests/taurus*'
-                junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: '**/staging_tests/junit*'
+                
+                // Set up production like env for exploratory testing
+                def composefile = "docker-compose-production.yml"
+                cleanWorkspace("${composefile}")
+                sh "docker-compose -f ${composefile} up -d"
             }
         }
     } catch(e) {
-        // Some error occured, send a message
-        //currentBuild.result = 'FAILURE'
+        failureSlack("running staging tests")
+        currentBuild.result = 'FAILURE'
+        error "There where failures in the staging tests"
+    } finally {
+        perfReport compareBuildPrevious: true, modeThroughput: true, relativeFailedThresholdNegative: 5.0, relativeFailedThresholdPositive: 5.0, relativeUnstableThresholdNegative: 5.0, relativeUnstableThresholdPositive: 5.0, sourceDataFiles: '**/staging_tests/taurus*'
+        junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: '**/staging_tests/junit*'
     }
 }
 
