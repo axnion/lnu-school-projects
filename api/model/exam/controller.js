@@ -71,7 +71,7 @@ class ExamController extends Controller {
 
     // Get testsurl from DB here?
     examFacade
-      .find({course: courseName})
+      .find({course: courseName, name: examName})
       .then((doc => {
         testsUrl = doc.testsUrl;
       }));
