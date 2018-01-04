@@ -10,6 +10,7 @@ services:
       - "8080:8080"
     links:
       - mongo
+    command: nodemon -L index.js
     environment:
       - MONGO_DB_URI=mongodb://mongo:27017/slackapp
       - URL=http://4ff1f4f8.ngrok.io

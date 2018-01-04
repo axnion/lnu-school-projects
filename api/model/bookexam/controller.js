@@ -5,7 +5,7 @@ const ExamFacade = require('../exam/facade');
 
 class SlackController extends Controller {
   async createBooking(req, res, next) {
-    console.log("Payload: ",req.body.payload); // don't delete yet
+    console.log("Payload: ", req.body.payload); // don't delete yet
     const response = JSON.parse(req.body.payload);
     const studentId = response.user.name;
     const course = response.channel.name;
@@ -30,17 +30,19 @@ class SlackController extends Controller {
         }
 
         let current = examDoc.timeSlots[timeSlotNumber].timeSlot;
-        if (current.studentId === 'Available'){
-            // TODO: Use lnu user name ?
-            current.studentId = studentId;
-            await examDoc.save();
-        }else {
-            return res.status(200).json({text: 'I am sorry but that slot is already taken. Pick another.'});
+        if (current.studentId === 'Available') {
+          // TODO: Use lnu user name ?
+          console.log('student id: ', studentId);
+          console.log(1);
+          current.studentId = studentId;
+          await examDoc.save();
+        } else {
+          return res.status(200).json({ text: 'I am sorry but that slot is already taken. Pick another.' });
         }
 
         return res.status(200).json(format(current));
       } else {
-        res.status(200).json({text: 'The current build of the examination did not pass the given tests please fix these and try again'});
+        res.status(200).json({ text: 'The current build of the examination did not pass the given tests please fix these and try again' });
       }
     } catch (e) {
       console.log(e);
