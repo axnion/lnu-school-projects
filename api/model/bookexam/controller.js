@@ -33,7 +33,6 @@ class SlackController extends Controller {
         if (current.studentId === 'Available') {
           // TODO: Use lnu user name ?
           console.log('student id: ', studentId);
-          console.log(1);
           current.studentId = studentId;
           await examDoc.save();
         } else {
