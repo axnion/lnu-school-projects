@@ -51,8 +51,9 @@ class SlackController extends Controller {
 }
 
 function format(current) {
+  const str = "You have successfully booked a examination! With the studentId: " + current.studentId + " in the time slot: <!date^" + current.startTime + "^{time} | 8.00 AM> - <!date^" + current.endTime + "^{time} |8.00 AM>";
   return {
-    text: `You have successfully booked a examination! With the studentId: ${current.studentId} in the time slot: <!date^${current.startTime}^{time} | 8.00 AM> - <!date^${current.endTime}^{time} |8.00 AM>`,
+    text: str
   };
 }
 
