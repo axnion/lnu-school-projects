@@ -73,7 +73,7 @@ class ExamController extends Controller {
       .catch(err => next(err));
   }
 
-  buildExam(req, res, next) {
+  async buildExam(req, res, next) {
     const input = req.body.repository;
     let info = {
       repoName: input.name,
@@ -85,22 +85,21 @@ class ExamController extends Controller {
     };
     console.log(info);
 
-    // Get testsurl from DB here?
-    examFacade
-      .findOne({course: info.courseName, name: info.examName})
-      .then(doc => {
-        testsUrl = doc.testsUrl;
-      }).catch(e => {
-        // Did not find matching course or exam
-      });
+    let exam = await examFacade.findOne({course: info.courseName, name: info.examName})
 
-    userFacade.findOne({github: info.githubId}).then(doc => {
-        info.studentId = doc.lnu;
-    });
+    //TODO Error message to Slack admin
+    if(!exam){
+        //Report to slack admin
+    }
 
-    request.get(
+    testsUrl = exam.testsUrl;
+
+    const user = await userFacade.findOne({github: info.githubId});
+    info.studentId = user.lnu;
+
+    await request.get(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
-      + '&studentId=' + studentId + '&testsurl=' + testsUrl + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '/reportexam',
+      + '&studentId=' + info.studentId + '&testsurl=' + testsUrl + '&course=' + info.courseName + '&exam=' + info.examName + '&apiurl=' + URL + '/reportexam',
       function (error, response, body) {
         if (!error && response.statusCode === 200) {
           console.log(body);
@@ -108,6 +107,7 @@ class ExamController extends Controller {
         // TODO: skicka feedback till slack
       }
     );
+
     return res.status(200);
   }
 }
