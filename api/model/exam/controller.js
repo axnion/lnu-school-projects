@@ -5,7 +5,7 @@ let examName;
 let courseName;
 let studentId;
 const URL = process.env.URL;
-let testsUrl = "https://github.com/tommykronstal/getadockerfile"
+let testsUrl;
 
 class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
@@ -22,6 +22,7 @@ class ExamController extends Controller {
       date: new Date('<' + input.date + '>'),
       name: input.name,
       examiners: input.examiners,
+      testsUrl: input.testsurl,
       timeSlots: []
     };
 
@@ -86,9 +87,23 @@ class ExamController extends Controller {
 
     extractCourseInfo(info.fullName);
     //TODO Get the course and Exam based of the github url FIX this with the register thing
+
+    // Get testsurl from DB here?
+    examFacade
+      .findOne({course: courseName, name: examName})
+      .then(doc => {
+        testsUrl = doc.testsUrl;
+      }).catch(e => {
+        // Did not find matching course or exam
+      });
+
     request.post(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
+<<<<<<< HEAD
       + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '&testsurl=' + testsUrl + '/reportexam',
+=======
+        + '&studentId=' + studentId + '&testsurl=' + testsUrl + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '/reportexam',
+>>>>>>> 17adad267a0a5a1612ea367c38e1d602f048482e
       { json: info },
       function (error, response, body) {
         if (!error && response.statusCode === 200) {
