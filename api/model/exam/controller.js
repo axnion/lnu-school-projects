@@ -1,16 +1,15 @@
 const Controller = require('../../lib/controller');
 const examFacade = require('./facade');
+const userFacade = require('../user/facade');
 const request = require('request');
-let examName;
-let courseName;
-let studentId;
 const URL = process.env.URL;
-let testsUrl = "https://github.com/tommykronstal/getadockerfile"
+let testsUrl = "https://github.com/tommykronstal/getadockerfile";
 
 class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
   createExam(req, res, next) {
-
+    console.log(req);
+    //TODO: check if user is admin when creating a exam
     const input = JSON.parse(req.body.text, (key, value) => {
       return value;
     });
@@ -79,27 +78,29 @@ class ExamController extends Controller {
     let info = {
       repoName: input.name,
       cloneUrl: input.clone_url,
-      fullName: input.full_name,
-      githubId: req.body.sender.login
+      courseName: input.owner.name,
+      githubId: req.body.sender.login,
+      studentId: "",
+      examName: input.name.split('-')[1] + '-' + input.name.split('-')[2]
     };
     console.log(info);
 
-    extractCourseInfo(info.fullName);
-    //TODO Get the course and Exam based of the github url FIX this with the register thing
-
     // Get testsurl from DB here?
     examFacade
-      .findOne({course: courseName, name: examName})
+      .findOne({course: info.courseName, name: info.examName})
       .then(doc => {
         testsUrl = doc.testsUrl;
       }).catch(e => {
         // Did not find any testsurl
       });
 
-    request.post(
+    userFacade.findOne({github: info.githubId}).then(doc => {
+        info.studentId = doc.lnu;
+    });
+
+    request.get(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
-        + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '&testsurl=' + testsUrl + '/reportexam',
-      { json: info },
+        + '&studentId=' + info.studentId + '&course=' + info.courseName + '&exam=' + info.examName + '&apiurl=' + URL + '&testsurl=' + testsUrl + '/reportexam',
       function (error, response, body) {
         if (!error && response.statusCode === 200) {
           console.log(body);
@@ -109,16 +110,6 @@ class ExamController extends Controller {
     );
     return res.status(200);
   }
-}
-
-function extractCourseInfo(githubUrl) {
-  //TODO Dont use all of these
-  let temp = githubUrl.split('/');
-  courseName = temp[0];
-  temp = temp[1].split('-', 2);
-  examName = temp[1];
-  //TODO Get Student ID from Register
-  studentId = temp[0];
 }
 
 function format(examDoc) {

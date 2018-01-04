@@ -13,21 +13,12 @@ class UserController extends Controller {
             "text": "You have been successfully registered"
         };
 
-        console.log(req.body);
-        console.log(input);
-
-        userFacade.create(input).then();
-
         userFacade
-            .create(input)
+            .createUser(input)
             .then(user => {
-                console.log(user);
                 return res.status(201).json(output);
             })
             .catch(err => res.status(500).json({"text":"A server error has occurred please try again later"}));
-
-
-        //return res.status(201).json(output);
     }
 
 }
