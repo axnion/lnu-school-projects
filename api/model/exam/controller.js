@@ -107,7 +107,6 @@ class ExamController extends Controller {
         // TODO: skicka feedback till slack
       }
     );
-
     return res.status(200);
   }
 }
