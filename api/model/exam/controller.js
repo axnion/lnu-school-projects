@@ -22,6 +22,7 @@ class ExamController extends Controller {
       date: new Date('<' + input.date + '>'),
       name: input.name,
       examiners: input.examiners,
+      testsUrl: input.testsurl,
       timeSlots: []
     };
 
@@ -85,6 +86,16 @@ class ExamController extends Controller {
 
     extractCourseInfo(info.fullName);
     //TODO Get the course and Exam based of the github url FIX this with the register thing
+
+    // Get testsurl from DB here?
+    examFacade
+      .findOne({course: courseName, name: examName})
+      .then(doc => {
+        testsUrl = doc.testsUrl;
+      }).catch(e => {
+        // Did not find any testsurl
+      });
+
     request.post(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
 <<<<<<< HEAD
