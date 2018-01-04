@@ -2,6 +2,10 @@ execution:
 - concurracy: 1
   ramp-up: 10s
   hold-for: 20s
+  scenario: registerUser
+- concurracy: 1
+  ramp-up: 10s
+  hold-for: 20s
   scenario: getExam
 - concurracy: 1
   ramp-up: 10s
@@ -20,8 +24,17 @@ execution:
   hold-for: 20s
   scenario: bookExam
 
-
 scenarios:
+  registerUser:
+    requests:
+     - url: http://web:8080/user/register
+       method: POST
+       label: registerUser
+       headers:
+        Content-Type: application/x-www-form-urlencoded
+       body:
+         text: '{"lnu": "tk222hq", "github": "tommykronstal"}'
+         user_name: 'tommykronstal'
   getExam:
     requests:
      - url: http://web:8080/exam
