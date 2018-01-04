@@ -90,7 +90,7 @@ class ExamController extends Controller {
 
     // Get testsurl from DB here?
     examFacade
-      .findOne({course: courseName, name: examName})
+      .findOne({ course: courseName, name: examName })
       .then(doc => {
         testsUrl = doc.testsUrl;
       }).catch(e => {
@@ -99,11 +99,7 @@ class ExamController extends Controller {
 
     request.post(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
-<<<<<<< HEAD
-      + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '&testsurl=' + testsUrl + '/reportexam',
-=======
-        + '&studentId=' + studentId + '&testsurl=' + testsUrl + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '/reportexam',
->>>>>>> 17adad267a0a5a1612ea367c38e1d602f048482e
+      + '&studentId=' + studentId + '&testsurl=' + testsUrl + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '/reportexam',
       { json: info },
       function (error, response, body) {
         if (!error && response.statusCode === 200) {
