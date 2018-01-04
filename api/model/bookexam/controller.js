@@ -15,6 +15,7 @@ class SlackController extends Controller {
 
     try {
       let report = await ReportExamFacade.findOne({ studentId, course, exam });
+      console.log(report);
       if (!report) {
         return res.status(200).json({
           text: 'We couldn\'t find any build history on your examination. Please create a release of your application on GitHub before trying to book the exam.'
@@ -23,6 +24,7 @@ class SlackController extends Controller {
 
       if (report.buildOk) {
         let examDoc = await ExamFacade.findOne({ course: course, name: exam });
+        console.log(examDoc);
         if (!examDoc) {
           return res.status(200).json({ text: "We couldn't find the specified exam" });
         }
