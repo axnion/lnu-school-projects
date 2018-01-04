@@ -5,7 +5,7 @@ let examName;
 let courseName;
 let studentId;
 const URL = process.env.URL;
-let testsUrl = "https://github.com/tommykronstal/getadockerfile"
+let testsUrl;
 
 class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
@@ -93,7 +93,7 @@ class ExamController extends Controller {
       .then(doc => {
         testsUrl = doc.testsUrl;
       }).catch(e => {
-        // Did not find any testsurl
+        // Did not find matching course or exam
       });
 
     request.post(
