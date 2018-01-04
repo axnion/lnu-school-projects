@@ -98,11 +98,7 @@ class ExamController extends Controller {
 
     request.post(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
-<<<<<<< HEAD
-      + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '/reportexam',
-=======
         + '&studentId=' + studentId + '&course=' + courseName + '&exam=' + examName + '&apiurl=' + URL + '&testsurl=' + testsUrl + '/reportexam',
->>>>>>> 7ebcc6806975d7bb544623632c77f6f2a22ecf8f
       { json: info },
       function (error, response, body) {
         if (!error && response.statusCode === 200) {
