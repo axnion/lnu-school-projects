@@ -16,14 +16,12 @@ class SlackController extends Controller {
     try {
 
       const user = await userFacade.findOne({ slackUser: studentId });
-      console.log("Booking user", user);
       if (!user) {
           return res.status(200).json({ text: "Please register your user before trying to book a exam." });
       }
       studentId = user.lnu;
 
       let report = await ReportExamFacade.findOne({ studentId, course, exam });
-      console.log("Booking report", report);
       if (!report) {
         return res.status(200).json({
           text: 'We couldn\'t find any build history on your examination. Please create a release of your application on GitHub before trying to book the exam.'
@@ -32,7 +30,6 @@ class SlackController extends Controller {
 
       if (report.buildOk) {
         let examDoc = await ExamFacade.findOne({ course: course, name: exam });
-          console.log("Booking exam", examDoc);
         if (!examDoc) {
           return res.status(200).json({ text: "We couldn't find the specified exam" });
         }
