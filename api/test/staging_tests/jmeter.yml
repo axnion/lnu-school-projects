@@ -35,7 +35,7 @@ scenarios:
        body:
          text: '{"lnu": "tk222hq", "github": "tommykronstal"}'
          user_name: 'tommykronstal'
-         token: 'pHrBUBELk3whs5w1Fsu6fqtJ'
+         token: "pHrBUBELk3whs5w1Fsu6fqtJ"
   getExam:
     requests:
      - url: http://web:8080/exam
@@ -51,7 +51,7 @@ scenarios:
        body:
          text: '{"date": "2018-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners":2}'
          channel_name: "1dv021"
-         token: 'pHrBUBELk3whs5w1Fsu6fqtJ'
+         token: "pHrBUBELk3whs5w1Fsu6fqtJ"
        assert:
         - contains:
           - .+course.+
@@ -65,7 +65,7 @@ scenarios:
         Content-Type: application/x-www-form-urlencoded
        body:
          channel_name: "1dv021"
-         token: 'pHrBUBELk3whs5w1Fsu6fqtJ'
+         token: "pHrBUBELk3whs5w1Fsu6fqtJ"
   reportExam:
     requests:
      - url: http://web:8080/reportexam
@@ -83,7 +83,7 @@ scenarios:
         Content-Type: application/x-www-form-urlencoded
        body:
          payload: '{"channel": {"name": "1dv021"}, "user": {"name": "tk222hq"}, "actions":[{"value": "exam*1"}]}'
-         token: 'pHrBUBELk3whs5w1Fsu6fqtJ'
+         token: "pHrBUBELk3whs5w1Fsu6fqtJ"
 
 
 modules:
