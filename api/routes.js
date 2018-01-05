@@ -12,14 +12,16 @@ router.route('/').get((req, res) => {
 
 router.route('*').all(function (req, res, next) {
     let token = req.body.token;
+    console.log(process.env.SLACKTOKEN !== token);
     if(req.url === "/bookexam"){
         token = JSON.parse(req.body.payload).token;
     }
     if(req.method === "POST" && req.url !== "/reportexam" && process.env.SLACKTOKEN !== token){
-        return res.status(403);
+        console.log("Returning 403");
+        return res.status(403).json("Forbidden");
+    }else {
+        return next();
     }
-
-    return next();
 });
 
 router.use('/exam', exam);

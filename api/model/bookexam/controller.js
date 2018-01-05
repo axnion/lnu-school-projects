@@ -32,11 +32,14 @@ class SlackController extends Controller {
         let current = examDoc.timeSlots[timeSlotNumber].timeSlot;
         if (current.studentId === 'Available') {
 
-          const user = await userFacade.findOne({ slackUser: studentId });
+            const user = await userFacade.findOne({ slackUser: studentId });
+            if (!user) {
+                return res.status(200).json({ text: "Please register your user before trying to book a exam." });
+            }
             console.log("Booking user", user);
-          current.studentId = user.lnu;
+            current.studentId = user.lnu;
 
-          await examDoc.save();
+            await examDoc.save();
         } else {
           return res.status(200).json({ text: 'I am sorry but that slot is already taken. Pick another.' });
         }
