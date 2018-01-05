@@ -33,10 +33,10 @@ class SlackController extends Controller {
         if (current.studentId === 'Available') {
 
             const user = await userFacade.findOne({ slackUser: studentId });
+            console.log("Booking user", user);
             if (!user) {
                 return res.status(200).json({ text: "Please register your user before trying to book a exam." });
             }
-            console.log("Booking user", user);
             current.studentId = user.lnu;
 
             await examDoc.save();
