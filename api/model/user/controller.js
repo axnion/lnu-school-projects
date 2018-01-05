@@ -10,13 +10,9 @@ class UserController extends Controller {
      * @param {*} next 
      */
     registerUser(req, res, next) {
-
-        console.log(req.body.text);
         let input = JSON.parse(req.body.text, (key, value) => {
             return value;
         });
-
-        console.log(input);
         input.slackUser = req.body.user_name;
 
         const output = {
@@ -28,7 +24,9 @@ class UserController extends Controller {
             .then(user => {
                 return res.status(201).json(output);
             })
-            .catch(err => res.status(500).json({ "text": "A server error has occurred please try again later" }));
+            .catch(err => {
+                res.status(500).json({ "text": "A server error has occurred please try again later" })
+            });
     }
 
 }
