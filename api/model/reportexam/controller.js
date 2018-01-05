@@ -8,7 +8,7 @@ class ReportExamController extends Controller {
     if (req.body.buildOk) {
       console.log('It is ok');
     }
-
+    //TODO: Report to slack use that build failed/was successful
     reportExamFacade
       .createExamReport(req.body)
       .then(resp => {
