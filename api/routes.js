@@ -10,6 +10,15 @@ router.route('/').get((req, res) => {
   res.json({ message: 'Welcome two slackapp API!' });
 });
 
+router.route('*').all(function (req, res, next) {
+    // TODO: Only check this on the slack routes
+    /*if(req.method === "POST" && req.url !== "/reportexam" && process.env.SLACKTOKEN !== req.body.token){
+        return res.status(403);
+    }*/
+
+    return next();
+});
+
 router.use('/exam', exam);
 router.use('/bookexam', bookExam);
 router.use('/reportexam', reportExam);

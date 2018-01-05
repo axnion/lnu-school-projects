@@ -10,7 +10,6 @@ class UserController extends Controller {
      * @param {*} next 
      */
     registerUser(req, res, next) {
-
         let input = JSON.parse(req.body.text, (key, value) => {
             return value;
         });
