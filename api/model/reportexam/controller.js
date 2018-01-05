@@ -6,13 +6,13 @@ class ReportExamController extends Controller {
 
     // unnecessary if - only for testing purposes
     if (req.body.buildOk) {
+        //TODO: Report to slack use that build failed/was successful
       console.log('It is ok');
     }
-    //TODO: Report to slack use that build failed/was successful
+
     reportExamFacade
       .createExamReport(req.body)
       .then(resp => {
-        console.log("Printing out the report exam in reportExamController",resp);
         return res.status(201).json({
           message: 'okdidoki'
         });

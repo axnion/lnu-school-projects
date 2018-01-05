@@ -68,7 +68,7 @@ class ExamController extends Controller {
     const { user_name, channel_name } = req.body;
 
     examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user_name } } }).then(doc => {
-      const responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at ${doc.timeSlots[0].timeSlot.startTime}` : 'No exam time was booked';
+      const responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at <!date^${doc.timeSlots[0].timeSlot.startTime.valueOf() / 1000}^ {date} at {time}| 2014-02-18 6:39:42 AM>` : 'No exam time was booked';
       return res.status(200).json({ text: responseText });
     })
       .catch(err => next(err));
@@ -84,7 +84,6 @@ class ExamController extends Controller {
       studentId: "",
       examName: input.name.split('-')[1] + '-' + input.name.split('-')[2]
     };
-    console.log(info);
 
     let exam = await examFacade.findOne({ course: info.courseName, name: info.examName });
 
@@ -137,7 +136,7 @@ function format(examDoc) {
     };
   }
   let formated = {
-    text: `${examDoc.name} for the course: ${examDoc.course} on <!date^${examDoc.date.valueOf() / 1000}^Posted {date_num}|Posted 2014-02-18 6:39:42 AM>`,
+    text: `${examDoc.name} for the course: ${examDoc.course} on <!date^${examDoc.date.valueOf() / 1000}^ {date_pretty}| 2014-02-18 6:39:42 AM>`,
     attachments: []
   };
 

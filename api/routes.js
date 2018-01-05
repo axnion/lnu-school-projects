@@ -11,11 +11,11 @@ router.route('/').get((req, res) => {
 });
 
 router.route('*').all(function (req, res, next) {
-    // TODO: Only check this on the slack routes
-    console.log(process.env.SLACKTOKEN);
-    console.log(process.env.SLACKTOKEN !== req.body.token);
-    console.log(req.body.token);
-    if(req.method === "POST" && req.url !== "/reportexam" && process.env.SLACKTOKEN !== req.body.token){
+    let token = req.body.token;
+    if(req.url === "/bookexam"){
+        token = JSON.parse(req.body.payload).token;
+    }
+    if(req.method === "POST" && req.url !== "/reportexam" && process.env.SLACKTOKEN !== token){
         return res.status(403);
     }
 
