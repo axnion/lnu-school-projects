@@ -82,7 +82,7 @@ scenarios:
        headers:
         Content-Type: application/x-www-form-urlencoded
        body:
-         payload: '{"channel": {"name": "1dv021"}, "user": {"name": "tk222hq"}, "actions":[{"value": "exam*1"}], "token":"pHrBUBELk3whs5w1Fsu6fqtJ"}'
+         payload: '{"channel": {"name": "1dv021"}, "user": {"name": "tommykronstal"}, "actions":[{"value": "exam*1"}], "token":"pHrBUBELk3whs5w1Fsu6fqtJ"}'
 
 
 modules:
