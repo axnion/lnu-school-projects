@@ -15,6 +15,7 @@ class SlackController extends Controller {
     //TODO What to do if a student books two times ? Update and set the new time or reject ?
     try {
       let report = await ReportExamFacade.findOne({ studentId, course, exam });
+      console.log("Booking report", report);
       if (!report) {
         return res.status(200).json({
           text: 'We couldn\'t find any build history on your examination. Please create a release of your application on GitHub before trying to book the exam.'
