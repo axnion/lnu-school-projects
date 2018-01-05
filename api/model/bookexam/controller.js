@@ -24,6 +24,7 @@ class SlackController extends Controller {
 
       if (report.buildOk) {
         let examDoc = await ExamFacade.findOne({ course: course, name: exam });
+          console.log("Booking exam", examDoc);
         if (!examDoc) {
           return res.status(200).json({ text: "We couldn't find the specified exam" });
         }
@@ -32,6 +33,7 @@ class SlackController extends Controller {
         if (current.studentId === 'Available') {
 
           const user = await userFacade.findOne({ slackUser: studentId });
+            console.log("Booking user", user);
           current.studentId = user.lnu;
 
           await examDoc.save();
