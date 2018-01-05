@@ -85,7 +85,7 @@ scenarios:
         Content-Type: application/x-www-form-urlencoded
        body:
          payload: '{"channel": {"name": "1dv021"}, "user": {"name": "tk222hq"}, "actions":[{"value": "exam*1"}]}'
-         token: process.env.SLACKTOKEN
+         token: process.env.SLACKTOKEN + ""
 
 
 modules:
