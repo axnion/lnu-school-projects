@@ -7,13 +7,21 @@ const userFacade = require('../user/facade');
 class SlackController extends Controller {
   async createBooking(req, res, next) {
     const response = JSON.parse(req.body.payload);
-    const studentId = response.user.name;
+    let studentId = response.user.name;
     const course = response.channel.name;
     const temp = response.actions[0].value.split('*', 2);
     const exam = temp[0];
     const timeSlotNumber = temp[1];
     //TODO What to do if a student books two times ? Update and set the new time or reject ?
     try {
+
+      const user = await userFacade.findOne({ slackUser: studentId });
+      console.log("Booking user", user);
+      if (!user) {
+          return res.status(200).json({ text: "Please register your user before trying to book a exam." });
+      }
+      studentId = user.lnu;
+
       let report = await ReportExamFacade.findOne({ studentId, course, exam });
       console.log("Booking report", report);
       if (!report) {
@@ -31,13 +39,7 @@ class SlackController extends Controller {
 
         let current = examDoc.timeSlots[timeSlotNumber].timeSlot;
         if (current.studentId === 'Available') {
-
-            const user = await userFacade.findOne({ slackUser: studentId });
-            console.log("Booking user", user);
-            if (!user) {
-                return res.status(200).json({ text: "Please register your user before trying to book a exam." });
-            }
-            current.studentId = user.lnu;
+            current.studentId = report.studentId;
 
             await examDoc.save();
         } else {
