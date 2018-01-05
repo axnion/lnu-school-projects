@@ -68,9 +68,16 @@ class ExamController extends Controller {
     const { user_name, channel_name } = req.body;
 
     examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user_name } } }).then(doc => {
-      const responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at ${doc.timeSlots[0].timeSlot.startTime}` : 'No exam time was booked';
+      let responseText;
+      if (doc !== null) {
+        responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at ${doc.timeSlots[0].timeSlot.startTime}` : 'No exam time was booked';
+      } else {
+        responseText = 'No exam found';
+      }
+
       return res.status(200).json({ text: responseText });
     })
+      // Skicka meddelande om att exam inte kunde hittas
       .catch(err => next(err));
   }
 
