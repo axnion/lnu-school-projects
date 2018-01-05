@@ -22,11 +22,9 @@ class UserController extends Controller {
         userFacade
             .createUser(input)
             .then(user => {
-                console.log(user);
                 return res.status(201).json(output);
             })
             .catch(err => {
-                console.log(err);
                 res.status(500).json({ "text": "A server error has occurred please try again later" })
             });
     }
