@@ -36,6 +36,7 @@ class SlackController extends Controller {
 
         let current = examDoc.timeSlots[timeSlotNumber].timeSlot;
         if (current.studentId === 'Available') {
+            // Remove find and remove and student id from the array when match is found.
             current.studentId = report.studentId;
 
             await examDoc.save();
