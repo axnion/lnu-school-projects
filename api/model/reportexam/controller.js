@@ -22,7 +22,10 @@ class ReportExamController extends Controller {
           message
         });
       })
-      .catch(err => res.status(500).json(err));
+      .catch(err => {
+          console.log(err);
+          res.status(500).json("There was an error while creating the exam report");
+      });
   }
 }
 
