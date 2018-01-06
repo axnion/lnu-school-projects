@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="2DV611" time="0.254">
+  <testsuite name="GET exam" id="6134380f-157a-469e-9af6-f04dff257ff8" tests="1" time="0.095">
+    <testcase name="Status code is 200" time="0.095"/>
+  </testsuite>
+  <testsuite name="/exam/create" id="cd0c5bcd-be46-4763-aa8f-78bb2a6b6ade" tests="1" time="0.081">
+    <testcase name="Status code is 201" time="0.081"/>
+  </testsuite>
+  <testsuite name="/exam/build" id="2410c5b4-ed6c-4b04-85ee-165fdf6a2717" tests="1" time="0.031">
+    <testcase name="Status code is 200" time="0.031"/>
+  </testsuite>
+  <testsuite name="/exam/getmyexam" id="aea7e14a-ca89-4545-81e5-a99d9bccd4c3" tests="1" time="0.009">
+    <testcase name="Status code is 200" time="0.009"/>
+  </testsuite>
+  <testsuite name="/user/register" id="6ef54f90-b379-4cdf-a9d1-28061ce4eb3a" tests="1" time="0.011">
+    <testcase name="Status code is 201" time="0.011"/>
+  </testsuite>
+  <testsuite name="/reportexam" id="eac5f04a-94d6-4fe1-bc6a-334c54b6feac" tests="1" time="0.006">
+    <testcase name="Status code is 201" time="0.006"/>
+  </testsuite>
+  <testsuite name="/bookexam" id="92c7f383-806f-44c4-88df-c28faa28166c" tests="1" time="0.021">
+    <testcase name="Status code is 200" time="0.021"/>
+  </testsuite>
+</testsuites>

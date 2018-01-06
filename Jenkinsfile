@@ -103,7 +103,7 @@ node('unit_slave') {
 /*
 * Jenkins Integration Slave
 */
-/*
+
 node('integration_slave') {
     try {
         stage('Integration Testing') {
@@ -135,7 +135,7 @@ node('integration_slave') {
         }
     }
 }
-*/
+
 /*
 * Ask for manual approval to continue to staging
 */
