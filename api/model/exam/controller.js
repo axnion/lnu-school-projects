@@ -76,9 +76,7 @@ class ExamController extends Controller {
       }
 
       return res.status(200).json({ text: responseText });
-    })
-      // Skicka meddelande om att exam inte kunde hittas
-      .catch(err => next(err));
+    }).catch(err => next(err));
   }
 
   async buildExam(req, res, next) {
