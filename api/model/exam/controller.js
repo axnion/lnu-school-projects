@@ -12,10 +12,10 @@ class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
 
   createExam(req, res, next) {
-    
+
     // TODO: Get slackid from incoming request
     isSlackAdmin(token, "slackid").then(isAdmin => {
-      if(isAdmin) {
+      if (isAdmin) {
         console.log("YAY ADMIN!!!")
         // TODO: Create the exam
       } else {
@@ -82,10 +82,15 @@ class ExamController extends Controller {
     const { user_name, channel_name } = req.body;
 
     examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user_name } } }).then(doc => {
-      const responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at <!date^${doc.timeSlots[0].timeSlot.startTime.valueOf() / 1000}^ {date} at {time}| 2014-02-18 6:39:42 AM>` : 'No exam time was booked';
+      let responseText;
+      if (doc !== null) {
+        responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at ${doc.timeSlots[0].timeSlot.startTime}` : 'No exam time was booked';
+      } else {
+        responseText = 'No exam found';
+      }
+
       return res.status(200).json({ text: responseText });
-    })
-      .catch(err => next(err));
+    }).catch(err => next(err));
   }
 
   async buildExam(req, res, next) {
