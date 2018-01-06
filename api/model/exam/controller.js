@@ -6,7 +6,7 @@ const token = require('../../config').slack.apitoken;
 const request = require('request');
 const rp = require('request-promise');
 const URL = process.env.URL;
-const reportToSlack = require('../../lib/reportToSlack');
+//const reportToSlack = require('../../lib/reportToSlack');
 let testsUrl;
 
 class ExamController extends Controller {
@@ -20,7 +20,8 @@ class ExamController extends Controller {
       } else {
         console.log("NOOOOO, not admin");
         // TODO: Do not create exam and report back to Slack
-        reportToSlack(req.body.channel_name, req.body.user_id, "Only admins can create exams");
+        //reportToSlack(req.body.channel_name, req.body.user_id, "Only admins can create exams");
+        res.status(200).json({"text": "Only admins can create exams"}); 
       }
     });
   }
