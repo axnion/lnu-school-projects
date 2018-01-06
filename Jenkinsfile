@@ -221,15 +221,6 @@ node('production') {
         currentBuild.result = 'FAILURE'
         error "There where failures when deploying to production"
     }
-    def rollback() {
-        unstash 'production'
-        dir('./api') {
-            def composefile = "docker-compose-production.yml"
-            cleanWorkspace("${composefile}")
-            sh "sed -i 's/unstable/stable/g' ${composefile}"
-            sh "docker-compose -f ${composefile} up -d --build"
-        }
-    }
 }
 
 /*
@@ -238,6 +229,17 @@ node('production') {
 stage('Upload stable image to Dockerhub') {
     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
         build.push("stable")
+    }
+}
+
+
+def rollback() {
+    unstash 'production'
+    dir('./api') {
+        def composefile = "docker-compose-production.yml"
+        cleanWorkspace("${composefile}")
+        sh "sed -i 's/unstable/stable/g' ${composefile}"
+        sh "docker-compose -f ${composefile} up -d --build"
     }
 }
 
