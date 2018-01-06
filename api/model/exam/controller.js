@@ -6,13 +6,27 @@ const token = require('../../config').slack.apitoken;
 const request = require('request');
 const rp = require('request-promise');
 const URL = process.env.URL;
-// const reportToSlack = require('../../lib/reportToSlack');
+//const reportToSlack = require('../../lib/reportToSlack');
 let testsUrl;
 
 class ExamController extends Controller {
   // /createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
 
   createExam(req, res, next) {
+    isSlackAdmin(token, req.body.user_id).then(isAdmin => {
+      if (isAdmin) {
+        console.log("YAY ADMIN!!!")
+        authToCreateExam(req, res, next);
+      } else {
+        console.log("NOOOOO, not admin");
+        // TODO: Do not create exam and report back to Slack
+        //reportToSlack(req.body.channel_name, req.body.user_id, "Only admins can create exams");
+        res.status(200).json({"text": "Only admins can create exams"}); 
+      }
+    });
+  }
+
+  authToCreateExam(req, res, next) {
     let input;
 
     try {
@@ -22,17 +36,6 @@ class ExamController extends Controller {
     } catch (e) {
       return res.status(205).json({ text: "Could not parse the given input." })
     }
-
-
-    isSlackAdmin(token, req.body.user_id).then(isAdmin => {
-      if (isAdmin) {
-        console.log("YAY ADMIN!!!")
-        // TODO: Create the exam
-      } else {
-        console.log("NOOOOO, not admin");
-        // TODO: Do not create exam and report back to Slack
-      }
-    });
 
     const timeTable = buildTimeTable(input.duration, input.date, input.timeSlots);
 
@@ -72,6 +75,7 @@ class ExamController extends Controller {
         res.status(205).json({ text: "There was an error while creating the exam." });
       });
   }
+
 
   getExam(req, res, next) {
     const inputDate = new Date(Date.now());
