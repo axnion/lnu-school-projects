@@ -30,6 +30,7 @@ execution:
     concurracy: 1
     hold-for: 20s
     ramp-up: 10s
+    delay: 10s
     scenario: bookExam
 modules: 
   jmeter: 
