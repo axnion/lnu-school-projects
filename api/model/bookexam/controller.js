@@ -14,7 +14,7 @@ class SlackController extends Controller {
     const timeSlotNumber = temp[1];
     //TODO What to do if a student books two times ? Update and set the new time or reject ?
     try {
-
+        console.log(req.body.payload);
       const user = await userFacade.findOne({ slackUser: studentId });
       if (!user) {
           return res.status(200).json({ text: "Please register your user before trying to book a exam." });
