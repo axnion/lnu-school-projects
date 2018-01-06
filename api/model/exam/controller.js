@@ -17,12 +17,7 @@ class ExamController extends Controller {
     });
 
     // TODO: Get slackid from incoming request
-<<<<<<< HEAD
     isSlackAdmin(token, req.body.user_id).then(isAdmin => {
-=======
-      console.log(req.body.user_id);
-    isSlackAdmin(token, 'U81ET9XRR').then(isAdmin => {
->>>>>>> 15c236835e0a4cf9810bd545f134be74168e06fd
       if (isAdmin) {
         console.log("YAY ADMIN!!!")
         // TODO: Create the exam
@@ -119,10 +114,10 @@ class ExamController extends Controller {
     testsUrl = exam.testsUrl;
 
     const user = await userFacade.findOne({ github: info.githubId });
-      if (!user) {
-          return res.status(404).json("Couldn't find the user specified");
-          //reportToSlack("ab223sq", "shitsOnFireYo")
-      }
+    if (!user) {
+      return res.status(404).json("Couldn't find the user specified");
+      //reportToSlack("ab223sq", "shitsOnFireYo")
+    }
     info.studentId = user.lnu;
 
     await request.get(
