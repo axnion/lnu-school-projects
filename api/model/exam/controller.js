@@ -14,19 +14,11 @@ class ExamController extends Controller {
 
   createExam(req, res, next) {
     isSlackAdmin(token, req.body.user_id).then(isAdmin => {
-      if (isAdmin) {
-        console.log("YAY ADMIN!!!")
-        authToCreateExam(req, res, next);
-      } else {
-        console.log("NOOOOO, not admin");
-        // TODO: Do not create exam and report back to Slack
-        //reportToSlack(req.body.channel_name, req.body.user_id, "Only admins can create exams");
-        res.status(200).json({"text": "Only admins can create exams"}); 
+      if (!isAdmin) {
+        console.log("Not ADMIN!!!");
+        return res.status(200).json({"text": "Only admins can create exams"});
       }
     });
-  }
-
-  authToCreateExam(req, res, next) {
     let input;
 
     try {
