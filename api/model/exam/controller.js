@@ -14,7 +14,8 @@ class ExamController extends Controller {
   createExam(req, res, next) {
 
     // TODO: Get slackid from incoming request
-    isSlackAdmin(token, JSON.parse(req.body).user_id).then(isAdmin => {
+      console.log(req.body.user_id);
+    isSlackAdmin(token, 'U81ET9XRR').then(isAdmin => {
       if (isAdmin) {
         console.log("YAY ADMIN!!!")
         // TODO: Create the exam
@@ -103,6 +104,7 @@ class ExamController extends Controller {
       studentId: "",
       examName: input.name.split('-')[1] + '-' + input.name.split('-')[2]
     };
+    console.log(info);
 
     let exam = await examFacade.findOne({ course: info.courseName, name: info.examName });
 
@@ -114,6 +116,10 @@ class ExamController extends Controller {
     testsUrl = exam.testsUrl;
 
     const user = await userFacade.findOne({ github: info.githubId });
+      if (!user) {
+          return res.status(404).json("Couldn't find the user specified");
+          //reportToSlack("ab223sq", "shitsOnFireYo")
+      }
     info.studentId = user.lnu;
 
     await request.get(
@@ -127,7 +133,7 @@ class ExamController extends Controller {
         }
       }
     );
-    return res.status(200);
+    return res.status(200).json('Ok');
   }
 }
 
