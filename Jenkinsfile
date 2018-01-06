@@ -103,6 +103,7 @@ node('unit_slave') {
 /*
 * Jenkins Integration Slave
 */
+/*
 node('integration_slave') {
     try {
         stage('Integration Testing') {
@@ -134,7 +135,7 @@ node('integration_slave') {
         }
     }
 }
-
+*/
 /*
 * Ask for manual approval to continue to staging
 */
@@ -162,9 +163,6 @@ node('staging_slave') {
                 // Do performance tests
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
-                environment {
-                    TAG = 'unstable'
-                }
                 sh 'docker pull tommykronstal/2dv611api:unstable'
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
                 cleanWorkspace("${dockerfile}")
