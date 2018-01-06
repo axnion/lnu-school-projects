@@ -31,7 +31,7 @@ async function reportToSlack(channelName, slackUser, message) {
     method: 'GET',
     uri: `https://slack.com/api/chat.postMessage?token=xoxp-273720381861-272957369408-294957226822-bb7917d088c058e70600b89f9d0617e8&channel=${slackUser}&text=${message}&pretty=1`,
   };
-    if (process.env.NODE_ENV == "dev" || process.env.NODE_ENV == "production") {
+    if (process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "production") {
         await rp(options).then(resp => {
             const res = JSON.parse(resp);
             if (!res.ok) {
