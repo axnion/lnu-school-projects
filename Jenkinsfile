@@ -2,7 +2,8 @@
 * Pipeline for 2DV611 project.
 */
 
-def api
+// Reference to the Docker image
+def build
 
 /*
 * Jenkins Master
@@ -33,7 +34,7 @@ node('master') {
         */
         stage('Building image') {
             dir('./api') {
-                 api = docker.build("tommykronstal/2dv611api")
+                 build = docker.build("tommykronstal/2dv611api")
             }
         }
         
@@ -42,11 +43,13 @@ node('master') {
         */
         stage('Upload image to docker hub') {
             docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                api.push("latest")
+                build.push("latest")
             }
         }
     } catch(e) {
-        errorHandler(e)
+        failureSlack("building project")
+        currentBuild.result = 'FAILURE'
+        error "There where failures while building Docker image"
     }
 }
 
@@ -130,26 +133,26 @@ node('integration_slave') {
     }
 }
 
+/*
+* Ask for manual approval to continue to staging
+*/
 stage('Approve Unstable Build') {
     manualStepSlack('staging')
     input('Publish unstable build and deploy to staging?')
 }
 
+/*
+* Deploy unstable image build to Dockerhub 
+*/
 stage('Upload unstable image to Dockerhub') {
     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-        api.push("unstable")
+        build.push("unstable")
     }
 }
 /*
 * Jenkins Staging Slave
 */
 node('staging_slave') {
-    // -> Tommy <-
-    // Get image for API from docker hub
-    // Seed DB with staging objects
-    // jMeter (or some other tool) to perform some staging loading and acceptance tests??
-    // Send a report, with slack
-    // Report to jenkins
     try {
         stage('Staging') {
             unstash 'staging'
@@ -157,7 +160,7 @@ node('staging_slave') {
                 // Do performance tests
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
-                sh 'docker pull tommykronstal/2dv611api'
+                sh 'docker pull tommykronstal/2dv611api:unstable'
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
                 cleanWorkspace("${dockerfile}")
                 
@@ -177,14 +180,21 @@ node('staging_slave') {
     }
 }
 
+/*
+* Ask for manual approval to continue to production
+*/
 stage('Approve Stable Build') {
     manualStepSlack('production')
     input('Publish stable build and deploy to production?')
 }
 
+
+/*
+* Deploy stable image build to Dockerhub
+*/
 stage('Upload stable image to Dockerhub') {
     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-        api.push("stable")
+        build.push("stable")
     }
 }
 
@@ -198,7 +208,7 @@ node('production') {
             dir('./api') {
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
-                sh 'docker pull tommykronstal/2dv611api'
+                sh 'docker pull tommykronstal/2dv611api:stable'
                 sh "docker-compose -f ${composefile} up -d --build"
             }
         }

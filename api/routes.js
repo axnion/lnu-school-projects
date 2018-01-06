@@ -15,7 +15,7 @@ router.route('*').all(function (req, res, next) {
     if(req.url === "/bookexam"){
         token = JSON.parse(req.body.payload).token;
     }
-    if(req.method === "POST" && req.url !== "/reportexam" && process.env.SLACKTOKEN !== token){
+    if(req.method === "POST" && req.url !== "/reportexam" && req.url !== "/exam/build" && process.env.SLACKTOKEN !== token){
         return res.status(403).json("Forbidden");
     }else {
         return next();
