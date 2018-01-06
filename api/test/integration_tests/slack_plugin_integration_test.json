@@ -1,0 +1,370 @@
+{
+	"info": {
+		"name": "2DV611",
+		"_postman_id": "38b259b8-d1c9-7b92-aecb-94b544aac669",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET exam",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "40c39723-d9a9-46b4-bd41-47c1c95304e9",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/exam",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exam"
+					]
+				},
+				"description": "Hits /exam \n\nexpects: \nstatusCode: 200\nAll exams"
+			},
+			"response": []
+		},
+		{
+			"name": "/exam/create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1560d9b2-6385-4986-a5e6-2cb378732e83",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "text",
+							"value": "{\"date\": \"2018-12-30\", \"name\": \"exam\", \"duration\": 30, \"timeSlots\": 20, \"examiners\":2, \"testsUrl\":\"githubTestRepo\"}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "channel_name",
+							"value": "2dv611",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "pHrBUBELk3whs5w1Fsu6fqtJ",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/exam/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exam",
+						"create"
+					]
+				},
+				"description": "Tests the backend logic for /exam/create  "
+			},
+			"response": []
+		},
+		{
+			"name": "/exam/build",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "71ccd48a-e5f2-4c0e-bc73-39c9f9d5ddf8",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"repository\": {\n    \"name\": \"grupp02-testning-ht17\",\n    \"clone_url\": \"https://github.com/2dv611/grupp02-testning-ht17.git\",\n    \"owner\": {\n    \"name\": \"2dv611\"\n    }\n   },\n   \"sender\": {\n    \"login\": \"wallstedt\"\n    }\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/exam/build",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exam",
+						"build"
+					]
+				},
+				"description": "Builds a student's exam. Expects 200 for OK, 403 for forbidden"
+			},
+			"response": []
+		},
+		{
+			"name": "/exam/getmyexam",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d96b76a2-a862-4a39-a9ae-9cb7a67fcea5",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "channel_name",
+							"value": "2dv611",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "pHrBUBELk3whs5w1Fsu6fqtJ",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "user_name",
+							"value": "fw222ek",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/exam/getmyexam",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exam",
+						"getmyexam"
+					]
+				},
+				"description": "Gets the time a student has booked for an exam"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4774c756-ac86-45dd-8fd0-3d6fc25f5e81",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "text",
+							"value": "{\"lnu\": \"fw222ek\", \"github\": \"wallstedt\"}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "user_name",
+							"value": "fw222ek",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "pHrBUBELk3whs5w1Fsu6fqtJ",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": " ",
+							"value": "",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/user/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"register"
+					]
+				},
+				"description": "Registers a new user or updates an existing user"
+			},
+			"response": []
+		},
+		{
+			"name": "/reportexam",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "70a54d44-1ee6-416b-877b-e80436c23990",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"course\": \"2dv611\",\n  \"studentId\": \"fw222ek\",\n  \"buildOk\": \"true\",\n  \"exam\": \"exam\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/reportexam",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"reportexam"
+					]
+				},
+				"description": "Reports exam"
+			},
+			"response": []
+		},
+		{
+			"name": "/bookexam",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6d4742b5-30fd-41dc-9779-053859c629e5",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "payload",
+							"value": "{\"user\":{\"name\":\"fw222ek\"},\"token\": \"pHrBUBELk3whs5w1Fsu6fqtJ\",\"actions\":[{\"value\":\"exam*1\"}],\"channel\":{\"name\":\"2dv611\"}}",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/bookexam",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bookexam"
+					]
+				},
+				"description": "Book an exam for the student"
+			},
+			"response": []
+		}
+	]
+}
