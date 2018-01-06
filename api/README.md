@@ -4,7 +4,7 @@
 
 If you wish to test the slack routes send the information in req.body.text
 
-###Create exam
+### Create exam
 
 Slack Command
 ```bash
@@ -21,7 +21,7 @@ Body
 }
 ```
 
-###List exam
+### List exam
 
 Slack Command
 ```bash
@@ -45,7 +45,7 @@ Body
 __IMPORTANT__ When calling this route req.body.channel_name needs to be set to the 
 channel name for the desired exam list.
 
-###Helper Routes during development
+### Helper Routes during development
 
 __/exam__ GET and POST for creating and listing exams
 
