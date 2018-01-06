@@ -35,10 +35,14 @@ class SlackController extends Controller {
         }
         let current = examDoc.timeSlots[timeSlotNumber].timeSlot;
         if (current.studentId === 'Available') {
-          // Remove find and remove and student id from the array when match is found.
           current.studentId = report.studentId;
-
+          //TODO: Check if this student already has a booking somewhere else
           await examDoc.save();
+        } else if(current.studentId === report.studentId){
+            current.studentId = 'Available';
+            await examDoc.save();
+
+            return res.status(200).json(formatUnbooking(report.studentId, current));
         } else {
           return res.status(205).json({ text: 'I am sorry but that slot is already taken. Pick another.' });
         }
@@ -59,6 +63,14 @@ function format(current) {
       "<!date^" + current.startTime.valueOf() / 1000 + "^ {time}| 8.00 AM> - <!date^" + current.endTime.valueOf() / 1000 + "^ {time}| 8.00 AM>",
     attachments: []
   };
+}
+
+function formatUnbooking(studentId, current) {
+    return {
+        text: "You have successfully removed your booked examination! With the studentId: " + studentId + " in the time slot: " +
+        "<!date^" + current.startTime.valueOf() / 1000 + "^ {time}| 8.00 AM> - <!date^" + current.endTime.valueOf() / 1000 + "^ {time}| 8.00 AM>",
+        attachments: []
+    };
 }
 
 module.exports = new SlackController(slackFacade);
