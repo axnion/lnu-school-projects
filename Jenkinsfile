@@ -136,8 +136,11 @@ stage('Approve Unstable Build') {
 }
 
 // TODO: Push image to unstable branch
-stage
-
+stage('Upload image to docker hub') {
+    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+        api.push("unstable")
+    }
+}
 /*
 * Jenkins Staging Slave
 */
