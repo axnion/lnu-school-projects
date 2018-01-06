@@ -6,25 +6,23 @@ const rp = require('request-promise')
 class ReportExamController extends Controller {
   createExamReport(req, res, next) {
     const { buildOk } = req.body;
-    // unnecessary if - only for testing purposes
-    if (req.body.buildOk) {
-      //TODO: Report to slack use that build failed/was successful
-      console.log('It is ok');
-    }
-    console.log(typeof req.body.buildOk);
-    console.log(buildOk);
+
     reportExamFacade
       .createExamReport(req.body)
       .then(resp => {
 
         const message = (buildOk == "true") ? "The build passed the tests! Register for exam with the \/bookexam command" : "The build failed some test. Correct the errors and make a new release";
-        reportToSlack(`%23${req.body.course}`, `%40${req.body.studentId}`, message);
+
+        if (process.env.NODE_ENV == "dev" || process.env.NODE_ENV == "production") {
+          reportToSlack(`%23${req.body.course}`, `%40${req.body.studentId}`, message);
+        }
+
 
         return res.status(201).json({
           message
         });
       })
-      .catch(err => next(err));
+      .catch(err => res.status(500).json(err));
   }
 }
 
