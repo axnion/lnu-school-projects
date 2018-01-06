@@ -13,12 +13,21 @@ class ExamController extends Controller {
   // /createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
 
   createExam(req, res, next) {
-    isSlackAdmin(token, req.body.user_id).then(isAdmin => {
-      if (!isAdmin) {
-        console.log("Not ADMIN!!!");
-        return res.status(200).json({"text": "Only admins can create exams"});
-      }
-    });
+      isSlackAdmin(token, req.body.user_id).then(isAdmin => {
+          if (!isAdmin) {
+              console.log("Not ADMIN!!!");
+              return res.status(200).json({"text": "Only admins can create exams"});
+          }else {
+              this.authToCreateExam(req, res, next);
+          }
+      }).catch(err => {
+          console.log(err);
+          res.status(205).json({text: "There was an error while checking for slack admin."});
+      });
+  }
+
+  authToCreateExam(req, res, next) {
+    console.log("Passed slack admin check!");
     let input;
 
     try {
