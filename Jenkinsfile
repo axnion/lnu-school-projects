@@ -43,7 +43,7 @@ node('master') {
         */
         stage('Upload image to docker hub') {
             docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                build push("latest")
+                build.push("latest")
             }
         }
     } catch(e) {
