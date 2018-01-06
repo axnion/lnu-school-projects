@@ -1,22 +1,27 @@
 const Controller = require('../../lib/controller');
 const examFacade = require('./facade');
 const userFacade = require('../user/facade');
-const isSlackAdmin = require('../../lib/isSlackAdmin')
+const isSlackAdmin = require('../../lib/isSlackAdmin');
 const token = require('../../config').slack.apitoken;
 const request = require('request');
-const rp = require('request-promise');
 const URL = process.env.URL;
 const reportToSlack = require('../../lib/reportToSlack');
 let testsUrl;
 
 class ExamController extends Controller {
-  /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
+  // /createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
 
   createExam(req, res, next) {
+    let input;
 
-    const input = JSON.parse(req.body.text, (key, value) => {
-      return value;
-    });
+    try {
+      input = JSON.parse(req.body.text, (key, value) => {
+        return value;
+        });
+    }catch (e){
+        return res.status(205).json({text: "Could not parse the given input."})
+    }
+
 
     isSlackAdmin(token, req.body.user_id).then(isAdmin => {
       if (isAdmin) {
@@ -61,7 +66,10 @@ class ExamController extends Controller {
     this.facade
       .create(exam)
       .then(doc => res.status(201).json(format(doc)))
-      .catch(err => next(err));
+      .catch(err => {
+          console.log(err);
+          res.status(205).json({text: "There was an error while creating the exam."});
+      });
   }
 
   getExam(req, res, next) {
@@ -69,7 +77,10 @@ class ExamController extends Controller {
     this.facade
       .findOne({ course: req.body.channel_name, date: { $gte: inputDate } })
       .then(doc => res.status(200).json(format(doc)))
-      .catch(err => next(err));
+      .catch(err => {
+          console.log(err);
+          res.status(205).json({text: "There was an error while looking for the exam."});
+      });
   }
 
   /**
@@ -78,10 +89,10 @@ class ExamController extends Controller {
    * @param {*} res 
    * @param {*} next 
    */
-  getMyExam(req, res, next) {
+  async getMyExam(req, res, next) {
     const { user_name, channel_name } = req.body;
 
-    examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user_name } } }).then(doc => {
+    const doc = await examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user_name } } });
       let responseText;
       if (doc !== null) {
         responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at ${doc.timeSlots[0].timeSlot.startTime}` : 'No exam time was booked';
@@ -90,7 +101,6 @@ class ExamController extends Controller {
       }
 
       return res.status(200).json({ text: responseText });
-    }).catch(err => next(err));
   }
 
   async buildExam(req, res, next) {
@@ -135,23 +145,6 @@ class ExamController extends Controller {
     return res.status(200).json('Ok');
   }
 }
-
-
-/* async function reportToSlack(channelName, slackUser, message) {
-  const options = {
-    method: 'GET',
-    uri: `https://slack.com/api/chat.postMessage?token=xoxp-273720381861-272957369408-294957226822-bb7917d088c058e70600b89f9d0617e8&channel=${slackUser}&text=${message}&pretty=1`,
-  };
-
-  return rp(options).then(resp => {
-    const res = JSON.parse(resp);
-    if (!res.ok) {
-      reportToSlack(channelName, channelName, `Oh nooooo! Something went wrong while sending a message to ${slackUser} about their Jenkins build.`);
-    }
-    return res;
-  })
-    .catch(err => err);
-} */
 
 function format(examDoc) {
   if (examDoc === null) {

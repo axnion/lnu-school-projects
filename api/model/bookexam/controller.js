@@ -16,22 +16,22 @@ class SlackController extends Controller {
     try {
       const user = await userFacade.findOne({ slackUser: studentId });
       if (!user) {
-        return res.status(200).json({ text: "Please register your user before trying to book a exam." });
+        return res.status(205).json({ text: "Please register your user before trying to book a exam." });
       }
       studentId = user.lnu;
 
       let report = await ReportExamFacade.findOne({ studentId, course, exam });
       if (!report) {
-        return res.status(200).json({
+        return res.status(205).json({
           text: 'We couldn\'t find any build history on your examination. Please create a release of your application on GitHub before trying to book the exam.'
         });
       }
 
       if (report.buildOk) {
-        let examDoc = await ExamFacade.findOne({ course: course, name: exam })
+        let examDoc = await ExamFacade.findOne({ course: course, name: exam });
 
         if (!examDoc) {
-          return res.status(200).json({ text: "We couldn't find the specified exam" });
+          return res.status(205).json({ text: "We couldn't find the specified exam" });
         }
         let current = examDoc.timeSlots[timeSlotNumber].timeSlot;
         if (current.studentId === 'Available') {
@@ -40,15 +40,15 @@ class SlackController extends Controller {
 
           await examDoc.save();
         } else {
-          return res.status(200).json({ text: 'I am sorry but that slot is already taken. Pick another.' });
+          return res.status(205).json({ text: 'I am sorry but that slot is already taken. Pick another.' });
         }
 
         return res.status(200).json(format(current));
       } else {
-        res.status(200).json({ text: 'The current build of the examination did not pass the given tests please fix these and try again' });
+        res.status(205).json({ text: 'The current build of the examination did not pass the given tests please fix these and try again' });
       }
     } catch (e) {
-      return res.status(500).json({ text: 'Internal server error' });
+      return res.status(205).json({ text: 'Internal server error' });
     }
   }
 }
