@@ -12,7 +12,7 @@ class SlackController extends Controller {
     const temp = response.actions[0].value.split('*', 2);
     const exam = temp[0];
     const timeSlotNumber = temp[1];
-    //TODO What to do if a student books two times ? Update and set the new time or reject ?
+
     try {
       const user = await userFacade.findOne({ slackUser: studentId });
       if (!user) {
@@ -35,8 +35,12 @@ class SlackController extends Controller {
         }
         let current = examDoc.timeSlots[timeSlotNumber].timeSlot;
         if (current.studentId === 'Available') {
+            for(let i = 0; i < examDoc.timeSlots.length; i++){
+                if (examDoc.timeSlots[i].timeSlot.studentId === report.studentId){
+                    examDoc.timeSlots[i].timeSlot.studentId = 'Available';
+                }
+            }
           current.studentId = report.studentId;
-          //TODO: Check if this student already has a booking somewhere else
           await examDoc.save();
         } else if(current.studentId === report.studentId){
             current.studentId = 'Available';
