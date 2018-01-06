@@ -163,7 +163,6 @@ node('staging_slave') {
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
                 sh "TAG=\'unstable\'"
-                sh "echo $TAG"
                 sh 'docker pull tommykronstal/2dv611api:unstable'
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
                 cleanWorkspace("${dockerfile}")
