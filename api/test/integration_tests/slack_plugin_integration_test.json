@@ -41,6 +41,74 @@
 			"response": []
 		},
 		{
+			"name": "/user/register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4774c756-ac86-45dd-8fd0-3d6fc25f5e81",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "text",
+							"value": "{\"lnu\": \"fw222ek\", \"github\": \"wallstedt\"}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "user_name",
+							"value": "fw222ek",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "pHrBUBELk3whs5w1Fsu6fqtJ",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": " ",
+							"value": "",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "web:8080/user/register",
+					"host": [
+						"web"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"register"
+					]
+				},
+				"description": "Registers a new user or updates an existing user"
+			},
+			"response": []
+		},
+		{
 			"name": "/exam/create",
 			"event": [
 				{
@@ -204,74 +272,6 @@
 					]
 				},
 				"description": "Gets the time a student has booked for an exam"
-			},
-			"response": []
-		},
-		{
-			"name": "/user/register",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "4774c756-ac86-45dd-8fd0-3d6fc25f5e81",
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Status code is 201\", function () {",
-							"    pm.response.to.have.status(201);",
-							"});"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "text",
-							"value": "{\"lnu\": \"fw222ek\", \"github\": \"wallstedt\"}",
-							"description": "",
-							"type": "text"
-						},
-						{
-							"key": "user_name",
-							"value": "fw222ek",
-							"description": "",
-							"type": "text"
-						},
-						{
-							"key": "token",
-							"value": "pHrBUBELk3whs5w1Fsu6fqtJ",
-							"description": "",
-							"type": "text"
-						},
-						{
-							"key": " ",
-							"value": "",
-							"description": "",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "web:8080/user/register",
-					"host": [
-						"web"
-					],
-					"port": "8080",
-					"path": [
-						"user",
-						"register"
-					]
-				},
-				"description": "Registers a new user or updates an existing user"
 			},
 			"response": []
 		},
