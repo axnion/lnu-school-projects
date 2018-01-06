@@ -162,7 +162,7 @@ node('staging_slave') {
                 // Do performance tests
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
-                sh 'docker pull tommykronstal/2dv611api:unstable'
+                sh 'docker pull tommykronstal/2dv611api:latest'
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
                 cleanWorkspace("${dockerfile}")
                 
