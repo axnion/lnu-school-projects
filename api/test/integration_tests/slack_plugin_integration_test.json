@@ -148,6 +148,12 @@
 							"type": "text"
 						},
 						{
+							"key": "user_id",
+							"value": "U80U5AVC0",
+							"description": "",
+							"type": "text"
+						},
+						{
 							"key": "token",
 							"value": "pHrBUBELk3whs5w1Fsu6fqtJ",
 							"description": "",
