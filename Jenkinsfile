@@ -66,30 +66,32 @@ node('unit_slave') {
 
                 sh 'ls -l test/unit_tests/report'
 
-                publishHTML (target: [
-                                        allowMissing: false,
-                                        alwaysLinkToLastBuild: false,
-                                        keepAll: true,
-                                        reportDir: 'test/unit_tests/report',
-                                        reportFiles: 'test-report.html',
-                                        reportName: 'Unit test report'
-                                    ])
-                /*publishHTML (target: [
-                                        allowMissing: false,
-                                        alwaysLinkToLastBuild: false,
-                                        keepAll: true,
-                                        reportDir: 'coverage/lcov-report/',
-                                        reportFiles: 'index.html',
-                                        reportName: 'Test coverage'
-                                    ])*/
             }
         }
     } catch(e) {
+        failureSlack("running unit tests")
         currentBuild.result = 'FAILURE'
-       /* currentBuild.result = 'FAILURE'
-        sh "echo ${e}"
-        slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
-        */ 
+        error "There where failures in the unit tests"
+    } finally {
+        publishHTML (target: [
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: 'test/unit_tests/report',
+            reportFiles: 'test-report.html',
+            reportName: 'Unit test report'
+        ])
+
+        /*
+        publishHTML (target: [
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: 'coverage/lcov-report/',
+            reportFiles: 'index.html',
+            reportName: 'Test coverage'
+        ])
+        */
     }
 }
 
