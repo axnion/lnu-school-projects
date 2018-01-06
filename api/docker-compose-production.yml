@@ -4,7 +4,7 @@ services:
   web:
     command: pm2-docker index.js
     #image: tommykronstal/2dv611api:unstable
-    image: tommykronstal/2dv611api:unstable
+    image: tommykronstal/2dv611api
     ports:
       - "80:8080"
     links:
