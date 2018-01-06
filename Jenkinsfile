@@ -255,7 +255,7 @@ def pullImages(imagename) {
 * Remove any existing running containers
 */
 def cleanWorkspace(dockerfile) {
-    sh "docker-compose -f ${dockerfile} down"
+    sh "docker-compose -f ${dockerfile} down -v"
 }
 
 /*
