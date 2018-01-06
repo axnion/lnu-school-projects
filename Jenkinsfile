@@ -224,7 +224,9 @@ node('production') {
             }
         }
     } catch(e) {
+        failureSlack("deploying to production... rolling back.")
         currentBuild.result = 'FAILURE'
+        error "There where failures when deploying to production"
     }
 }
 

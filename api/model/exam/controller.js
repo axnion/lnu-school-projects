@@ -6,14 +6,13 @@ const token = require('../../config').slack.apitoken;
 const request = require('request');
 const rp = require('request-promise');
 const URL = process.env.URL;
+const reportToSlack = require('../../lib/reportToSlack');
 let testsUrl;
 
 class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
 
   createExam(req, res, next) {
-        console.log(req.body);
-      //console.log(req.body);
 
     const input = JSON.parse(req.body.text, (key, value) => {
       return value;
@@ -116,10 +115,10 @@ class ExamController extends Controller {
     testsUrl = exam.testsUrl;
 
     const user = await userFacade.findOne({ github: info.githubId });
-      if (!user) {
-          return res.status(404).json("Couldn't find the user specified");
-          //reportToSlack("ab223sq", "shitsOnFireYo")
-      }
+    if (!user) {
+      return res.status(404).json("Couldn't find the user specified");
+      //reportToSlack("ab223sq", "shitsOnFireYo")
+    }
     info.studentId = user.lnu;
 
     await request.get(
@@ -138,7 +137,7 @@ class ExamController extends Controller {
 }
 
 
-async function reportToSlack(channelName, slackUser, message) {
+/* async function reportToSlack(channelName, slackUser, message) {
   const options = {
     method: 'GET',
     uri: `https://slack.com/api/chat.postMessage?token=xoxp-273720381861-272957369408-294957226822-bb7917d088c058e70600b89f9d0617e8&channel=${slackUser}&text=${message}&pretty=1`,
@@ -152,7 +151,7 @@ async function reportToSlack(channelName, slackUser, message) {
     return res;
   })
     .catch(err => err);
-}
+} */
 
 function format(examDoc) {
   if (examDoc === null) {

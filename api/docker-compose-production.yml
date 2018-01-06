@@ -5,11 +5,13 @@ services:
     command: pm2-docker index.js
     image: tommykronstal/2dv611api
     ports:
-      - "8080:8080"
+      - "80:8080"
     links:
       - mongo
     environment:
       - MONGO_DB_URI=mongodb://mongo:27017/slackapp
+      - SLACKTOKEN=pHrBUBELk3whs5w1Fsu6fqtJ
+      - URL=http://194.47.174.54:80
 
   mongo:
     image: mongo
