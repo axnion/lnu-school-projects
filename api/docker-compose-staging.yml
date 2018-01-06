@@ -10,7 +10,7 @@ services:
       - mongo
     environment:
       - MONGO_DB_URI=mongodb://mongo:27017/slackapp
-      - URL=http://82e43bfc.ngrok.io
+      - URL=http://194.47.174.58:8080
       - SLACKTOKEN=pHrBUBELk3whs5w1Fsu6fqtJ
 
   mongo:

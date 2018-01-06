@@ -12,8 +12,6 @@ router.route('/').get((req, res) => {
 
 router.route('*').all(function (req, res, next) {
     let token = req.body.token;
-    console.log(req.body.token);
-    console.log(process.env.SLACKTOKENn);
     if(req.url === "/bookexam"){
         token = JSON.parse(req.body.payload).token;
     }

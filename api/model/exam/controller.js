@@ -14,8 +14,6 @@ class ExamController extends Controller {
 
   createExam(req, res, next) {
 
-    console.log(req.body);
-
     const input = JSON.parse(req.body.text, (key, value) => {
       return value;
     });
