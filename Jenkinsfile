@@ -210,7 +210,7 @@ node('production') {
             dir('./api') {
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
-                sh 'docker pull tommykronstal/2dv611api:stable'
+                sh 'docker pull tommykronstal/2dv611api:latest'
                 sh "docker-compose -f ${composefile} up -d --build"
             }
         }
