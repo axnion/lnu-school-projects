@@ -29,7 +29,7 @@ services:
     image: postman/newman_ubuntu1404
     volumes:
       - "./test/integration_tests:/etc/newman"
-    command: run slack_plugin_integration_test.json --reporters="html,junit" --reporter-junit-export="integration_test_results.xml" --delay-request 100
+    command: run slack_plugin_integration_test.json --reporters="html,junit" --reporter-junit-export="integration_test_results.xml" --delay-request 150
      # - run newman_tests.json --reporters="html,junit" --reporter-junit-export="integration_test_results.xml"
     #  - run slack_plugin_integration_test.json --reporters="html,junit" --reporter-junit-export="integration_test_results.xml"
     depends_on:
