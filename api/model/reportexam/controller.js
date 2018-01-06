@@ -13,10 +13,7 @@ class ReportExamController extends Controller {
 
         const message = (buildOk == "true") ? "The build passed the tests! Register for exam with the \/bookexam command" : "The build failed some test. Correct the errors and make a new release";
 
-        if (process.env.NODE_ENV == "dev" || process.env.NODE_ENV == "production") {
-          reportToSlack(`%23${req.body.course}`, `%40${req.body.studentId}`, message);
-        }
-
+        reportToSlack(`%23${req.body.course}`, `%40${req.body.studentId}`, message);
 
         return res.status(201).json({
           message
@@ -34,15 +31,16 @@ async function reportToSlack(channelName, slackUser, message) {
     method: 'GET',
     uri: `https://slack.com/api/chat.postMessage?token=xoxp-273720381861-272957369408-294957226822-bb7917d088c058e70600b89f9d0617e8&channel=${slackUser}&text=${message}&pretty=1`,
   };
-
-  await rp(options).then(resp => {
-    const res = JSON.parse(resp);
-    if (!res.ok) {
-      reportToSlack(channelName, channelName, `Oh nooooo! Something went wrong while sending a message to ${slackUser} about their Jenkins build.`);
+    if (process.env.NODE_ENV == "dev" || process.env.NODE_ENV == "production") {
+        await rp(options).then(resp => {
+            const res = JSON.parse(resp);
+            if (!res.ok) {
+                reportToSlack(channelName, channelName, `Oh nooooo! Something went wrong while sending a message to ${slackUser} about their Jenkins build.`);
+            }
+            return res;
+        })
+            .catch(err => err);
     }
-    return res;
-  })
-    .catch(err => err);
 }
 
 module.exports = new ReportExamController(reportExamFacade);
