@@ -3,8 +3,7 @@ const Router = require('express').Router;
 const router = new Router();
 
 router.route('/')
-  .get((...args) => controller.find(...args))
-  .post((...args) => controller.create(...args));
+  .get((...args) => controller.find(...args));
 
 router.route('/create').post((...args) => controller.createExam(...args));
 
