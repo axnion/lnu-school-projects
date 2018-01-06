@@ -6,6 +6,7 @@ const token = require('../../config').slack.apitoken;
 const request = require('request');
 const rp = require('request-promise');
 const URL = process.env.URL;
+const reportToSlack = require('../../lib/reportToSlack');
 let testsUrl;
 
 class ExamController extends Controller {
@@ -136,7 +137,7 @@ class ExamController extends Controller {
 }
 
 
-async function reportToSlack(channelName, slackUser, message) {
+/* async function reportToSlack(channelName, slackUser, message) {
   const options = {
     method: 'GET',
     uri: `https://slack.com/api/chat.postMessage?token=xoxp-273720381861-272957369408-294957226822-bb7917d088c058e70600b89f9d0617e8&channel=${slackUser}&text=${message}&pretty=1`,
@@ -150,7 +151,7 @@ async function reportToSlack(channelName, slackUser, message) {
     return res;
   })
     .catch(err => err);
-}
+} */
 
 function format(examDoc) {
   if (examDoc === null) {

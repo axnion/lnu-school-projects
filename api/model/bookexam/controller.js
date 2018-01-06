@@ -17,7 +17,7 @@ class SlackController extends Controller {
 
       const user = await userFacade.findOne({ slackUser: studentId });
       if (!user) {
-          return res.status(200).json({ text: "Please register your user before trying to book a exam." });
+        return res.status(200).json({ text: "Please register your user before trying to book a exam." });
       }
       studentId = user.lnu;
 
@@ -29,17 +29,18 @@ class SlackController extends Controller {
       }
 
       if (report.buildOk) {
-        let examDoc = await ExamFacade.findOne({ course: course, name: exam });
+        let examDoc = await ExamFacade.findOne({ course: course, name: exam })
+
         if (!examDoc) {
           return res.status(200).json({ text: "We couldn't find the specified exam" });
         }
-
+        console.log(examDoc);
         let current = examDoc.timeSlots[timeSlotNumber].timeSlot;
         if (current.studentId === 'Available') {
-            // Remove find and remove and student id from the array when match is found.
-            current.studentId = report.studentId;
+          // Remove find and remove and student id from the array when match is found.
+          current.studentId = report.studentId;
 
-            await examDoc.save();
+          await examDoc.save();
         } else {
           return res.status(200).json({ text: 'I am sorry but that slot is already taken. Pick another.' });
         }
@@ -57,8 +58,8 @@ class SlackController extends Controller {
 function format(current) {
   return {
     text: "You have successfully booked a examination! With the studentId: " + current.studentId + " in the time slot: " +
-    "<!date^" + current.startTime.valueOf() / 1000 + "^ {time}| 8.00 AM> - <!date^" + current.endTime.valueOf() / 1000 + "^ {time}| 8.00 AM>",
-      attachments: []
+      "<!date^" + current.startTime.valueOf() / 1000 + "^ {time}| 8.00 AM> - <!date^" + current.endTime.valueOf() / 1000 + "^ {time}| 8.00 AM>",
+    attachments: []
   };
 }
 
