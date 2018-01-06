@@ -202,37 +202,22 @@ node('production') {
             dir('./api') {
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
-                sh 'docker pull tommykronstal/2dv611api:unstable'
+                //sh 'docker pull tommykronstal/2dv611api:unstable'
+                sh 'docker pull tommykronstal/2dv611api'
                 sh "docker-compose -f ${composefile} up -d --build"
-                
-                sh "sed -i 's/unstable/stable/g' ${composefile}"
-                sh "cat ${composefile}"
             }
         }
 
         stage('Smoke Testing') {
-            try {
-                sh 'curl localhost'
-                sh 'echo SHIT WORKS'
-            } catch(e) {
-                sh 'echo SHIT BROKE'
-            }
+            sleep 5
+            sh 'curl localhost' // VEEEERY simple smoke test. Should be replaced
         }
     } catch(e) {
+        //rollback()
         failureSlack("deploying to production... rolling back.")
         currentBuild.result = 'FAILURE'
         error "There where failures when deploying to production"
     }
-    /*
-    def rollback() {
-        unstash 'production'
-        dir('./api') {
-            def composefile = "docker-compose-production.yml"
-            cleanWorkspace("${composefile}")
-            sh "docker-compose -f ${composefile} up -d --build"
-        }
-    }
-    */
 }
 
 /*
@@ -241,6 +226,17 @@ node('production') {
 stage('Upload stable image to Dockerhub') {
     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
         build.push("stable")
+    }
+}
+
+
+def rollback() {
+    unstash 'production'
+    dir('./api') {
+        def composefile = "docker-compose-production.yml"
+        cleanWorkspace("${composefile}")
+        sh "sed -i 's/unstable/stable/g' ${composefile}"
+        sh "docker-compose -f ${composefile} up -d --build"
     }
 }
 
