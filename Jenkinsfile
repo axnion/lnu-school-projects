@@ -204,13 +204,11 @@ node('production') {
                 cleanWorkspace("${composefile}")
                 sh 'docker pull tommykronstal/2dv611api:unstable'
                 sh "docker-compose -f ${composefile} up -d --build"
-                
-                sh "sed -i 's/unstable/stable/g' ${composefile}"
-                sh "cat ${composefile}"
             }
         }
 
         stage('Smoke Testing') {
+            sleep 5
             try {
                 sh 'curl localhost'
                 sh 'echo SHIT WORKS'
@@ -223,16 +221,15 @@ node('production') {
         currentBuild.result = 'FAILURE'
         error "There where failures when deploying to production"
     }
-    /*
     def rollback() {
         unstash 'production'
         dir('./api') {
             def composefile = "docker-compose-production.yml"
             cleanWorkspace("${composefile}")
+            sh "sed -i 's/unstable/stable/g' ${composefile}"
             sh "docker-compose -f ${composefile} up -d --build"
         }
     }
-    */
 }
 
 /*
