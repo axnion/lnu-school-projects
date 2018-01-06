@@ -27,9 +27,9 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "web:8080/exam",
+					"raw": "localhost:8080/exam",
 					"host": [
-						"web"
+						"localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -88,9 +88,9 @@
 					]
 				},
 				"url": {
-					"raw": "web:8080/exam/create",
+					"raw": "localhost:8080/exam/create",
 					"host": [
-						"web"
+						"localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -111,8 +111,8 @@
 						"id": "71ccd48a-e5f2-4c0e-bc73-39c9f9d5ddf8",
 						"type": "text/javascript",
 						"exec": [
-							"pm.test(\"Status code is 404\", function () {",
-							"    pm.response.to.have.status(404);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
 							"});"
 						]
 					}
@@ -128,12 +128,12 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"repository\": {\n    \"name\": \"grupp02-testning-ht17\",\n    \"clone_url\": \"https://github.com/2dv611/grupp02-testning-ht17.git\",\n    \"owner\": {\n    \"name\": \"2dv611\"\n    }\n   },\n   \"sender\": {\n    \"login\": \"wallstedt\"\n    }\n}"
+					"raw": "{ \"repository\": { \"name\": \"grupp02-testning-ht17\", \"clone_url\": \"https://github.com/2dv611/grupp02-testning-ht17.git\", \"owner\": { \"name\": \"2dv611\" }}, \"sender\": { \"login\": \"wallstedt\" } }"
 				},
 				"url": {
-					"raw": "web:8080/exam/build",
+					"raw": "localhost:8080/exam/build",
 					"host": [
-						"web"
+						"localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -193,9 +193,9 @@
 					]
 				},
 				"url": {
-					"raw": "web:8080/exam/getmyexam",
+					"raw": "localhost:8080/exam/getmyexam",
 					"host": [
-						"web"
+						"localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -261,9 +261,9 @@
 					]
 				},
 				"url": {
-					"raw": "web:8080/user/register",
+					"raw": "localhost:8080/user/register",
 					"host": [
-						"web"
+						"localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -304,9 +304,9 @@
 					"raw": "{\n  \"course\": \"2dv611\",\n  \"studentId\": \"fw222ek\",\n  \"buildOk\": \"true\",\n  \"exam\": \"exam\"\n}"
 				},
 				"url": {
-					"raw": "web:8080/reportexam",
+					"raw": "localhost:8080/reportexam",
 					"host": [
-						"web"
+						"localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -353,9 +353,9 @@
 					]
 				},
 				"url": {
-					"raw": "web:8080/bookexam",
+					"raw": "localhost:8080/bookexam",
 					"host": [
-						"web"
+						"localhost"
 					],
 					"port": "8080",
 					"path": [
