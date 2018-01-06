@@ -1,102 +1,113 @@
-execution:
-- concurracy: 1
-  ramp-up: 10s
-  hold-for: 20s
-  scenario: registerUser
-- concurracy: 1
-  ramp-up: 10s
-  hold-for: 20s
-  scenario: getExam
-- concurracy: 1
-  ramp-up: 10s
-  hold-for: 20s
-  scenario: createExam
-- concurracy: 1
-  ramp-up: 10s
-  hold-for: 20s
-  delay: 10s
-  scenario: reportExam
-- concurracy: 1
-  ramp-up: 10s
-  hold-for: 20s
-  scenario: listExam
-- concurracy: 1
-  ramp-up: 10s
-  hold-for: 20s
-  scenario: bookExam
-
-scenarios:
-  registerUser:
-    requests:
-     - url: http://web:8080/user/register
-       method: POST
-       label: registerUser
-       headers:
-        Content-Type: application/x-www-form-urlencoded
-       body:
-         text: '{"lnu": "tk222hq", "github": "tommykronstal"}'
-         user_name: 'tommykronstal'
-         token: "pHrBUBELk3whs5w1Fsu6fqtJ"
-  getExam:
-    requests:
-     - url: http://web:8080/exam
-       method: GET
-       label: getExam
-  createExam:
-    requests:
-     - url: http://web:8080/exam/create
-       method: POST
-       label: createExam
-       headers:
-         Content-Type: application/x-www-form-urlencoded
-       body:
-         text: '{"date": "2018-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners":2, "testsurl": "https://github.com/tommykronstal/getadockerfile"}'
-         channel_name: "1dv021"
-         token: "pHrBUBELk3whs5w1Fsu6fqtJ"
-       assert:
-        - contains:
-          - .+course.+
-          - .+name.+
-  listExam:
-    requests:
-     - url: http://web:8080/exam/get
-       method: POST
-       label: listExam
-       headers:
-        Content-Type: application/x-www-form-urlencoded
-       body:
-         channel_name: "1dv021"
-         token: "pHrBUBELk3whs5w1Fsu6fqtJ"
-  reportExam:
-    requests:
-     - url: http://web:8080/reportexam
-       method: POST
-       label: reportExam
-       headers:
-        Content-Type: application/x-www-form-urlencoded
-       body: 'buildOk=true&studentId=tk222hq&course=1dv021&exam=exam'
-  bookExam:
-    requests:
-     - url: http://web:8080/bookexam
-       method: POST
-       label: bookExam
-       headers:
-        Content-Type: application/x-www-form-urlencoded
-       body:
-         payload: '{"channel": {"name": "1dv021"}, "user": {"name": "tommykronstal"}, "actions":[{"value": "exam*1"}], "token":"pHrBUBELk3whs5w1Fsu6fqtJ"}'
-
-
-modules:
-  jmeter:
-    path: ~/.bzt/jmeter-taurus/bin/jmeter
-    download-link: https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-3.3.zip
-    version: 3.3  # minimal supported version of JMeter is 2.9
-    force-ctg: true   # true by default
+--- 
+execution: 
+  - 
+    concurracy: 1
+    hold-for: 20s
+    ramp-up: 10s
+    scenario: registerUser
+  - 
+    concurracy: 1
+    hold-for: 20s
+    ramp-up: 10s
+    scenario: getExam
+  - 
+    concurracy: 1
+    hold-for: 20s
+    ramp-up: 10s
+    scenario: createExam
+  - 
+    concurracy: 1
+    delay: 10s
+    hold-for: 20s
+    ramp-up: 10s
+    scenario: reportExam
+  - 
+    concurracy: 1
+    hold-for: 20s
+    ramp-up: 10s
+    scenario: listExam
+  - 
+    concurracy: 1
+    hold-for: 20s
+    ramp-up: 10s
+    scenario: bookExam
+modules: 
+  jmeter: 
     detect-plugins: true
-    plugins:
-    - jpgc-json=2.2
-    - jpgc-casutg
-
-reporting:
-  - module: junit-xml
+    download-link: "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-3.3.zip"
+    force-ctg: true
+    path: ~/.bzt/jmeter-taurus/bin/jmeter
+    plugins: 
+      - jpgc-json=2.2
+      - jpgc-casutg
+    version: 3.3
+reporting: 
+  - 
     filename: junit_staging_dump.xml
+    module: junit-xml
+scenarios: 
+  bookExam: 
+    requests: 
+      - 
+        body: 
+          payload: "{\"channel\": {\"name\": \"1dv021\"}, \"user\": {\"name\": \"tommykronstal\"}, \"actions\":[{\"value\": \"exam*1\"}], \"token\":\"pHrBUBELk3whs5w1Fsu6fqtJ\"}"
+        headers: 
+          Content-Type: application/x-www-form-urlencoded
+        label: bookExam
+        method: POST
+        url: "http://web:8080/bookexam"
+  createExam: 
+    requests: 
+      - 
+        assert: 
+          - 
+            contains: 
+              - .+course.+
+              - .+name.+
+        body: 
+          channel_name: 1dv021
+          text: "{\"date\": \"2018-12-30\", \"name\": \"exam\", \"duration\": 30, \"timeSlots\": 20, \"examiners\":2, \"testsurl\": \"https://github.com/tommykronstal/getadockerfile\"}"
+          token: pHrBUBELk3whs5w1Fsu6fqtJ
+        headers: 
+          Content-Type: application/x-www-form-urlencoded
+        label: createExam
+        method: POST
+        url: "http://web:8080/exam/create"
+  getExam: 
+    requests: 
+      - 
+        label: getExam
+        method: GET
+        url: "http://web:8080/exam"
+  listExam: 
+    requests: 
+      - 
+        body: 
+          channel_name: 1dv021
+          token: pHrBUBELk3whs5w1Fsu6fqtJ
+        headers: 
+          Content-Type: application/x-www-form-urlencoded
+        label: listExam
+        method: POST
+        url: "http://web:8080/exam/get"
+  registerUser: 
+    requests: 
+      - 
+        body: 
+          text: "{\"lnu\": \"tk222hq\", \"github\": \"tommykronstal\"}"
+          token: pHrBUBELk3whs5w1Fsu6fqtJ
+          user_name: tommykronstal
+        headers: 
+          Content-Type: application/x-www-form-urlencoded
+        label: registerUser
+        method: POST
+        url: "http://web:8080/user/register"
+  reportExam: 
+    requests: 
+      - 
+        body: buildOk=true&studentId=tk222hq&course=1dv021&exam=exam
+        headers: 
+          Content-Type: application/x-www-form-urlencoded
+        label: reportExam
+        method: POST
+        url: "http://web:8080/reportexam"
