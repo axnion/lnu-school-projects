@@ -16,13 +16,13 @@ class ExamController extends Controller {
     // TODO: Get slackid from incoming request
     isSlackAdmin(token, "slackid").then(isAdmin => {
       if(isAdmin) {
-          console.log("YAY ADMIN!!!")
-          // TODO: Create the exam
+        console.log("YAY ADMIN!!!")
+        // TODO: Create the exam
       } else {
-          console.log("NOOOOO, not admin");
-          // TODO: Do not create exam and report back to Slack
+        console.log("NOOOOO, not admin");
+        // TODO: Do not create exam and report back to Slack
       }
-  });
+    });
 
     const input = JSON.parse(req.body.text, (key, value) => {
       return value;
