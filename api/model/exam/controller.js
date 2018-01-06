@@ -1,6 +1,8 @@
 const Controller = require('../../lib/controller');
 const examFacade = require('./facade');
 const userFacade = require('../user/facade');
+const isSlackAdmin = require('../../lib/isSlackAdmin')
+const token = require('../../config').slack;
 const request = require('request');
 const rp = require('request-promise');
 const URL = process.env.URL;
@@ -8,8 +10,20 @@ let testsUrl;
 
 class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
+
   createExam(req, res, next) {
-    //TODO: check if user is admin when creating a exam
+    
+    // TODO: Get slackid from incoming request
+    isSlackAdmin(token, "slackid").then(isAdmin => {
+      if(isAdmin) {
+          console.log("YAY ADMIN!!!")
+          // TODO: Create the exam
+      } else {
+          console.log("NOOOOO, not admin");
+          // TODO: Do not create exam and report back to Slack
+      }
+  });
+
     const input = JSON.parse(req.body.text, (key, value) => {
       return value;
     });
