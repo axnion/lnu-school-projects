@@ -162,7 +162,8 @@ node('staging_slave') {
                 // Do performance tests
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
-                sh "TAG='unstable'"
+                sh "TAG=unstable"
+                sh "echo $TAG"
                 sh 'docker pull tommykronstal/2dv611api:unstable'
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
                 cleanWorkspace("${dockerfile}")
@@ -209,7 +210,7 @@ node('production') {
         stage('Production') {
             unstash 'production'
             dir('./api') {
-                sh "TAG='stable'"
+                sh "TAG=stable"
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
                 sh 'docker pull tommykronstal/2dv611api:latest'
