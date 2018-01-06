@@ -111,8 +111,8 @@
 						"id": "71ccd48a-e5f2-4c0e-bc73-39c9f9d5ddf8",
 						"type": "text/javascript",
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
 							"});"
 						]
 					}
