@@ -12,8 +12,8 @@ class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
 
   createExam(req, res, next) {
-
-      console.log(req.body);
+        console.log(req.body);
+      //console.log(req.body);
 
     const input = JSON.parse(req.body.text, (key, value) => {
       return value;
