@@ -316,6 +316,55 @@
 				"description": "Reports exam"
 			},
 			"response": []
+		},
+		{
+			"name": "/bookexam",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6d4742b5-30fd-41dc-9779-053859c629e5",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "payload",
+							"value": "{\"user\":{\"name\":\"fw222ek\"},\"token\": \"pHrBUBELk3whs5w1Fsu6fqtJ\",\"actions\":[{\"value\":\"testning-ht17*1\"}],\"channel\":{\"name\":\"2dv611\"}}",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "web:8080/bookexam",
+					"host": [
+						"web"
+					],
+					"port": "8080",
+					"path": [
+						"bookexam"
+					]
+				},
+				"description": "Book an exam for the student"
+			},
+			"response": []
 		}
 	]
 }
