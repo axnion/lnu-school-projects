@@ -10,7 +10,6 @@ module.exports = function(token, user) {
                 reject("nope, could not connect, check your url");
             } else {
                 let obj = JSON.parse(body);
-                console.log(obj);
                 if (obj.user) {
                     resolve(obj.user.is_admin);
                 } else {

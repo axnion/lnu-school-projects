@@ -76,25 +76,27 @@ node('unit_slave') {
         currentBuild.result = 'FAILURE'
         error "There where failures in the unit tests"
     } finally {
-        publishHTML (target: [
-            allowMissing: false,
-            alwaysLinkToLastBuild: false,
-            keepAll: true,
-            reportDir: 'test/unit_tests/report',
-            reportFiles: 'test-report.html',
-            reportName: 'Unit test report'
-        ])
+        dir('./api') {
+            publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'test/unit_tests/report',
+                reportFiles: 'test-report.html',
+                reportName: 'Unit test report'
+            ])
 
-        /*
-        publishHTML (target: [
-            allowMissing: false,
-            alwaysLinkToLastBuild: false,
-            keepAll: true,
-            reportDir: 'coverage/lcov-report/',
-            reportFiles: 'index.html',
-            reportName: 'Test coverage'
-        ])
-        */
+            /*
+            publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'coverage/lcov-report/',
+                reportFiles: 'index.html',
+                reportName: 'Test coverage'
+            ])
+            */
+        }
     }
 }
 
@@ -210,6 +212,15 @@ node('production') {
                 cleanWorkspace("${composefile}")
                 sh 'docker pull tommykronstal/2dv611api:stable'
                 sh "docker-compose -f ${composefile} up -d --build"
+            }
+        }
+
+        stage('Smoke Testing') {
+            try {
+                sh 'curl localhost:8080'
+                sh 'echo SHIT WORKS'
+            } catch(e) {
+                sh 'echo SHIT BROKE'
             }
         }
     } catch(e) {

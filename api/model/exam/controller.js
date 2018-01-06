@@ -13,11 +13,11 @@ class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
 
   createExam(req, res, next) {
+    console.log(req.body.text);
     const input = JSON.parse(req.body.text, (key, value) => {
       return value;
     });
 
-    // TODO: Get slackid from incoming request
     isSlackAdmin(token, req.body.user_id).then(isAdmin => {
       if (isAdmin) {
         console.log("YAY ADMIN!!!")
