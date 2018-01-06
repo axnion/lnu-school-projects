@@ -162,7 +162,7 @@ node('staging_slave') {
                 // Do performance tests
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
-                sh 'docker pull tommykronstal/2dv611api:latest'
+                sh 'docker pull tommykronstal/2dv611api:unstable'
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
                 cleanWorkspace("${dockerfile}")
                 
@@ -217,7 +217,7 @@ node('production') {
 
         stage('Smoke Testing') {
             try {
-                sh 'curl localhost:8080'
+                sh 'curl localhost'
                 sh 'echo SHIT WORKS'
             } catch(e) {
                 sh 'echo SHIT BROKE'
