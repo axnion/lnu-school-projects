@@ -214,6 +214,15 @@ node('production') {
                 sh "docker-compose -f ${composefile} up -d --build"
             }
         }
+
+        stage('Smoke Testing') {
+            try {
+                sh 'curl localhost:8080'
+                sh 'echo SHIT WORKS'
+            } catch(e) {
+                sh 'echo SHIT BROKE'
+            }
+        }
     } catch(e) {
         currentBuild.result = 'FAILURE'
     }
