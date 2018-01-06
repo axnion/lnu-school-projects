@@ -202,21 +202,18 @@ node('production') {
             dir('./api') {
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
-                sh 'docker pull tommykronstal/2dv611api:unstable'
+                //sh 'docker pull tommykronstal/2dv611api:unstable'
+                sh 'docker pull tommykronstal/2dv611api'
                 sh "docker-compose -f ${composefile} up -d --build"
             }
         }
 
         stage('Smoke Testing') {
             sleep 5
-            try {
-                sh 'curl localhost'
-                sh 'echo SHIT WORKS'
-            } catch(e) {
-                sh 'echo SHIT BROKE'
-            }
+            sh 'curl localhost' // VEEEERY simple smoke test. Should be replaced
         }
     } catch(e) {
+        //rollback()
         failureSlack("deploying to production... rolling back.")
         currentBuild.result = 'FAILURE'
         error "There where failures when deploying to production"
