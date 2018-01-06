@@ -2,12 +2,13 @@
 * Pipeline for 2DV611 project.
 */
 
+// Reference to the Docker image
+def build
 
 /*
 * Jenkins Master
 */
 node('master') {
-    def api
 
     try {
         /*
@@ -33,7 +34,7 @@ node('master') {
         */
         stage('Building image') {
             dir('./api') {
-                 api = docker.build("tommykronstal/2dv611api")
+                 build = docker.build("tommykronstal/2dv611api")
             }
         }
         
@@ -42,11 +43,13 @@ node('master') {
         */
         stage('Upload image to docker hub') {
             docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                api.push("latest")
+                build.push("latest")
             }
         }
     } catch(e) {
-        errorHandler(e)
+        failureSlack("building project")
+        currentBuild.result = 'FAILURE'
+        error "There where failures while building Docker image"
     }
 }
 
@@ -66,30 +69,32 @@ node('unit_slave') {
 
                 sh 'ls -l test/unit_tests/report'
 
-                publishHTML (target: [
-                                        allowMissing: false,
-                                        alwaysLinkToLastBuild: false,
-                                        keepAll: true,
-                                        reportDir: 'test/unit_tests/report',
-                                        reportFiles: 'test-report.html',
-                                        reportName: 'Unit test report'
-                                    ])
-                /*publishHTML (target: [
-                                        allowMissing: false,
-                                        alwaysLinkToLastBuild: false,
-                                        keepAll: true,
-                                        reportDir: 'coverage/lcov-report/',
-                                        reportFiles: 'index.html',
-                                        reportName: 'Test coverage'
-                                    ])*/
             }
         }
     } catch(e) {
+        failureSlack("running unit tests")
         currentBuild.result = 'FAILURE'
-       /* currentBuild.result = 'FAILURE'
-        sh "echo ${e}"
-        slackSend baseUrl: 'https://2dv611ht17gr2.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', color: 'bad', message: "${env.BUILD_NAME} encountered an error while doing ${current_stage}", teamDomain: '2dv611ht17gr2', token: 'CYFZICSkkPl29ILJPFgbmDSA'
-        */ 
+        error "There where failures in the unit tests"
+    } finally {
+        publishHTML (target: [
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: 'test/unit_tests/report',
+            reportFiles: 'test-report.html',
+            reportName: 'Unit test report'
+        ])
+
+        /*
+        publishHTML (target: [
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: 'coverage/lcov-report/',
+            reportFiles: 'index.html',
+            reportName: 'Test coverage'
+        ])
+        */
     }
 }
 
@@ -128,23 +133,26 @@ node('integration_slave') {
     }
 }
 
+/*
+* Ask for manual approval to continue to staging
+*/
 stage('Approve Unstable Build') {
     manualStepSlack('staging')
     input('Publish unstable build and deploy to staging?')
 }
 
-// TODO: Push image to unstable branch
-
+/*
+* Deploy unstable image build to Dockerhub 
+*/
+stage('Upload unstable image to Dockerhub') {
+    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+        build.push("unstable")
+    }
+}
 /*
 * Jenkins Staging Slave
 */
 node('staging_slave') {
-    // -> Tommy <-
-    // Get image for API from docker hub
-    // Seed DB with staging objects
-    // jMeter (or some other tool) to perform some staging loading and acceptance tests??
-    // Send a report, with slack
-    // Report to jenkins
     try {
         stage('Staging') {
             unstash 'staging'
@@ -152,7 +160,7 @@ node('staging_slave') {
                 // Do performance tests
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
-                sh 'docker pull tommykronstal/2dv611api'
+                sh 'docker pull tommykronstal/2dv611api:unstable'
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
                 cleanWorkspace("${dockerfile}")
                 
@@ -172,12 +180,23 @@ node('staging_slave') {
     }
 }
 
+/*
+* Ask for manual approval to continue to production
+*/
 stage('Approve Stable Build') {
     manualStepSlack('production')
     input('Publish stable build and deploy to production?')
 }
 
-// TODO: Push image to stable branch
+
+/*
+* Deploy stable image build to Dockerhub
+*/
+stage('Upload stable image to Dockerhub') {
+    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+        build.push("stable")
+    }
+}
 
 /*
 * Jenkins Production Slave
@@ -189,7 +208,7 @@ node('production') {
             dir('./api') {
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
-                sh 'docker pull tommykronstal/2dv611api'
+                sh 'docker pull tommykronstal/2dv611api:stable'
                 sh "docker-compose -f ${composefile} up -d --build"
             }
         }
