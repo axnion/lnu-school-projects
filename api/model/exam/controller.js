@@ -1,6 +1,8 @@
 const Controller = require('../../lib/controller');
 const examFacade = require('./facade');
 const userFacade = require('../user/facade');
+const isSlackAdmin = require('../../lib/isSlackAdmin')
+const token = require('../../config').slack;
 const request = require('request');
 const rp = require('request-promise');
 const URL = process.env.URL;
@@ -8,8 +10,20 @@ let testsUrl;
 
 class ExamController extends Controller {
   /// createexamtest {"date": "2017-12-30", "name": "exam", "duration": 30, "timeSlots": 20, "examiners": 3}
+
   createExam(req, res, next) {
-    //TODO: check if user is admin when creating a exam
+    
+    // TODO: Get slackid from incoming request
+    isSlackAdmin(token, "slackid").then(isAdmin => {
+      if(isAdmin) {
+        console.log("YAY ADMIN!!!")
+        // TODO: Create the exam
+      } else {
+        console.log("NOOOOO, not admin");
+        // TODO: Do not create exam and report back to Slack
+      }
+    });
+
     const input = JSON.parse(req.body.text, (key, value) => {
       return value;
     });
@@ -68,6 +82,7 @@ class ExamController extends Controller {
     const { user_name, channel_name } = req.body;
 
     examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user_name } } }).then(doc => {
+<<<<<<< HEAD
       let responseText;
       if (doc !== null) {
         responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at ${doc.timeSlots[0].timeSlot.startTime}` : 'No exam time was booked';
@@ -75,6 +90,9 @@ class ExamController extends Controller {
         responseText = 'No exam found';
       }
 
+=======
+      const responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at <!date^${doc.timeSlots[0].timeSlot.startTime.valueOf() / 1000}^ {date} at {time}| 2014-02-18 6:39:42 AM>` : 'No exam time was booked';
+>>>>>>> e2a5ebfe50e59598be57d2092d4530fb88a11afc
       return res.status(200).json({ text: responseText });
     }).catch(err => next(err));
   }
@@ -89,7 +107,6 @@ class ExamController extends Controller {
       studentId: "",
       examName: input.name.split('-')[1] + '-' + input.name.split('-')[2]
     };
-    console.log(info);
 
     let exam = await examFacade.findOne({ course: info.courseName, name: info.examName });
 
@@ -142,7 +159,7 @@ function format(examDoc) {
     };
   }
   let formated = {
-    text: `${examDoc.name} for the course: ${examDoc.course} on <!date^${examDoc.date.valueOf() / 1000}^Posted {date_num}|Posted 2014-02-18 6:39:42 AM>`,
+    text: `${examDoc.name} for the course: ${examDoc.course} on <!date^${examDoc.date.valueOf() / 1000}^ {date_pretty}| 2014-02-18 6:39:42 AM>`,
     attachments: []
   };
 
