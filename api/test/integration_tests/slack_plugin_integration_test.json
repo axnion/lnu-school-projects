@@ -27,9 +27,9 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "localhost:8080/exam",
+					"raw": "web:8080/exam",
 					"host": [
-						"localhost"
+						"web"
 					],
 					"port": "8080",
 					"path": [
