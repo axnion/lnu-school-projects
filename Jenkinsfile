@@ -135,8 +135,7 @@ stage('Approve Unstable Build') {
     input('Publish unstable build and deploy to staging?')
 }
 
-// TODO: Push image to unstable branch
-stage('Upload image to docker hub') {
+stage('Upload unstable image to Dockerhub') {
     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
         api.push("unstable")
     }
@@ -183,7 +182,11 @@ stage('Approve Stable Build') {
     input('Publish stable build and deploy to production?')
 }
 
-// TODO: Push image to stable branch
+stage('Upload stable image to Dockerhub') {
+    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+        api.push("stable")
+    }
+}
 
 /*
 * Jenkins Production Slave
