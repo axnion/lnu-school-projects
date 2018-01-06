@@ -14,7 +14,7 @@ class ExamController extends Controller {
   createExam(req, res, next) {
 
     // TODO: Get slackid from incoming request
-    isSlackAdmin(token, "slackid").then(isAdmin => {
+    isSlackAdmin(token, JSON.parse(req.body).user_id).then(isAdmin => {
       if (isAdmin) {
         console.log("YAY ADMIN!!!")
         // TODO: Create the exam
