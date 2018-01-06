@@ -2,12 +2,12 @@
 * Pipeline for 2DV611 project.
 */
 
+def api
 
 /*
 * Jenkins Master
 */
 node('master') {
-    def api
 
     try {
         /*
@@ -136,6 +136,7 @@ stage('Approve Unstable Build') {
 }
 
 // TODO: Push image to unstable branch
+stage
 
 /*
 * Jenkins Staging Slave
