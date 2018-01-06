@@ -301,7 +301,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"course\": \"2dv611\",\n  \"studentId\": \"fw222ek\",\n  \"buildOk\": \"true\",\n  \"exam\": \"exam\"\n}"
+					"raw": "{\n  \"course\": \"2dv611\",\n  \"studentId\": \"fw222ek\",\n  \"buildOk\": \"true\",\n  \"exam\": \"testning-ht17\"\n}"
 				},
 				"url": {
 					"raw": "web:8080/reportexam",
@@ -346,7 +346,7 @@
 					"urlencoded": [
 						{
 							"key": "payload",
-							"value": "{\"user\":{\"name\":\"fw222ek\"},\"token\": \"pHrBUBELk3whs5w1Fsu6fqtJ\",\"actions\":[{\"value\":\"exam*1\"}],\"channel\":{\"name\":\"2dv611\"}}",
+							"value": "{\"user\":{\"name\":\"fw222ek\"},\"token\": \"pHrBUBELk3whs5w1Fsu6fqtJ\",\"actions\":[{\"value\":\"testning-ht17*2\"}],\"channel\":{\"name\":\"2dv611\"}}",
 							"description": "",
 							"type": "text"
 						}

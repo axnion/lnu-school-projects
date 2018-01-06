@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="2DV611" time="0.10700000000000003">
+  <testsuite name="GET exam" id="b4bd7074-0092-4f8f-b4d2-8428a76c75d8" tests="1" time="0.042">
+    <testcase name="Status code is 200" time="0.042"/>
+  </testsuite>
+  <testsuite name="/exam/create" id="c171850a-fa61-48ac-8e6b-3ca672e3627e" tests="1" time="0.029">
+    <testcase name="Status code is 201" time="0.029"/>
+  </testsuite>
+  <testsuite name="/exam/build" id="d5da99bd-f340-488e-82e3-d5fefaf2a18a" tests="1" time="0.013">
+    <testcase name="Status code is 200" time="0.013"/>
+  </testsuite>
+  <testsuite name="/exam/getmyexam" id="503fcf57-b5cd-4ff7-859e-a919ac3d8c89" tests="1" time="0.005">
+    <testcase name="Status code is 200" time="0.005"/>
+  </testsuite>
+  <testsuite name="/user/register" id="f057dd59-68b0-485c-a9a6-952ae4c73d16" tests="1" time="0.005">
+    <testcase name="Status code is 201" time="0.005"/>
+  </testsuite>
+  <testsuite name="/reportexam" id="d722296f-ac49-40e8-b6a7-5b494323ddd8" tests="1" time="0.006">
+    <testcase name="Status code is 201" time="0.006"/>
+  </testsuite>
+  <testsuite name="/bookexam" id="d0b56f9b-3c9d-4dbb-bff1-22a255eec37d" tests="1" time="0.007">
+    <testcase name="Status code is 200" time="0.007">
+      <failure type="AssertionFailure">
+        <![CDATA[Failed 1 times.]]>
+      </failure>
+    </testcase>
+  </testsuite>
+</testsuites>
