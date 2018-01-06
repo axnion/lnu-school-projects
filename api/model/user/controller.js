@@ -27,7 +27,7 @@ class UserController extends Controller {
             })
             .catch(err => {
                 console.log(err);
-                res.status(500).json({ "text": "A server error has occurred please try again later" })
+                res.status(205).json({ "text": "A server error has occurred please try again later" })
             });
     }
 
