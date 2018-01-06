@@ -69,7 +69,7 @@
 					"urlencoded": [
 						{
 							"key": "text",
-							"value": "{\"date\": \"2018-12-30\", \"name\": \"exam\", \"duration\": 30, \"timeSlots\": 20, \"examiners\":2, \"testsUrl\":\"githubTestRepo\"}",
+							"value": "{\"date\": \"2018-12-30\", \"name\": \"testning-ht17\", \"duration\": 30, \"timeSlots\": 20, \"examiners\":2, \"testsUrl\":\"githubTestRepo\"}",
 							"description": "",
 							"type": "text"
 						},
