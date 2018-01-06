@@ -17,9 +17,9 @@ class ExamController extends Controller {
     try {
       input = JSON.parse(req.body.text, (key, value) => {
         return value;
-        });
-    }catch (e){
-        return res.status(205).json({text: "Could not parse the given input."})
+      });
+    } catch (e) {
+      return res.status(205).json({ text: "Could not parse the given input." })
     }
 
 
@@ -67,8 +67,8 @@ class ExamController extends Controller {
       .create(exam)
       .then(doc => res.status(201).json(format(doc)))
       .catch(err => {
-          console.log(err);
-          res.status(205).json({text: "There was an error while creating the exam."});
+        console.log(err);
+        res.status(205).json({ text: "There was an error while creating the exam." });
       });
   }
 
@@ -78,8 +78,8 @@ class ExamController extends Controller {
       .findOne({ course: req.body.channel_name, date: { $gte: inputDate } })
       .then(doc => res.status(200).json(format(doc)))
       .catch(err => {
-          console.log(err);
-          res.status(205).json({text: "There was an error while looking for the exam."});
+        console.log(err);
+        res.status(205).json({ text: "There was an error while looking for the exam." });
       });
   }
 
@@ -93,14 +93,14 @@ class ExamController extends Controller {
     const { user_name, channel_name } = req.body;
 
     const doc = await examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user_name } } });
-      let responseText;
-      if (doc !== null) {
-        responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at ${doc.timeSlots[0].timeSlot.startTime}` : 'No exam time was booked';
-      } else {
-        responseText = 'No exam found';
-      }
+    let responseText;
+    if (doc !== null) {
+      responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at ${doc.timeSlots[0].timeSlot.startTime}` : 'No exam time was booked';
+    } else {
+      responseText = 'No exam found';
+    }
 
-      return res.status(200).json({ text: responseText });
+    return res.status(200).json({ text: responseText });
   }
 
   async buildExam(req, res, next) {
@@ -215,6 +215,22 @@ function buildTimeTable(duration, date, timeSlots) {
   }
 
   return table;
+}
+
+async function reportToSlack(channelName, slackUser, message) {
+  const options = {
+    method: 'GET',
+    uri: `https://slack.com/api/chat.postMessage?token=xoxp-273720381861-272957369408-294957226822-bb7917d088c058e70600b89f9d0617e8&channel=${slackUser}&text=${message}&pretty=1`,
+  };
+
+  await rp(options).then(resp => {
+    const res = JSON.parse(resp);
+    if (!res.ok) {
+      reportToSlack(channelName, channelName, `Oh nooooo! Something went wrong while sending a message to ${slackUser} about their Jenkins build.`);
+    }
+    return res;
+  })
+    .catch(err => err);
 }
 
 function addMinutes(date, minutes) {
