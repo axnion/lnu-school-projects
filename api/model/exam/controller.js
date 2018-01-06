@@ -4,8 +4,9 @@ const userFacade = require('../user/facade');
 const isSlackAdmin = require('../../lib/isSlackAdmin');
 const token = require('../../config').slack.apitoken;
 const request = require('request');
+const rp = require('request-promise');
 const URL = process.env.URL;
-const reportToSlack = require('../../lib/reportToSlack');
+// const reportToSlack = require('../../lib/reportToSlack');
 let testsUrl;
 
 class ExamController extends Controller {
