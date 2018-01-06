@@ -1,25 +1,27 @@
 const Controller = require('../../lib/controller');
 const reportExamFacade = require('./facade');
-const rp = require('request-promise');
+const rp = require('request-promise')
 // const reportToSlack = require('../../lib/reportToSlack');
 
-class ReportExamController extends Controller {  
+class ReportExamController extends Controller {
   createExamReport(req, res, next) {
-
+    const { buildOk } = req.body;
     // unnecessary if - only for testing purposes
     if (req.body.buildOk) {
-        //TODO: Report to slack use that build failed/was successful
+      //TODO: Report to slack use that build failed/was successful
       console.log('It is ok');
     }
-
+    console.log(typeof req.body.buildOk);
+    console.log(buildOk);
     reportExamFacade
       .createExamReport(req.body)
       .then(resp => {
 
-        // TODO: Send notification to Slack 
-        reportToSlack(`%23${req.body.course}`, `%40${req.body.studentId}`, "The exam was built!");
+        const message = (buildOk == "true") ? "The build passed the tests! Register for exam with the \/bookexam command" : "The build failed some test. Correct the errors and make a new release";
+        reportToSlack(`%23${req.body.course}`, `%40${req.body.studentId}`, message);
+
         return res.status(201).json({
-          message: 'okdidoki'
+          message
         });
       })
       .catch(err => next(err));
