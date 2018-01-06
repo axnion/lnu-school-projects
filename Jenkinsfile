@@ -186,19 +186,9 @@ node('staging_slave') {
 /*
 * Ask for manual approval to continue to production
 */
-stage('Approve Stable Build') {
+stage('Deploy to production') {
     manualStepSlack('production')
-    input('Publish stable build and deploy to production?')
-}
-
-
-/*
-* Deploy stable image build to Dockerhub
-*/
-stage('Upload stable image to Dockerhub') {
-    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-        build.push("stable")
-    }
+    input('Deploy to production?')
 }
 
 /*
@@ -209,11 +199,13 @@ node('production') {
         stage('Production') {
             unstash 'production'
             dir('./api') {
-                sh "TAG=stable"
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
-                sh 'docker pull tommykronstal/2dv611api:latest'
+                sh 'docker pull tommykronstal/2dv611api:unstable'
                 sh "docker-compose -f ${composefile} up -d --build"
+                
+                sh "sed -i 's/unstable/stable/g' ${composefile}"
+                sh "cat ${composefile}"
             }
         }
 
@@ -229,6 +221,25 @@ node('production') {
         failureSlack("deploying to production... rolling back.")
         currentBuild.result = 'FAILURE'
         error "There where failures when deploying to production"
+    }
+    /*
+    def rollback() {
+        unstash 'production'
+        dir('./api') {
+            def composefile = "docker-compose-production.yml"
+            cleanWorkspace("${composefile}")
+            sh "docker-compose -f ${composefile} up -d --build"
+        }
+    }
+    */
+}
+
+/*
+* Deploy stable image build to Dockerhub
+*/
+stage('Upload stable image to Dockerhub') {
+    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+        build.push("stable")
     }
 }
 
