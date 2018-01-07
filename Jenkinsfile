@@ -213,10 +213,23 @@ node('production') {
             sh 'curl localhost' // VEEEERY simple smoke test. Should be replaced
         }
     } catch(e) {
-        //rollback()
-        failureSlack("deploying to production... rolling back.")
-        currentBuild.result = 'FAILURE'
-        error "There where failures when deploying to production"
+        try {
+            stage('Rollback') {
+                def composefile = "docker-compose-production.yml"
+                cleanWorkspace("${composefile}")
+                sh "sed -i 's/unstable/stable/g' ${composefile}"
+                cleanWorkspace("${composefile}")
+                sh "docker-compose -f ${composefile} pull"
+                sh "docker-compose -f ${composefile} up -d"
+            }
+            currentBuild.result = 'UNSTABLE'
+            failureSlack("deploying to production... rolling back.")
+
+        } catch(e) {
+            failureSlack("Deployment failed, was unable to roll back")
+            currentBuild.result = 'FAILURE'
+            error "There where failures when rolling back to previous version"
+        }
     }
 }
 
@@ -226,17 +239,6 @@ node('production') {
 stage('Upload stable image to Dockerhub') {
     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
         build.push("stable")
-    }
-}
-
-
-def rollback() {
-    unstash 'production'
-    dir('./api') {
-        def composefile = "docker-compose-production.yml"
-        cleanWorkspace("${composefile}")
-        sh "sed -i 's/unstable/stable/g' ${composefile}"
-        sh "docker-compose -f ${composefile} up -d --build"
     }
 }
 
