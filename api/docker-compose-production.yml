@@ -24,4 +24,4 @@ services:
   mongodata:
     image: tianon/true
     volumes:
-      - /data/db
+      - /data/mongodb:/data/db
