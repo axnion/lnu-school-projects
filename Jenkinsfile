@@ -125,14 +125,12 @@ node('integration_slave') {
         dir('./api') {
             junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/integration_tests/newman/**.xml'
 
-            sh 'mv test/integration_tests/newman/**.html test/integration_tests/newman/latest_report.html'
-
             publishHTML (target: [
                 allowMissing: false,
                 alwaysLinkToLastBuild: false,
                 keepAll: false,
                 reportDir: 'test/integration_tests/newman',
-                reportFiles: 'latest_report.html',
+                reportFiles: '**.html',
                 reportName: "Integration test report"
             ])
         }
