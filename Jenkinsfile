@@ -225,7 +225,7 @@ node('production') {
             currentBuild.result = 'UNSTABLE'
             failureSlack("deploying to production... rolling back.")
 
-        } catch(e) {
+        } catch(err) {
             failureSlack("Deployment failed, was unable to roll back")
             currentBuild.result = 'FAILURE'
             error "There where failures when rolling back to previous version"
