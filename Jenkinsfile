@@ -174,6 +174,8 @@ node('staging_slave') {
                 cleanWorkspace("${composefile}")
                 try {
                     sh "docker stop \$(docker ps -a -q) && docker rm \$(docker ps -a -q) && docker rmi \$(docker images -q) -f"
+                } catch(e) {
+
                 }
                 sh "docker-compose -f ${composefile} up -d"
             }
@@ -207,7 +209,11 @@ node('production') {
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
                 //sh 'docker pull tommykronstal/2dv611api:unstable'
-                sh 'docker pull tommykronstal/2dv611api'
+                try {
+                    sh "docker stop \$(docker ps -a -q) && docker rm \$(docker ps -a -q) && docker rmi \$(docker images -q) -f"
+                } catch(e) {
+
+                }
                 sh "docker-compose -f ${composefile} up -d --build"
             }
         }
