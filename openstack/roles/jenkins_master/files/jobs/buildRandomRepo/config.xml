@@ -73,7 +73,7 @@ node {
         
     // Copy all tests.js-files to student repo
     sh 'cp ./coursetests/*.tests.js ./student/test/'
-    sh 'cp ./coursetests/Dockerfile ./student'
+    sh '/bin/cp -f ./coursetests/Dockerfile ./student'
         
     stage('Running tests') {
         dir('./student') {
