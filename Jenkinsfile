@@ -204,7 +204,7 @@ node('production') {
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
                 sh "docker-compose -f ${composefile} pull"
-                sh "docker-compose -f ${composefile} up -d"
+                //sh "docker-compose -f ${composefile} up -d"
             }
         }
 
