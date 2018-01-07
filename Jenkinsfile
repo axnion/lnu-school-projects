@@ -148,9 +148,11 @@ stage('Approve Unstable Build') {
 /*
 * Deploy unstable image build to Dockerhub 
 */
-stage('Upload unstable image to Dockerhub') {
-    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-        build.push("unstable")
+node('master') {
+    stage('Upload unstable image to Dockerhub') {
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            build.push("unstable")
+        }
     }
 }
 /*
@@ -164,13 +166,14 @@ node('staging_slave') {
                 // Do performance tests
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
-                sh 'docker pull tommykronstal/2dv611api:unstable'
+                sh "docker-compose -f ${dockerfile} pull"
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
                 cleanWorkspace("${dockerfile}")
                 
                 // Set up production like env for exploratory testing
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
+                sh "docker-compose -f ${composefile} pull"
                 sh "docker-compose -f ${composefile} up -d"
             }
         }
@@ -202,9 +205,8 @@ node('production') {
             dir('./api') {
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
-                //sh 'docker pull tommykronstal/2dv611api:unstable'
-                sh 'docker pull tommykronstal/2dv611api'
-                sh "docker-compose -f ${composefile} up -d --build"
+                sh "docker-compose -f ${composefile} pull"
+                sh "docker-compose -f ${composefile} up -d"
             }
         }
 
@@ -212,31 +214,37 @@ node('production') {
             sleep 5
             sh 'curl localhost' // VEEEERY simple smoke test. Should be replaced
         }
+
     } catch(e) {
-        //rollback()
-        failureSlack("deploying to production... rolling back.")
-        currentBuild.result = 'FAILURE'
-        error "There where failures when deploying to production"
+        try {
+            stage('Rollback') {
+                dir('./api') {
+                    def composefile = "docker-compose-production.yml"
+                    cleanWorkspace("${composefile}")
+                    sh "sed -i 's/unstable/stable/g' ${composefile}"
+                    cleanWorkspace("${composefile}")
+                    sh "docker-compose -f ${composefile} pull"
+                    sh "docker-compose -f ${composefile} up -d"
+                }
+            }
+            currentBuild.result = 'UNSTABLE'
+            failureSlack("deploying to production... rolling back.")
+
+        } catch(err) {
+            failureSlack("Deployment failed, was unable to roll back")
+            currentBuild.result = 'FAILURE'
+            error "There where failures when rolling back to previous version"
+        }
     }
 }
 
-/*
-* Deploy stable image build to Dockerhub
-*/
-stage('Upload stable image to Dockerhub') {
-    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-        build.push("stable")
-    }
-}
-
-
-def rollback() {
-    unstash 'production'
-    dir('./api') {
-        def composefile = "docker-compose-production.yml"
-        cleanWorkspace("${composefile}")
-        sh "sed -i 's/unstable/stable/g' ${composefile}"
-        sh "docker-compose -f ${composefile} up -d --build"
+node('master') {
+    if(currentBuild.result == 'SUCCESS') {
+        stage('Upload stable image to Dockerhub') {
+            docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                build.push("stable")
+            }
+        }
     }
 }
 
