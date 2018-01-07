@@ -164,13 +164,15 @@ node('staging_slave') {
                 // Do performance tests
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
-                sh 'docker pull tommykronstal/2dv611api:unstable'
+                //sh 'docker pull tommykronstal/2dv611api:unstable'
+                sh "docker-compose -f ${dockerfile} pull"
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
                 cleanWorkspace("${dockerfile}")
                 
                 // Set up production like env for exploratory testing
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
+                sh "docker-compose -f ${composefile} pull"
                 sh "docker-compose -f ${composefile} up -d"
             }
         }
