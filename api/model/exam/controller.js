@@ -15,7 +15,6 @@ class ExamController extends Controller {
   createExam(req, res, next) {
       isSlackAdmin(token, req.body.user_id).then(isAdmin => {
           if (!isAdmin) {
-              console.log("Not ADMIN!!!");
               return res.status(200).json({"text": "Only admins can create exams"});
           }else {
               this.authToCreateExam(req, res, next);
@@ -27,7 +26,6 @@ class ExamController extends Controller {
   }
 
   authToCreateExam(req, res, next) {
-    console.log("Passed slack admin check! Staging is new ?");
     let input;
 
     try {
@@ -101,7 +99,7 @@ class ExamController extends Controller {
     const doc = await examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user_name } } });
     let responseText;
     if (doc !== null) {
-      responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at ${doc.timeSlots[0].timeSlot.startTime}` : 'No exam time was booked';
+      responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at <!date^${doc.timeSlots[0].timeSlot.startTime.valueOf() / 1000}^{date} {time} | 8.00 AM>` : 'No exam time was booked';
     } else {
       responseText = 'No exam found';
     }
@@ -119,7 +117,6 @@ class ExamController extends Controller {
       studentId: "",
       examName: input.name.split('-')[1] + '-' + input.name.split('-')[2]
     };
-    console.log(info);
 
     let exam = await examFacade.findOne({ course: info.courseName, name: info.examName });
 

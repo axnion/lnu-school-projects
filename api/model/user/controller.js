@@ -22,7 +22,6 @@ class UserController extends Controller {
         userFacade
             .createUser(input)
             .then(user => {
-                console.log(user);
                 return res.status(201).json(output);
             })
             .catch(err => {
