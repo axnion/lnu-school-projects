@@ -204,7 +204,7 @@ node('production') {
             unstash 'production'
             dir('./api') {
                 def composefile = "docker-compose-production.yml"
-                cleanWorkspace("${composefile}")
+                cleanWorkspaceKeepVolumes("${composefile}")
                 sh "docker-compose -f ${composefile} pull"
                 sh "docker-compose -f ${composefile} up -d"
             }
@@ -220,9 +220,9 @@ node('production') {
             stage('Rollback') {
                 dir('./api') {
                     def composefile = "docker-compose-production.yml"
-                    cleanWorkspace("${composefile}")
+                    cleanWorkspaceKeepVolumes("${composefile}")
                     sh "sed -i 's/unstable/stable/g' ${composefile}"
-                    cleanWorkspace("${composefile}")
+                    cleanWorkspaceKeepVolumes("${composefile}")
                     sh "docker-compose -f ${composefile} pull"
                     sh "docker-compose -f ${composefile} up -d"
                 }
@@ -256,10 +256,17 @@ def pullImages(imagename) {
 }
 
 /*
-* Remove any existing running containers
+* Remove any existing running containers, including volumes
 */
 def cleanWorkspace(dockerfile) {
     sh "docker-compose -f ${dockerfile} down -v"
+}
+
+/*
+* Remove any existing running containers, including volumes
+*/
+def cleanWorkspaceKeepVolumes(dockerfile) {
+    sh "docker-compose -f ${dockerfile} down"
 }
 
 /*
