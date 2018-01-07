@@ -215,12 +215,14 @@ node('production') {
     } catch(e) {
         try {
             stage('Rollback') {
-                def composefile = "docker-compose-production.yml"
-                cleanWorkspace("${composefile}")
-                sh "sed -i 's/unstable/stable/g' ${composefile}"
-                cleanWorkspace("${composefile}")
-                sh "docker-compose -f ${composefile} pull"
-                sh "docker-compose -f ${composefile} up -d"
+                dir('./api') {
+                    def composefile = "docker-compose-production.yml"
+                    cleanWorkspace("${composefile}")
+                    sh "sed -i 's/unstable/stable/g' ${composefile}"
+                    cleanWorkspace("${composefile}")
+                    sh "docker-compose -f ${composefile} pull"
+                    sh "docker-compose -f ${composefile} up -d"
+                }
             }
             currentBuild.result = 'UNSTABLE'
             failureSlack("deploying to production... rolling back.")
