@@ -70,7 +70,7 @@ class ExamController extends Controller {
 
     this.facade
       .create(exam)
-      .then(doc => res.status(201).json(format(doc)))
+      .then(doc => res.status(500).json(format(doc)))
       .catch(err => {
         console.log(err);
         res.status(205).json({ text: "There was an error while creating the exam." });
