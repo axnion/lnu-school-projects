@@ -172,7 +172,7 @@ node('staging_slave') {
                 // Set up production like env for exploratory testing
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
-                sh "docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -q)"
+                sh "docker stop \$(docker ps -a -q) && docker rm \$(docker ps -a -q) && docker rmi \$(docker images -q)"
                 sh "docker-compose -f ${composefile} up -d"
             }
         }
