@@ -215,11 +215,6 @@ node('production') {
             sh 'curl localhost' // VEEEERY simple smoke test. Should be replaced
         }
 
-        stage('Upload stable image to Dockerhub') {
-            docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                build.push("stable")
-            }
-        }
     } catch(e) {
         try {
             stage('Rollback') {
@@ -239,6 +234,16 @@ node('production') {
             failureSlack("Deployment failed, was unable to roll back")
             currentBuild.result = 'FAILURE'
             error "There where failures when rolling back to previous version"
+        }
+    }
+}
+
+node('master') {
+    if(currentBuild.result == 'SUCCESS') {
+        stage('Upload stable image to Dockerhub') {
+            docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                build.push("stable")
+            }
         }
     }
 }
