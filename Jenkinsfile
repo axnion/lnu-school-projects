@@ -212,9 +212,21 @@ node('production') {
             }
         }
 
+        /*
+        * Test so the service is up and running
+        */
         stage('Smoke Testing') {
             sleep 5
             sh 'curl localhost' // VEEEERY simple smoke test. Should be replaced
+        }
+
+        /*
+        * Upload stable image to Dockerhub
+        */
+        stage('Upload stable image to Dockerhub') {
+            docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                build.push("stable")
+            }
         }
     } catch(e) {
         try {
@@ -239,16 +251,6 @@ node('production') {
     }
 }
 
-/*
-* Deploy stable image build to Dockerhub
-*/
-node('master') { 
-    stage('Upload stable image to Dockerhub') {
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            build.push("stable")
-        }
-    }
-}
 /*
 * Pull down Docker image from Dockerhub
 */
