@@ -27,7 +27,7 @@ class ExamController extends Controller {
   }
 
   authToCreateExam(req, res, next) {
-    console.log("Passed slack admin check!");
+    console.log("Passed slack admin check! Staging is new ?");
     let input;
 
     try {
