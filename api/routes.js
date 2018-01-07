@@ -7,7 +7,7 @@ const reportExam = require('./model/reportexam/router');
 const user = require('./model/user/router');
 
 router.route('/').get((req, res) => {
-  res.json({ message: 'Welcome the slackapp API! 11.0' });
+  res.json({ message: 'Welcome the slackapp API!' });
 });
 
 router.route('*').all(function (req, res, next) {
