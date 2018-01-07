@@ -174,8 +174,6 @@ node('staging_slave') {
                 cleanWorkspace("${composefile}")
                 try {
                     sh "docker stop \$(docker ps -a -q) && docker rm \$(docker ps -a -q) && docker rmi \$(docker images -q) -f"
-                } catch(e) {
-
                 }
                 sh "docker-compose -f ${composefile} up -d"
             }
