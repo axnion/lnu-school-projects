@@ -164,7 +164,6 @@ node('staging_slave') {
                 // Do performance tests
                 def dockerfile = "docker-compose-staging.yml"
                 cleanWorkspace("${dockerfile}")
-                //sh 'docker pull tommykronstal/2dv611api:unstable'
                 sh "docker-compose -f ${dockerfile} pull"
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner web"
                 cleanWorkspace("${dockerfile}")
@@ -172,11 +171,7 @@ node('staging_slave') {
                 // Set up production like env for exploratory testing
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
-                try {
-                    sh "docker stop \$(docker ps -a -q) && docker rm \$(docker ps -a -q) && docker rmi \$(docker images -q) -f"
-                } catch(e) {
-
-                }
+                sh "docker-compose -f ${composefile} pull"
                 sh "docker-compose -f ${composefile} up -d"
             }
         }
@@ -208,8 +203,6 @@ node('production') {
             dir('./api') {
                 def composefile = "docker-compose-production.yml"
                 cleanWorkspace("${composefile}")
-                //sh 'docker pull tommykronstal/2dv611api:unstable'
-
                 sh "docker-compose -f ${composefile} pull"
                 sh "docker-compose -f ${composefile} up -d"
             }
