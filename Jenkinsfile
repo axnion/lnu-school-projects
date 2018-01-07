@@ -140,17 +140,19 @@ node('integration_slave') {
 /*
 * Ask for manual approval to continue to staging
 */
-stage('Approve Unstable Build') {
-    manualStepSlack('staging')
-    input('Publish unstable build and deploy to staging?')
-}
+node('master') {
+    stage('Approve Unstable Build') {
+        manualStepSlack('staging')
+        input('Publish unstable build and deploy to staging?')
+    }
 
-/*
-* Deploy unstable image build to Dockerhub 
-*/
-stage('Upload unstable image to Dockerhub') {
-    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-        build.push("unstable")
+    /*
+    * Deploy unstable image build to Dockerhub 
+    */
+    stage('Upload unstable image to Dockerhub') {
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            build.push("unstable")
+        }
     }
 }
 /*
@@ -188,9 +190,11 @@ node('staging_slave') {
 /*
 * Ask for manual approval to continue to production
 */
-stage('Deploy to production') {
-    manualStepSlack('production')
-    input('Deploy to production?')
+node('master') {
+    stage('Deploy to production') {
+        manualStepSlack('production')
+        input('Deploy to production?')
+    }
 }
 
 /*
@@ -238,12 +242,13 @@ node('production') {
 /*
 * Deploy stable image build to Dockerhub
 */
-stage('Upload stable image to Dockerhub') {
-    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-        build.push("stable")
+node('master') { 
+    stage('Upload stable image to Dockerhub') {
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            build.push("stable")
+        }
     }
 }
-
 /*
 * Pull down Docker image from Dockerhub
 */
