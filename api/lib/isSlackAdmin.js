@@ -1,7 +1,7 @@
 // A module to check if a slackid is admin of the workspace
 
 const request = require("request");
-const url = "https://slack.com/api/users.info";
+const url = process.env.SLACK_API_URL;
 
 module.exports = function(token, user) {
     return new Promise((resolve, reject) => {
