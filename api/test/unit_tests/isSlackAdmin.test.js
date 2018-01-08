@@ -2,8 +2,9 @@ const sinon = require('sinon');
 const isSlackAdmin = require('../../lib/isSlackAdmin');
 
 
-describe.skip('Test ', () => {
+describe('Test ', () => {
 
-  // stub a token with sinon 
-
-})
+  test.skip('Test stubbing a token', done => {
+    // stub a token with sinon 
+  });
+});
