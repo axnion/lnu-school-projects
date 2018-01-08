@@ -7,13 +7,13 @@ module.exports = function(token, user) {
     return new Promise((resolve, reject) => {
         request.post(url, {form:{token: token, user: user}}, function(error, response, body) {
             if (error) {
-                reject("nope, could not connect, check your url");
+                reject("Could not connect, check the URL");
             } else {
                 let obj = JSON.parse(body);
                 if (obj.user) {
                     resolve(obj.user.is_admin);
                 } else {
-                    reject("nope, no user found, check your user id");
+                    reject("No user found, check the user_id");
                 }  
             }
         });
