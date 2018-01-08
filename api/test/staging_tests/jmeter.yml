@@ -17,6 +17,11 @@ execution:
     scenario: createExam
   - 
     concurracy: 1
+    hold-for: 20s
+    ramp-up: 10s
+    scenario: createExamNotAdmin
+  - 
+    concurracy: 1
     delay: 10s
     hold-for: 20s
     ramp-up: 10s
@@ -70,6 +75,23 @@ scenarios:
           text: "{\"date\": \"2018-12-30\", \"name\": \"exam\", \"duration\": 30, \"timeSlots\": 20, \"examiners\":2, \"testsurl\": \"https://github.com/tommykronstal/getadockerfile\"}"
           token: pHrBUBELk3whs5w1Fsu6fqtJ
           user_id: "U81ET9XRR"
+        headers: 
+          Content-Type: application/x-www-form-urlencoded
+        label: createExam
+        method: POST
+        url: "http://web:8080/exam/create"
+  createExamNotAdmin: 
+    requests: 
+      - 
+        assert: 
+          - 
+            contains: 
+              - .+Only admins can create exams.+
+        body: 
+          channel_name: 1dv021
+          text: "{\"date\": \"2018-12-30\", \"name\": \"exam\", \"duration\": 30, \"timeSlots\": 20, \"examiners\":2, \"testsurl\": \"https://github.com/tommykronstal/getadockerfile\"}"
+          token: pHrBUBELk3whs5w1Fsu6fqtJ
+          user_id: "notadmin"
         headers: 
           Content-Type: application/x-www-form-urlencoded
         label: createExam
