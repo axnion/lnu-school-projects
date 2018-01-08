@@ -11,7 +11,7 @@ class ReportExamController extends Controller {
       .createExamReport(req.body)
       .then(resp => {
 
-        const message = (buildOk == "true") ? "The build passed the tests! Register for exam with the \/bookexam command" : "The build failed one or more of the test(s). Correct the errors and make a new release to create a new exam report";
+        const message = (buildOk == "true") ? "The build passed the tests! Register for exam with the \/showexam command" : "The build failed one or more of the test(s). Correct the errors and make a new release to create a new exam report";
 
         reportToSlack(`%23${req.body.course}`, `%40${req.body.studentId}`, message);
 
