@@ -5,7 +5,7 @@ services:
     command: pm2-docker index.js
     image: tommykronstal/2dv611api:unstable
     ports:
-      - "81:8080"
+      - "80:8080"
     links:
       - mongo
     environment:
