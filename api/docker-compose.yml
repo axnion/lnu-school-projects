@@ -16,6 +16,8 @@ services:
       - URL=http://da171505.ngrok.io
       - SLACKTOKEN=pHrBUBELk3whs5w1Fsu6fqtJ
       - NODE_ENV=dev
+      - SLACK_API_URL=https://slack.com/api/users.info
+      - SLACK_API_TOKEN=xoxp-273720381861-273503337875-295792058871-3b163bd86f0376bb62cf609f4df26983
 
   mongo:
     image: mongo
