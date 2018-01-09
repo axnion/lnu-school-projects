@@ -66,28 +66,38 @@ node {
                 echo "Checking out code from ${giturl}"
                 git credentialsId: 'github-credentials', url: "${giturl}"
             } catch(e) {
-                // Could not clone student repo, must do something. Report to API or Slack?
+                // Could not clone student repo, must do something. TODO: Report to API
             }
         }
     }
-        
+
     // Copy all tests.js-files to student repo
-    sh 'cp ./coursetests/*.tests.js ./student/test/'
-    sh '/bin/cp -f ./coursetests/Dockerfile ./student'
+    stage('Copy files') {
+        try {
+            sh 'cp ./coursetests/*.tests.js ./student/test/'
+            sh '/bin/cp -f ./coursetests/Dockerfile ./student'
+        } catch(e) {
+
+        }
+    }
         
     stage('Running tests') {
         dir('./student') {
             try {
-                // Build step could be in another stage - but if the student can't keep up correct structure etc, they should fail :)
                 sh "docker build -t '${studentid}'/studentapp ."
                 sh "docker run '${studentid}'/studentapp"
-                // Report exam true. Do we include studentid here?
-                reportexam(true)
+
+                // Report exam true
+                stage ('Report') {
+                    reportexam(true)
+                }
             } catch(e) {
                 currentBuild.result = 'FAILURE'
-                sh "echo 'your tests failed, i will notify your master'"
+                
                 // Report exam false.
-                reportexam(false)
+                stage('Report') {
+                    reportexam(false)
+                }
             }
         }
     }
