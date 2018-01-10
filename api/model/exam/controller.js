@@ -97,7 +97,7 @@ class ExamController extends Controller {
     const { user_name, channel_name } = req.body;
     const user = await userFacade.findOne({ slackUser: user_name });
 
-    const doc = await examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user.lnu } } });
+    const doc = await examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user ? user.lnu : "" } } });
     let responseText;
     if (doc !== null) {
       responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at <!date^${doc.timeSlots[0].timeSlot.startTime.valueOf() / 1000}^{date} {time} | 8.00 AM>` : 'No exam time was booked';
@@ -133,7 +133,7 @@ class ExamController extends Controller {
       return res.status(404).json("Couldn't find the user specified");
       //reportToSlack("ab223sq", "shitsOnFireYo")
     }
-    info.studentId = user.lnu;
+    info.studentId = user.slackUser;
 
     await request.get(
       'http://194.47.174.64:8000/job/buildRandomRepo/buildWithParameters?token=superSecretToken&giturl=' + info.cloneUrl
