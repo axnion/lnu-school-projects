@@ -114,7 +114,7 @@ node('integration_slave') {
 
             dir('./api') {
                 cleanWorkspace("${dockerfile}")
-                pullImages("${dockerhubname}/2dv611api")
+                pullImages("${dockerHubName}/2dv611api")
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
             }
         }
