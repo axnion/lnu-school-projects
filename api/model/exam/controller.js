@@ -100,7 +100,7 @@ class ExamController extends Controller {
     const doc = await examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user ? user.lnu : "" } } });
     let responseText;
     if (doc !== null) {
-      responseText = (doc.timeSlots.length > 0) ? `${user_name} has booked exam at <!date^${doc.timeSlots[0].timeSlot.startTime.valueOf() / 1000}^{date} {time} | 8.00 AM>` : 'No exam time was booked';
+      responseText = (doc.timeSlots.length > 0) ? `${user.lnu} has booked exam at <!date^${doc.timeSlots[0].timeSlot.startTime.valueOf() / 1000}^{date} {time} | 8.00 AM>` : 'No exam time was booked';
     } else {
       responseText = 'No exam found';
     }
