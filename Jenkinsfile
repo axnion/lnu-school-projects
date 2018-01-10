@@ -4,6 +4,7 @@
 
 // Reference to the Docker image
 def build
+def dockerHubName = "tommykronstal"
 
 /*
 * Jenkins Master
@@ -34,7 +35,7 @@ node('master') {
         */
         stage('Building image') {
             dir('./api') {
-                 build = docker.build("tommykronstal/2dv611api")
+                 build = docker.build("${dockerHubName}/2dv611api")
             }
         }
         
@@ -63,7 +64,7 @@ node('unit_slave') {
             dir('./api') {
                 def dockerfile = "docker-compose-unit.yml"
                 cleanWorkspace("${dockerfile}")
-                pullImages("tommykronstal/2dv611api")
+                pullImages("${dockerHubName}/2dv611api")
                 sh "docker-compose -f ${dockerfile} up --exit-code-from web web"
                 junit allowEmptyResults: true, healthScaleFactor: 2.0, testResults: 'test/unit_tests/report/test-report.html'
 
@@ -113,7 +114,7 @@ node('integration_slave') {
 
             dir('./api') {
                 cleanWorkspace("${dockerfile}")
-                pullImages("tommykronstal/2dv611api")
+                pullImages("${dockerhubname}/2dv611api")
                 sh "docker-compose -f ${dockerfile} up --exit-code-from testrunner testrunner"
             }
         }
