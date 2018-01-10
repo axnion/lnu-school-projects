@@ -95,10 +95,7 @@ class ExamController extends Controller {
    */
   async getMyExam(req, res, next) {
     const { user_name, channel_name } = req.body;
-      const user = await userFacade.findOne({ slackUser: user_name });
-      if (!user) {
-          return res.status(205).json({ text: "Please register your user before trying to book a exam." });
-      }
+    const user = await userFacade.findOne({ slackUser: user_name });
 
     const doc = await examFacade.findOne({ course: channel_name, date: { $gte: Date.now() } }, { timeSlots: { $elemMatch: { 'timeSlot.studentId': user.lnu } } });
     let responseText;
