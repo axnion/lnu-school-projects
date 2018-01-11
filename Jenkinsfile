@@ -267,7 +267,7 @@ def cleanWorkspace(dockerfile) {
 * Remove any existing running containers, including volumes
 */
 def cleanWorkspaceKeepVolumes(dockerfile) {
-    sh "docker-compose -f ${dockerfile} down -v"
+    sh "docker-compose -f ${dockerfile} down"
 }
 
 /*
