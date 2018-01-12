@@ -213,7 +213,7 @@ node('production') {
 
         stage('Smoke Testing') {
             sleep 5
-            sh 'curl localhost'
+            sh 'curl localhost:6006'
         }
 
     } catch(e) {
