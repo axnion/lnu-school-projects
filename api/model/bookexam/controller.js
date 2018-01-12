@@ -13,7 +13,6 @@ class SlackController extends Controller {
     const exam = temp[0];
     const timeSlotNumber = temp[1];
 
-    //Test
     try {
       const user = await userFacade.findOne({ slackUser: studentId });
       if (!user) {
