@@ -17,7 +17,7 @@ describe('Get exam route', () => {
       })
 
     request.get('/exam').end((err, res) => {
-      expect(res.body.status).toEqual(202)
+      expect(res.body.status).toEqual(200)
       done()
     })
   })
