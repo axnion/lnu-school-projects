@@ -11,7 +11,7 @@ describe('Test ', () => {
 
     const req = {
       body: {
-        buildIsOk: true
+        buildIsOk: false
       }
     };
 
