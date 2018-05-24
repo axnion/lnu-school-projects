@@ -1,8 +1,0 @@
-# Created by .ignore support plugin (hsz.mobi)
-
-.idea
-.vagrant
-.log
-**/staging_results
-api/node_modules
-api/test/integration_tests/newman
