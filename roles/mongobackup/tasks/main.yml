@@ -1,0 +1,12 @@
+---
+  - name: distribute DB public key to backup machine
+    authorized_key: user="{{ backup_ssh_user }}"
+                    key="{{ lookup('file', '/tmp/id_rsa.pub') }}"
+                    state=present
+    when: run_ssh_setup
+
+  - name: create backups directory
+    file:
+      path: "{{ backup_dir }}"
+      state: directory
+      owner: "{{ backup_ssh_user }}"

@@ -1,0 +1,16 @@
+[Unit]
+Description=Configuration Management Client
+
+[Service]
+ExecStart=/usr/local/bin/node {{ install_path }}/index.js
+WorkingDirectory={{ install_path }}
+Restart=always
+ # Restart service after 10 seconds if node service crashes
+ RestartSec=10
+ # Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=client
+
+[Install]
+WantedBy=multi-user.target

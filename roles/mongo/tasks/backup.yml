@@ -1,0 +1,21 @@
+---
+  - name: Create mongobackup directory
+    file:
+      path: /opt/mongobackup
+      state: directory
+
+  - name: Copy mongobackup.conf
+    template:
+      src: mongobackup.conf.j2
+      dest: /opt/mongobackup/mongobackup.conf
+
+  - name: Copy mongobackup.sh
+    copy:
+      src: mongobackup.sh
+      dest: /opt/mongobackup/
+
+  - name: Set cron job
+    cron:
+      name: mongo backup
+      special_time: daily
+      job: bash /opt/mongobackup/mongobackup.sh

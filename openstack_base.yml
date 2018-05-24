@@ -1,0 +1,149 @@
+# Playbook creates the base essentials for the intrastucture.
+# Network + subnet
+# Router
+# Security Groups
+# Ansible Management Machine
+---
+- hosts: localhost
+  vars:
+    - auth_url: https://labcloudftk2.lnu.se:5000
+    - project: Group01_project
+    - ansible: mgmt
+    - network: acme_lan
+    - subnet: lan
+    - range: 10.0.10.0/24
+    - router: acme_router
+
+  vars_prompt:
+    - name: "username"
+      prompt: "Openstack Username"
+    - name: "password"
+      prompt: "Openstack Password"
+
+  tasks:
+  - name: Create network
+    os_network:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: "{{ project }}"
+      name: "{{ network }}"
+      state: present
+      external: false
+
+  - name: Create subnet
+    os_subnet:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: "{{ project }}"
+      name: "{{ subnet }}"
+      state: present
+      network_name: "{{ network }}"
+      cidr: "{{ range }}"
+      dns_nameservers:
+        - 194.47.199.41
+        - 194.47.110.97
+
+  - name: Create router
+    os_router:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: "{{ project }}"
+      name: "{{ router }}"
+      state: present
+      network: internetlan
+      interfaces:
+        - "{{ subnet }}"
+
+  - name: Create security group ssh
+    os_security_group:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: "{{ project }}"
+      name: ssh
+      state: present
+      description: Security group for allowing incomming SSH connections
+
+  - name: Add SSH rule to security group ssh
+    os_security_group_rule:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: "{{ project }}"
+      security_group: ssh
+      protocol: tcp
+      port_range_min: 22
+      port_range_max: 22
+      remote_ip_prefix: 0.0.0.0/0
+
+  - name: Create security group http
+    os_security_group:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: "{{ project }}"
+      name: http
+      state: present
+      description: Security group for allowing incomming HTTP connections
+
+  - name: Add HTTP rule to security group http
+    os_security_group_rule:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: "{{ project }}"
+      security_group: http
+      protocol: tcp
+      port_range_min: 3000
+      port_range_max: 3000
+      remote_ip_prefix: 0.0.0.0/0
+
+  - name: Create port
+    os_port:
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: "{{ project }}"
+      name: "{{ ansible }}_port"
+      state: present
+      network: "{{ network }}"
+      fixed_ips:
+        - ip_address: "{{ hostvars[ansible]['ansible_host'] }}"
+
+  - name: Create management machine
+    os_server:
+      state: present
+      auth:
+        auth_url: "{{ auth_url }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        project_name: "{{ project }}"
+      name: "{{ ansible }}"
+      image: "{{ hostvars[ansible]['image'] }}"
+      flavor: "{{ hostvars[ansible]['flavor'] }}"
+      nics:
+        - port-name: "{{ ansible }}_port"
+      key_name: cloud
+      auto_ip: "{{ hostvars[ansible]['public_ip'] }}"
+      userdata: |
+        {%- raw -%}#!/bin/bash
+        sudo apt-get -y install software-properties-common
+        sudo apt-add-repository -y ppa:ansible/ansible
+        sudo apt-get update
+        sudo apt-get -y install ansible
+        sudo apt-get -y install python-pip
+        sudo pip install shade
+        touch /home/ubuntu/done
+        {% endraw %}
+      security_groups: default,ssh

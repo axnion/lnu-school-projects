@@ -1,0 +1,64 @@
+---
+  - hosts: all
+    become: yes
+    roles:
+     - common
+
+  - hosts: all:!monitor
+    become: yes
+    roles:
+     - sensu_client
+
+  - hosts: littleboy
+    become: yes
+    roles:
+      - node
+      - littleboy
+
+  - hosts: service_a_db
+    become: yes
+    roles:
+      - mongo
+
+  - hosts: service_a_bkup
+    become: yes
+    roles:
+      - mongobackup
+
+  - hosts: service_b_db
+    become: yes
+    roles:
+      - postgres
+
+  - hosts: fatman
+    become: yes
+    roles:
+      - java
+      - fatman
+
+  - hosts: service_b_bkup
+    become: yes
+    roles:
+      - postgresbackup
+
+  - hosts: service_a_lb:service_b_lb
+    become: yes
+    roles:
+      - lb
+
+  - hosts: gateway
+    become: yes
+    roles:
+      - node
+      - gateway
+
+  - hosts: client
+    become: yes
+    roles:
+      - node
+      - client
+
+  - hosts: monitor
+    become: yes
+    roles:
+      - sensu_master

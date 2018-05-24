@@ -1,0 +1,17 @@
+[Unit]
+Description=Service A - Little Boy server
+Requires=network.target
+
+[Service]
+ExecStart=/usr/local/bin/node {{ install_path }}/dist/
+WorkingDirectory={{ install_path }}
+Restart=always
+ # Restart service after 10 seconds if node service crashes
+ RestartSec=10
+ # Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=littleboy
+
+[Install]
+WantedBy=multi-user.target

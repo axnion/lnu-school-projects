@@ -1,0 +1,18 @@
+---
+  - name: Download latest release of Fat Man from Github
+    get_url:
+      url: https://github.com/acme-config-management/fat-man/releases/download/v{{ version }}/fat-man-{{ version }}-fat.jar
+      dest: "{{ install_path }}"
+      mode: 0744
+
+  - name: Add Fatman service file to server
+    template:
+      src: "{{ role_path }}/templates/fatman.service.j2"
+      dest: /etc/systemd/system/fatman.service
+
+  - name: Start fatman service
+    systemd:
+      name: fatman.service
+      state: restarted
+      daemon_reload: yes
+      enabled: yes

@@ -1,0 +1,47 @@
+---
+  - name: Download latest release of Gateway from Github
+    get_url:
+      url: "https://github.com/acme-config-management/gateway/archive/{{ prod_version }}.zip"
+      dest: "{{ download_path }}"
+      mode: 0744
+
+  - name: install unzip
+    apt:
+      name: unzip
+
+  - name: Extract gateway zip to install path
+    unarchive:
+      remote_src: yes
+      src: "{{ download_path }}/gateway-{{ prod_version }}.zip"
+      dest: "{{ install_path }}"
+    register: gateway_files
+
+  - name: Install gateway dependencies
+    shell: npm install
+    args:
+      chdir: "{{ install_path }}/gateway-{{ prod_version }}"
+    when: gateway_files.changed
+
+  - name: Copy service file
+    template:
+      src: gateway.service.j2
+      dest: /etc/systemd/system/gateway.service
+    register: gateway_service
+
+  - name: Copy service conf file
+    template:
+      src: .gatewayconf.j2
+      dest: /etc/.gatewayconf
+
+  - name: Start and enable gateway server
+    systemd:
+      name: gateway
+      state: started
+      daemon_reload: yes
+      enabled: yes
+
+  - name: Restart gateway service
+    systemd:
+      name: gateway
+      state: restarted
+    when: gateway_files.changed

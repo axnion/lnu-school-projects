@@ -1,0 +1,44 @@
+---
+  - name: Install SSL prerequisites
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - python-urllib3
+      - python-openssl
+      - python-pyasn1
+      - python-pip
+
+  - name: Install SSL prerequisites - pip
+    pip:
+      name: ndg-httpsclient
+
+  - name: Check if npm is installed
+    command: dpkg-query -l npm
+    register: npm_check
+    failed_when: npm_check.rc > 1
+    changed_when: no
+
+  - import_tasks: install_node.yml
+    when: npm_check.stderr.find('no packages found') != -1
+
+  - name: Install n
+    npm:
+      name: n
+      global: yes
+    register: n
+
+  - name: Get correct node version
+    command: n {{ nodejs_version }}
+    when: n.changed
+
+  - name: Uninstall nodejs module
+    apt:
+      name: nodejs
+      state: absent
+
+  - name: Symlink node
+    file:
+      src: /usr/bin/nodejs
+      dest: /usr/bin/node
+      state: link
+      force: yes

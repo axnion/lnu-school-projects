@@ -1,0 +1,19 @@
+[Unit]
+Description=Express API Gateway
+Requires=network.target
+
+[Service]
+EnvironmentFile=/etc/.gatewayconf
+ExecStart=/usr/local/bin/node {{ install_path }}/gateway-{{ prod_version }}/server.js $ARG1 $ARG2
+# Required on some systems
+WorkingDirectory={{ install_path }}/gateway-{{ prod_version }}/
+Restart=always
+ # Restart service after 10 seconds if node service crashes
+ RestartSec=10
+ # Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=gateway
+
+[Install]
+WantedBy=multi-user.target

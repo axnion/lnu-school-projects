@@ -1,0 +1,9 @@
+flavor: cpu1-ram2048-disk10
+image: ba7be78b-9986-4631-9242-c7d87540b50f
+public_ip: false
+security_groups: default
+
+port_used: 8080
+admin_port: 9876
+littleboy_port: 80
+fatman_port: 80

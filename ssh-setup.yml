@@ -1,0 +1,17 @@
+---
+- hosts: mgmt
+  tasks:
+    - name: check if key-pair exists
+      stat: path=/home/vagrant/.ssh/id_rsa
+      register: key_file
+
+    - name: generate SSH key-pair
+      shell: ssh-keygen -b 2048 -t rsa -f /home/vagrant/.ssh/id_rsa -q -N ""
+      when: key_file.stat.exists == False
+
+- hosts: all
+  tasks:
+    - name: distribute public key
+      authorized_key: user=vagrant
+                      key="{{ lookup('file', '/home/vagrant/.ssh/id_rsa.pub') }}"
+                      state=present

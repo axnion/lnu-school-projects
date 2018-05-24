@@ -1,0 +1,66 @@
+---
+  - name: Include monitor variables depending on environment
+    include_vars: "{{ playbook_dir }}/environments/{{ sensu_environment }}/host_vars/monitor"
+
+  - name: Ensure that https transport is ready
+    apt:
+      name: apt-transport-https
+      state: present
+
+  - name: Ensure the Sensu APT repo GPG key is present
+    apt_key:
+      url: "{{ sensu_apt_key_url }}"
+      state: present
+
+  - name: Ensure the Sensu Core APT repo is present
+    apt_repository:
+      repo: "{{ sensu_apt_repo_url }}"
+      state: present
+      update_cache: true
+
+  - name: Ensure Sensu is installed
+    apt: name=sensu state={{ sensu_state }}
+
+  - name: Ensure the Sensu config directory is present
+    file:
+      dest: "{{ sensu_config_path }}/conf.d"
+      state: directory
+      owner: sensu
+      group: sensu
+
+  - name: Deploy Sensu RabbitMQ configuration
+    template:
+      dest: "{{ sensu_config_path }}/conf.d/rabbitmq.json"
+      owner: sensu
+      group: sensu
+      src: sensu-rabbitmq.json.j2
+    notify:
+      - restart sensu-server service
+      - restart sensu-api service
+      - restart sensu-client service
+
+  - name: Deploy Sensu transport configuration
+    template:
+      dest: "{{ sensu_config_path }}/conf.d/transport.json"
+      owner: sensu
+      group: sensu
+      src: transport.json.j2
+    notify:
+      - restart sensu-server service
+      - restart sensu-api service
+      - restart sensu-client service
+
+
+  - name: Deploy Sensu client service configuration
+    template:
+      dest: "{{ sensu_config_path }}/conf.d/client.json"
+      owner: sensu
+      group: sensu
+      src: client.json.j2
+    notify: restart sensu-client service
+
+  - name: Ensure Sensu client service is running
+    service:
+      name: sensu-client
+      state: started
+      enabled: yes

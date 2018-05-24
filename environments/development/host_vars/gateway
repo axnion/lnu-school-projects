@@ -1,0 +1,4 @@
+port_used: 8080
+admin_port: 9876
+littleboy_port: 80
+fatman_port: 80

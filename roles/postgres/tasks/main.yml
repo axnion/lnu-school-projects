@@ -1,0 +1,51 @@
+---
+  - import_tasks: ssh_setup.yml
+    when: run_ssh_setup
+
+  - name: Installing PostgreSQL
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - postgresql
+      - libpq-dev
+      - python-psycopg2
+    become: yes
+    register: postgresql_install
+
+  - name: Add Postgres account
+    postgresql_user:
+      name: "{{ db_user }}"
+      password: "{{ db_pass }}"
+      state: present
+    become: yes
+    become_user: postgres
+    when: postgresql_install.changed
+
+  - name: Create database
+    postgresql_db:
+      name: "{{ db_name }}"
+      owner: "{{ db_user }}"
+      state: present
+    become: yes
+    become_user: postgres
+    when: postgresql_install.changed
+
+  - name: Add access to remote hosts
+    shell: echo host all all 10.0.10.0/24 trust >> /etc/postgresql/9.5/main/pg_hba.conf
+    become: yes
+    when: postgresql_install.changed
+
+  - name: Replace postgresql.conf
+    copy:
+      src: "{{ role_path }}/files/postgresql.conf"
+      dest: /etc/postgresql/9.5/main/postgresql.conf
+    become: yes
+
+    # MAKE A HANDLER
+  - name: Restarting Postgresql
+    systemd:
+      name: postgresql
+      state: restarted
+    become: yes
+
+  - import_tasks: backup.yml

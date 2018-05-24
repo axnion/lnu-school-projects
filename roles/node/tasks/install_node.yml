@@ -1,0 +1,21 @@
+---
+  - name: Download node setup script
+    get_url:
+      url: https://deb.nodesource.com/setup_7.x
+      force: yes
+      dest: /tmp/
+      mode: 0755
+
+  - name: Run node setup script
+    command: /tmp/setup_7.x
+    args:
+      chdir: /tmp/
+
+  - name: Remove setup script
+    file:
+      path: /tmp/setup_7.x
+      state: absent
+
+  - name: Install nodejs
+    apt:
+      name: nodejs

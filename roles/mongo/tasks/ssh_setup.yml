@@ -1,0 +1,14 @@
+---
+  - name: check if key-pair exists
+    stat: path={{ backup_ssh_key_path }}
+    register: key_file
+
+  - name: generate SSH key-pair
+    shell: ssh-keygen -b 2048 -t rsa -f {{ backup_ssh_key_path }} -q -N ""
+    when: key_file.stat.exists == False
+
+  - name: copy public key to tmp dir
+    fetch:
+      src: "{{ backup_ssh_key_path }}.pub"
+      dest: /tmp/
+      flat: yes

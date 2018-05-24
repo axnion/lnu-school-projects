@@ -1,0 +1,45 @@
+flavor: cpu2-ram4096-disk20
+image: ba7be78b-9986-4631-9242-c7d87540b50f
+public_ip: true
+security_groups: default,http
+ 
+# Sensu Slack Handler
+slack_webhook_url: https://hooks.slack.com/services/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
+slack_emoji_icon: japanese_goblin
+slack_bot_username: acme-bot
+slack_channel: general
+
+# Redis
+redis_host: 127.0.0.1
+redis_port: 6379
+
+# Uchiwa
+uchiwa_users:
+  - username: admin
+    password: admin
+uchiwa_port: 3000
+uchiwa_refresh: 5
+uchiwa_datacenter_name: Acme
+
+
+# Sensu API
+sensu_api_host: "{{ hostvars['monitor']['ansible_host'] }}"
+sensu_api_port: 4567
+sensu_api_username: admin
+sensu_api_password: secret
+sensu_api_timeout: 5000
+
+
+# Sensu client
+sensu_transport: rabbitmq
+sensu_config_path: /etc/sensu
+sensu_state: present
+sensu_apt_key_url: "http://repositories.sensuapp.org/apt/pubkey.gpg"
+sensu_apt_repo_url: "deb     http://repositories.sensuapp.org/apt {{ ansible_distribution_release }} main"
+
+# RabbitMQ
+rabbitmq_host: "{{ hostvars['monitor']['ansible_host'] }}"
+rabbitmq_sensu_username: sensu
+rabbitmq_sensu_password: secret
+rabbitmq_sensu_vhost: /sensu
+rabbitmq_port: 5672

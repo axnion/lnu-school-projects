@@ -1,0 +1,4 @@
+
+cd /opt/postgresbackup
+pg_dump -h {{ db_host }} -U {{ db_user }} -w {{ db_name }} > postgres_backup_db
+rsync -avzh -e 'ssh -i {{ backup_ssh_key_path }}' /opt/postgresbackup/postgres_backup_db {{ backup_ssh_user }}@{{ hostvars['service_b_bkup']['ansible_host'] }}:{{ backup_dir }}

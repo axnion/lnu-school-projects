@@ -1,0 +1,17 @@
+---
+  - name: Add Oracla Java PPA
+    apt_repository:
+      repo: ppa:webupd8team/java
+      state: present
+
+  - name: Set license selected
+    shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+
+  - name: Set Oracle license as seen
+    shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+
+  - name: Install Java
+    apt:
+      name: "oracle-java{{ java_version }}-set-default"
+      update-cache: yes
+      force: yes

@@ -1,0 +1,79 @@
+---
+  - import_tasks: ssh_setup.yml
+    when: run_ssh_setup
+
+  - name: Install pip
+    apt:
+      name: python-pip
+
+  - name: Add MongoDB GPG key
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: 0C49F3730359A14518585931BC711F9BA15703C6
+
+  - name: Create list file
+    lineinfile:
+      path: /etc/apt/sources.list.d/mongodb-org-3.4.list
+      line: 'deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse'
+      create: yes
+
+  - name: Install correct MongoDB version
+    apt:
+      name: "mongodb-org={{ mongodb_version }}"
+      update_cache: yes
+
+  - name: Install pymongo prerequisite
+    pip:
+      name: pymongo
+      state: latest
+
+  - name: Copy mongod.conf
+    template:
+      src: mongod.conf.j2
+      dest: /etc/mongod.conf
+
+  - name: Copy mongod.service
+    copy:
+      src: mongod.service
+      dest: /etc/systemd/system/mongod.service
+
+  - name: Restart MongoDB service
+    systemd:
+      name: mongod
+      state: restarted
+
+  - name: wait for MongoDB port to be listening
+    wait_for: host=127.0.0.1 port=27017 delay=5 state=started
+
+  - name: Check if admin user already exists
+    command: >
+      mongo --quiet -u {{ mongodb_user_admin_name }} \
+          -p {{ mongodb_user_admin_password }} --eval 'db.version()' admin
+    register: mongodb_user_admin_check
+    changed_when: false
+    ignore_errors: true
+
+  - name: Create database admin user
+    mongodb_user:
+      database: admin
+      name: "{{ mongodb_user_admin_name }}"
+      password: "{{ mongodb_user_admin_password }}"
+      roles: userAdminAnyDatabase
+    when: mongodb_user_admin_check.rc != 0
+
+  - name: Create database user
+    mongodb_user:
+      database: "{{ mongodb_database_name }}"
+      name: "{{ mongodb_user_name }}"
+      password: "{{ mongodb_user_password }}"
+      roles: readWrite
+      login_user: "{{ mongodb_user_admin_name }}"
+      login_password: "{{ mongodb_user_admin_password }}"
+
+  - name: Restart MongoDB service
+    systemd:
+      name: mongod
+      state: restarted
+      enabled: yes
+
+  - import_tasks: backup.yml
