@@ -1,0 +1,23 @@
+<div class="repo-wrapper">
+    <h3>Repositories</h3>
+    <ul>
+        {{#each repos}}
+            <li>{{full_name}}<a href="#" onclick="watch(this, '{{full_name}}')">Watch</a></li>
+        {{/each}}
+    </ul>
+</div>
+<div class="issue-wrapper">
+    <h3>Issues</h3>
+
+    <ul id="watchRepos">
+    </ul>
+</div>
+<div class="notification-wrapper">
+    <h3>Notifications</h3>
+    <ul id="notifications">
+
+    </ul>
+</div>
+
+<script src='/socket.io/socket.io.js'></script>
+<script src="/js/websocketClient.js"></script>

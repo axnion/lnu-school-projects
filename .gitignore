@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 .vagrant
 **/node_modules
 **/*/node_modules
@@ -7,3 +8,7 @@
 node_modules
 .vagrant
 >>>>>>> a8b6814ac5ac9a481942440a5149ae66d90708dc
+=======
+.env
+node_modules
+>>>>>>> 3a9c7a3758eaa095e6f2f323fab5a6f2ec126894

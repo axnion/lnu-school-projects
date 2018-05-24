@@ -1,0 +1,92 @@
+h4 {
+    padding: 0;
+    margin: 0;
+}
+
+.repo-wrapper {
+    float: left;
+    padding-left: 20px;
+}
+
+.repo-wrapper ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.repo-wrapper ul li a {
+    float: right;
+    margin-right: 5px;
+}
+
+.notification-wrapper {
+    float: left;
+    padding-left: 20px;
+}
+
+.issue-wrapper {
+    float: left;
+}
+
+#watchRepos {
+    margin: 0;
+    padding: 0;
+}
+
+.repo {
+    border-top: 2px solid black;
+}
+
+.repo ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#issues {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#issues li {
+    padding-bottom: 5px;
+}
+
+.issue {
+    margin: 5px;
+    padding: 5px;
+    width: 200px;
+    border-top: 1px solid black;
+}
+
+.date {
+    padding: 0;
+    margin: 0;
+    font-size: 60%;
+}
+
+#notifications {
+    list-style-type: none;
+    margin: 0;
+    padding: 2px;
+}
+
+#notifications li {
+    background-color: #d6d6d6;
+    margin-top: 5px;
+}
+
+#notifications p {
+    margin: 0;
+    padding: 1px;
+}
+
+#notifications .action {
+    margin-top:10px;
+    float: right;
+}
+
+#notifications img {
+    width: 50px;
+}

@@ -36,7 +36,10 @@
   "requireCommaBeforeLineBreak": true,
   "requireSpaceBeforeBinaryOperators": true,
   "requireSpaceAfterBinaryOperators": true,
+<<<<<<< HEAD
   "requireCamelCaseOrUpperCaseIdentifiers": false,
+=======
+>>>>>>> 3a9c7a3758eaa095e6f2f323fab5a6f2ec126894
   "requireLineFeedAtFileEnd": true,
   "requireCapitalizedConstructors": true,
   "requireDotNotation": true,
