@@ -1,0 +1,27 @@
+--------ATT GÖRA---------
+Kontrollera så att errorhanteringen funkar.
+Skriv ut nätverksfel på skärmen.
+Lägg till run metod
+
+--------KLART---------
+Kontrollera och fixa potensiella fel i sparfunktinen.
+Byt ut alla globala variabler.
+Gör så att man måste fylla i något i nickname.
+Flytta alla print metoder till ett eget objekt och flytta all hantering av html till det objectet.
+Dela upp postAnswer i fler funktioner.
+Skapa en clear container metod som tar bort allt i en container.
+Fixa deleteing av form på ett bättre sätt.
+Timern skiver inte alltid ut meddelandet.
+Lägg till så ens nya tid alltid syns längst upp när man vinner.
+Flytta upp så allt blir deklarerat i början av funktionen.
+Rensa upp i index.html
+Skapa en default till questioncontainer och sätt timern i en template.
+Lös template.remove() problemet
+Dela upp save highscore
+Implementera clearContainer där den behövs.
+Undersök lite på hur man får this att alltid vara this.
+Byt ut scoreboarddiven mot ul li.
+Sätt lite style på listan
+Försök att dra ner lite på IDn i html
+Gör så att det bara finns så många element som behövs i highscore arrayen.
+Fixa problem med att när timer slutar så försvinner inte formuläret.

@@ -1,0 +1,61 @@
+<html>
+<head>
+    <title>Quiz</title>
+    <link rel="stylesheet" href="./stylesheet/style.css"/>
+</head>
+<body>
+
+    <div id="topContainer" class="container">
+        <h1>Javascript Quiz</h1>
+        <p id="timeParagraph"></p>
+        <p id="questionParagraph"></p>
+    </div>
+
+    <div id="bottomContainer" class="container">
+
+    </div>
+
+    <!--Nickname Template-->
+    <template id="nicknameTemplate">
+        <form id = "nicknameForm">
+            <input type="text" placeholder="Nickname">
+            <input type="submit" value="Start Game">
+        </form>
+        <p id="nickMessage"></p>
+    </template>
+
+    <!--Answer Tamplate Text-->
+    <template id="textAnswerTemplate">
+        <form id = "textAnswerForm">
+            <input type="text" placeholder="Answer">
+            <input type="submit" value="OK">
+        </form>
+    </template>
+
+    <!--Answer Tamplate Alternatives-->
+    <template id="alternativeAnswerTemplate">
+        <form id = "alternativeAnswerForm">
+        </form>
+    </template>
+
+    <!--Game Lost Template-->
+    <template id="gameLostTemplate">
+        <p id="message"></p>
+        <form id="gameLostForm">
+            <input type="submit" value="Restart">
+        </form>
+    </template>
+
+    <!--Game Won Template-->
+    <template id="gameWonTemplate">
+        <h3 id="playerScore"></h3>
+        <ol id="scoreBoard">
+        </ol>
+        <form>
+            <input type="submit" value="Play again">
+        </form>
+    </template>
+
+    <script src="./javascript/build.js"></script>
+</body>
+</html>
