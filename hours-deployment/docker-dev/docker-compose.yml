@@ -1,0 +1,14 @@
+version: '2'
+services:
+    db:
+        build: db
+        volumes:
+            - ./db/backups:/var/lib/postgresql/data
+    hours:
+        build: hours
+        env_file:
+            - hours/.env
+        links:
+            - db:postgres
+        ports:
+            - "8080:8080"

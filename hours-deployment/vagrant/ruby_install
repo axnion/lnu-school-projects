@@ -1,0 +1,6 @@
+echo 'Installing Ruby 2.3.1'
+rbenv install 2.3.1
+rbenv global 2.3.1
+
+echo 'Installing Bundler'
+gem install bundler
