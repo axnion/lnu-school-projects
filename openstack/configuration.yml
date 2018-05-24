@@ -1,0 +1,59 @@
+---
+  # Installs Java and Docker
+  - hosts: jenkins
+    become: true
+    vars:
+      docker_install_compose: true
+    roles:
+      - geerlingguy.java
+      - geerlingguy.docker
+
+  # Installs Jenkins and configure it with plugins and Jenkins user
+  - hosts: jenkins_master
+    become: yes
+    vars:
+      jenkins_hostname: 10.0.10.20
+      jenkins_http_port: 8000
+      jenkins_plugins:
+        - ssh-slave
+        - git
+        - slack
+        - junit
+        - workflow-aggregator
+        - performance
+        - htmlpublisher
+      jenkins_admin_username: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          65386538393263643736626661663732366563386634613137383438633333656631363433386265
+          6663333864366239366431343565666531656564356564340a633337613032383066343263323032
+          34623832653031303864386130663438366532303865306134633636626366383130656464346461
+          6465636332393764380a626132646663333562396235626239616433316566356632356461376266
+          3832
+      jenkins_admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66396537623465623931643039333065303531366336353966353135323133393964363338386461
+          3765383630353163653535646661666430323263333136300a336263376331336463366538656336
+          61383331333936393263633165396664663537313239646666643933383338366365636665376262
+          3035346439656631300a616639653261393537656232383263396137666238326263623165323363
+          3935
+    roles:
+      - geerlingguy.jenkins
+      - jenkins_master
+
+  # Creates and modifies jenkins user to work with Docker
+  - hosts: jenkins
+    become: true
+    roles:
+      - users
+
+  # Prepares jenkins slaves
+  - hosts: jenkins_slaves
+    become: yes
+    roles:
+      - jenkins_slave
+
+  # Prepares integration slave with needed software
+  - hosts: integration_slave
+    become: yes
+    roles:
+      - geerlingguy.nodejs

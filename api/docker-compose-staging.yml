@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+  web:
+    #command: npm start
+    image: tommykronstal/2dv611api:unstable
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+    environment:
+      - MONGO_DB_URI=mongodb://mongo:27017/slackapp
+      - URL=http://194.47.174.58:8080
+      - SLACKTOKEN=pHrBUBELk3whs5w1Fsu6fqtJ
+      - NODE_ENV=staging
+      - SLACK_API_URL=https://slack.com/api/users.info
+      - SLACK_API_TOKEN=xoxp-273720381861-273503337875-295792058871-3b163bd86f0376bb62cf609f4df26983
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes_from:
+      - mongodata
+
+  mongodata:
+    image: tianon/true
+    volumes:
+      - /data/db
+
+  testrunner:
+    image: blazemeter/taurus
+    command: test.yml jmeter.yml
+    volumes:
+     - ./test/staging_tests:/bzt-configs
+    depends_on:
+     - web
+    links:
+     - web:web

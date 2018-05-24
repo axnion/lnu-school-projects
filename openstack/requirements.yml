@@ -1,0 +1,11 @@
+# Jenkins Master Role
+- name: geerlingguy.jenkins
+  src: geerlingguy.jenkins
+
+# Java 
+- name: geerlingguy.java
+  src: geerlingguy.java
+
+# Docker
+- name: geerlingguy.docker
+  src: geerlingguy.docker

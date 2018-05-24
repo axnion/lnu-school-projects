@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+  web:
+    #command: npm start
+    build: .
+    volumes:
+      - ./:/app
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+    command: nodemon -L index.js
+    environment:
+      - MONGO_DB_URI=mongodb://mongo:27017/slackapp
+      - URL=http://1f12cbac.ngrok.io
+      - SLACKTOKEN=pHrBUBELk3whs5w1Fsu6fqtJ
+      - NODE_ENV=dev
+      - SLACK_API_URL=https://slack.com/api/users.info
+      - SLACK_API_TOKEN=xoxp-273720381861-273503337875-295792058871-3b163bd86f0376bb62cf609f4df26983
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes_from:
+      - mongodata
+
+  mongodata:
+    image: tianon/true
+    volumes:
+      - /data/db

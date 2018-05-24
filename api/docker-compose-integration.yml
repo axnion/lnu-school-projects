@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+  web:
+    #command: npm start
+    image: tommykronstal/2dv611api
+    # build: .
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+    environment:
+      - MONGO_DB_URI=mongodb://mongo:27017/slackapp
+      - SLACKTOKEN=pHrBUBELk3whs5w1Fsu6fqtJ
+      - URL=http://10.0.10.22:8080
+      - SLACK_API_URL=https://slack.com/api/users.info
+      - SLACK_API_TOKEN=xoxp-273720381861-273503337875-295792058871-3b163bd86f0376bb62cf609f4df26983
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes_from:
+      - mongodata
+
+  mongodata:
+    image: tianon/true
+    volumes:
+      - /data/db
+
+  testrunner:
+    image: postman/newman_ubuntu1404
+    volumes:
+      - "./test/integration_tests:/etc/newman"
+    command: run slack_plugin_integration_test.json --reporters="html,junit" --reporter-junit-export="integration_test_results.xml" --delay-request 150
+     # - run newman_tests.json --reporters="html,junit" --reporter-junit-export="integration_test_results.xml"
+    #  - run slack_plugin_integration_test.json --reporters="html,junit" --reporter-junit-export="integration_test_results.xml"
+    depends_on:
+      - web

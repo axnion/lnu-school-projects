@@ -1,0 +1,46 @@
+{
+  "name": "slackapp",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "jest": { "testResultsProcessor": "./node_modules/jest-html-reporter",
+            "coverageDirectory": "./test/unit_tests/coverage"},
+  "jest-html-reporter": {
+    "pageTitle": "Slack API unit tests report",
+    "outputPath": "/app/test/unit_tests/report/test-report.html",
+    "includeFailureMsg": false
+  },
+  "scripts": {
+    "test": "jest --coverage --no-cache",
+    "start": "nodemon -L index.js",
+    "debug": "nodemon --inspect=0.0.0.0:9229 index.js"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "author": "Fredrik Wällstedt <fw222ek@student.lnu.se>",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "helmet": "^3.1.0",
+    "mongoose": "^4.7.0",
+    "morgan": "^1.7.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.7.1",
+    "jest": "^21.2.1",
+    "jest-html-reporter": "^0.5.7",
+    "nock": "^9.1.4",
+    "nodemon": "^1.11.0",
+    "sinon": "^4.1.3",
+    "sinon-mongoose": "^2.0.2",
+    "supertest": "^3.0.0"
+  }
+}
