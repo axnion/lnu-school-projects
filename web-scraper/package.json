@@ -1,0 +1,25 @@
+{
+  "name": "web-scraper",
+  "version": "1.0.0",
+  "description": "Assignment 1 in 1DV023. Task is to make a webscraper to gather information on three websites",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1dv023/an222yp-examination-1.git"
+  },
+  "author": "Axel Nilsson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/1dv023/an222yp-examination-1/issues"
+  },
+  "homepage": "https://github.com/1dv023/an222yp-examination-1#readme",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "prompt-promise": "^1.0.3",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  }
+}
